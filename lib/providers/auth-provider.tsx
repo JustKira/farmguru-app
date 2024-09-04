@@ -1,18 +1,19 @@
 import axios from 'axios';
+import { Href, usePathname, useRouter } from 'expo-router';
 import React, { createContext, useEffect } from 'react';
 
 import { BASE_URL } from '../axios-client';
 import { storage } from '../mmkv/storage';
 
 export interface AuthContextType {
-  user: UserData;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string, redirect: Href<string>) => Promise<void>;
   signOut: () => void;
 }
 
 type AuthProviderProps = {
   children: React.ReactNode;
-  unauthorized?: React.ReactNode;
+  signInPath: Href<string>;
+  protectedRoutes: RegExp[];
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,20 +26,33 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children, unauthorized }) => {
-  const [user, setUser] = React.useState<UserData | null>(null);
+export const AuthProvider: React.FC<AuthProviderProps> = ({
+  children,
+  protectedRoutes,
+  signInPath,
+}) => {
+  const pathName = usePathname();
+  const router = useRouter();
 
-  function initializeUser() {
-    const u = storage.getString('userData');
+  // function initializeUser() {
+  //   const u = storage.getString('user-data');
+  //   const userData = u ? JSON.parse(u) : null;
+  // }
 
+  // useEffect(initializeUser, []);
+
+  useEffect(() => {
+    // Only perform route checks after loading is complete
+    const isProtectedRoute = protectedRoutes.some((regex) => regex.test(pathName));
+    const u = storage.getString('user-data');
     const userData = u ? JSON.parse(u) : null;
+    if (isProtectedRoute && !userData) {
+      // If the user is not authenticated and is trying to access a protected route, redirect to the sign-in page
+      router.replace(signInPath);
+    }
+  }, [pathName]);
 
-    setUser(userData);
-  }
-
-  useEffect(initializeUser, []);
-
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, redirect: Href<string>) => {
     const response = await axios.post<{ data: UserResponseData }>(`${BASE_URL}/accounts/login`, {
       email,
       password,
@@ -55,27 +69,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, unauthoriz
       refreshToken: data.RefreshToken,
     };
 
-    setUser({ ...restUser, accessToken, refreshToken });
-    storage.set('user-data', JSON.stringify({ ...restUser, accessToken, refreshToken }));
+    storage.set('user-data', JSON.stringify({ ...restUser }));
     storage.set('user-access-token', accessToken);
     storage.set('user-refresh-token', refreshToken);
+
+    router.replace(redirect);
   };
 
   const signOut = () => {
-    setUser(null);
     storage.delete('user-data');
     storage.delete('user-access-token');
     storage.delete('user-refresh-token');
+
+    router.replace(signInPath);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        user: user as UserData,
         signIn,
         signOut,
       }}>
-      {user ? children : unauthorized}
+      {children}
     </AuthContext.Provider>
   );
 };

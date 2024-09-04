@@ -1,5 +1,4 @@
-// Import necessary modules and components
-import '../global.css';
+import '~/global.css';
 
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
@@ -8,8 +7,8 @@ import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import Login from '~/components/login';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { storage } from '~/lib/mmkv/storage';
@@ -82,10 +81,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      <AuthProvider unauthorized={<Login />}>
-        <Stack />
-      </AuthProvider>
+      <SafeAreaProvider>
+        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+        <AuthProvider signInPath="/login" protectedRoutes={[/^\/$/, /^\/field\/.*/]}>
+          <Stack />
+        </AuthProvider>
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
