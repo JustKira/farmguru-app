@@ -12,9 +12,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { storage } from '~/lib/mmkv/storage';
-import migrations from '~/lib/model/migrations';
-import schema from '~/lib/model/schema';
+import migrations from '~/lib/database/migrations';
+import schema from '~/lib/database/schema';
 import { AuthProvider } from '~/lib/providers/auth-provider';
+import { field } from '@nozbe/watermelondb/decorators';
+import Field from '~/lib/database/model/field';
 
 // Define theme constants
 const LIGHT_THEME: Theme = {
@@ -39,9 +41,7 @@ const adapter = new SQLiteAdapter({
 // Initialize WatermelonDB database
 const database = new Database({
   adapter,
-  modelClasses: [
-    // Add Models to Watermelon here, if any
-  ],
+  modelClasses: [Field],
 });
 
 // Prevent the splash screen from auto-hiding before getting the color scheme
