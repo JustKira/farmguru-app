@@ -33,9 +33,9 @@ export default function Login() {
   });
 
   return (
-    <SafeAreaView>
+    <>
       <Stack.Screen options={{ headerShown: false }} />
-      <View className="flex h-full justify-center">
+      <View className="flex justify-center h-full">
         <Card className="w-full border-transparent">
           <CardHeader>
             <CardTitle className="font-black">FarmGuru</CardTitle>
@@ -77,6 +77,6 @@ export default function Login() {
           </CardContent>
         </Card>
       </View>
-    </SafeAreaView>
+    </>
   );
 }

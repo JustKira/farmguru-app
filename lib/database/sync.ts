@@ -1,6 +1,6 @@
 import { synchronize } from '@nozbe/watermelondb/sync';
 import { watermelondb } from './database';
-async function appSync() {
+async function onSync() {
   await synchronize({
     database: watermelondb,
     pullChanges: async ({ lastPulledAt }) => {

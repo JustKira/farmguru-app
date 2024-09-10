@@ -1,7 +1,8 @@
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { useRouter } from 'expo-router';
-import { Image, View } from 'react-native';
 import { Farm } from 'phosphor-react-native';
+import { Image, View } from 'react-native';
+
 import { Button } from './ui/button';
 import { Text } from './ui/text';
 
@@ -15,7 +16,7 @@ export default function CustomDrawerContent(props: any) {
 
   return (
     <View className="flex-1">
-      <View className="pb-4 pt-10">
+      <View className="pt-10 pb-4">
         <Image
           className="h-24"
           resizeMode="contain"
@@ -31,7 +32,7 @@ export default function CustomDrawerContent(props: any) {
         <DrawerItem
           label="Farms"
           icon={({ size, color }) => <Farm size={size} color={color} />}
-          onPress={() => router.push('/index')}
+          onPress={() => router.push('/')}
         />
         <DrawerItemList {...props} />
       </DrawerContentScrollView>

@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
+import { PortalHost } from '@rn-primitives/portal';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { storage } from '~/lib/mmkv/storage';
@@ -69,6 +69,7 @@ export default function RootLayout() {
               headerShown: false,
             }}
           />
+          <PortalHost />
         </AuthProvider>
       </SafeAreaProvider>
     </ThemeProvider>
