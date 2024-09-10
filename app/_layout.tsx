@@ -64,7 +64,11 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
         <AuthProvider signInPath="/login" protectedRoutes={[/^\/$/, /^\/field\/.*/]}>
-          <Stack />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
         </AuthProvider>
       </SafeAreaProvider>
     </ThemeProvider>

@@ -1,11 +1,16 @@
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import { useRouter } from 'expo-router';
 import { Image, View } from 'react-native';
-
+import { Farm } from 'phosphor-react-native';
+import { Button } from './ui/button';
 import { Text } from './ui/text';
 
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
+import { useAuth } from '~/lib/providers/auth-provider';
 
 export default function CustomDrawerContent(props: any) {
+  const { signOut } = useAuth();
+  const router = useRouter();
   const { isDarkColorScheme } = useColorScheme();
 
   return (
@@ -21,11 +26,21 @@ export default function CustomDrawerContent(props: any) {
           }
         />
       </View>
+
       <DrawerContentScrollView {...props}>
+        <DrawerItem
+          label="Farms"
+          icon={({ size, color }) => <Farm size={size} color={color} />}
+          onPress={() => router.push('/index')}
+        />
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      <Text className="text-3xl text-foreground">Sign out</Text>
+      <View className="px-2 pb-2">
+        <Button onPress={() => signOut()}>
+          <Text>Sign out</Text>
+        </Button>
+      </View>
     </View>
   );
 }
