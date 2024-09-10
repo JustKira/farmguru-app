@@ -1,7 +1,6 @@
 import '~/global.css';
 
-import { Database } from '@nozbe/watermelondb';
-import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
+import '~/lib/database/database';
 import { Theme, ThemeProvider } from '@react-navigation/native';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -12,11 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { storage } from '~/lib/mmkv/storage';
-import migrations from '~/lib/database/migrations';
-import schema from '~/lib/database/schema';
 import { AuthProvider } from '~/lib/providers/auth-provider';
-import { field } from '@nozbe/watermelondb/decorators';
-import Field from '~/lib/database/model/field';
 
 // Define theme constants
 const LIGHT_THEME: Theme = {
@@ -28,21 +23,6 @@ const DARK_THEME: Theme = {
   dark: true,
   colors: NAV_THEME.dark,
 };
-
-// WatermelonDB setup
-const adapter = new SQLiteAdapter({
-  schema,
-  migrations,
-  jsi: false,
-
-  onSetUpError: () => {},
-});
-
-// Initialize WatermelonDB database
-const database = new Database({
-  adapter,
-  modelClasses: [Field],
-});
 
 // Prevent the splash screen from auto-hiding before getting the color scheme
 SplashScreen.preventAutoHideAsync();

@@ -14,6 +14,14 @@ type AuthProviderProps = {
   children: React.ReactNode;
   signInPath: Href<string>;
   protectedRoutes: RegExp[];
+  onSignInSuccess?: (user: {
+    accountId: string;
+    loginId: string;
+    accountType: string;
+    email: string;
+    name: string;
+  }) => void;
+  onSignOutSuccess?: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,6 +38,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   children,
   protectedRoutes,
   signInPath,
+  onSignInSuccess,
+  onSignOutSuccess,
 }) => {
   const pathName = usePathname();
   const router = useRouter();
@@ -73,6 +83,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     storage.set('user-access-token', accessToken);
     storage.set('user-refresh-token', refreshToken);
 
+    if (onSignInSuccess) {
+      onSignInSuccess({ ...restUser });
+    }
+
     router.replace(redirect);
   };
 
@@ -80,6 +94,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     storage.delete('user-data');
     storage.delete('user-access-token');
     storage.delete('user-refresh-token');
+
+    if (onSignOutSuccess) {
+      onSignOutSuccess();
+    }
 
     router.replace(signInPath);
   };
