@@ -6,7 +6,7 @@ import { BASE_URL } from '../axios-client';
 import { storage } from '../mmkv/storage';
 
 export interface AuthContextType {
-  signIn: (email: string, password: string, redirect: Href<string>) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   isLoading: boolean;
 }
@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     }
   }, [pathName]);
 
-  const signIn = async (email: string, password: string, redirect: Href<string>) => {
+  const signIn = async (email: string, password: string) => {
     setIsLoading(true);
 
     const response = await axios.post<{ data: UserResponseData }>(`${BASE_URL}/accounts/login`, {

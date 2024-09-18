@@ -47,16 +47,17 @@ export default function RootLayout() {
         document.documentElement.classList.add('bg-background');
       }
       if (!theme) {
-        storage.set('theme', colorScheme); // Use MMKV to set the theme
+        storage.set('theme', 'light'); // Use MMKV to set the theme
         setIsColorSchemeLoaded(true);
         return;
       }
-      const colorTheme = theme === 'dark' ? 'dark' : 'light';
-      if (colorTheme !== colorScheme) {
-        setColorScheme(colorTheme);
-        setIsColorSchemeLoaded(true);
-        return;
-      }
+      // const colorTheme = theme === 'dark' ? 'dark' : 'light';
+      // if (colorTheme !== colorScheme) {
+      //   setColorScheme('light');
+      //   setIsColorSchemeLoaded(true);
+      //   return;
+      // }
+
       setIsColorSchemeLoaded(true);
     })().finally(() => {
       SplashScreen.hideAsync();
@@ -70,18 +71,12 @@ export default function RootLayout() {
   return (
     <DatabaseProvider database={database}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          //value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-          value={LIGHT_THEME}>
+        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
           <SafeAreaProvider>
-            <StatusBar
-              // style={isDarkColorScheme ? 'light' : 'dark'}
-              style="light"
-            />
+            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
             <AuthProvider
               onSignInSuccess={async () => {
-                await appSync();
-                router.replace('/(app_drawer)');
+                router.replace('/sync');
                 // await reloadAppAsync();
               }}
               onSignOutSuccess={async () => {

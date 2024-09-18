@@ -30,7 +30,7 @@ export default function Login() {
   const { signIn } = useAuth();
 
   const submit = handleSubmit(async (data) => {
-    await signIn(data.email, data.password, '/');
+    await signIn(data.email, data.password);
   });
 
   const { isConnected } = useNetInfo();
