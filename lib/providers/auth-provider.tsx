@@ -8,6 +8,7 @@ import { storage } from '../mmkv/storage';
 export interface AuthContextType {
   signIn: (email: string, password: string, redirect: Href<string>) => Promise<void>;
   signOut: () => void;
+  isLoading: boolean;
 }
 
 type AuthProviderProps = {
@@ -20,8 +21,8 @@ type AuthProviderProps = {
     accountType: string;
     email: string;
     name: string;
-  }) => void;
-  onSignOutSuccess?: () => void;
+  }) => Promise<void>;
+  onSignOutSuccess?: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -44,6 +45,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   const pathName = usePathname();
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = React.useState(true);
+
   // function initializeUser() {
   //   const u = storage.getString('user-data');
   //   const userData = u ? JSON.parse(u) : null;
@@ -63,6 +66,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   }, [pathName]);
 
   const signIn = async (email: string, password: string, redirect: Href<string>) => {
+    setIsLoading(true);
+
     const response = await axios.post<{ data: UserResponseData }>(`${BASE_URL}/accounts/login`, {
       email,
       password,
@@ -87,10 +92,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       onSignInSuccess({ ...restUser });
     }
 
-    router.replace(redirect);
+    setIsLoading(false);
   };
 
   const signOut = () => {
+    setIsLoading(true);
     storage.delete('user-data');
     storage.delete('user-access-token');
     storage.delete('user-refresh-token');
@@ -99,7 +105,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       onSignOutSuccess();
     }
 
-    router.replace(signInPath);
+    setIsLoading(false);
   };
 
   return (
@@ -107,6 +113,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       value={{
         signIn,
         signOut,
+        isLoading,
       }}>
       {children}
     </AuthContext.Provider>

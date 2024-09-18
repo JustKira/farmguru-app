@@ -9,14 +9,14 @@ import { Text } from './ui/text';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { useAuth } from '~/lib/providers/auth-provider';
 
-export default function CustomDrawerContent(props: any) {
+export default function CustomFieldDrawerContent(props: any) {
   const { signOut } = useAuth();
   const router = useRouter();
   const { isDarkColorScheme } = useColorScheme();
 
   return (
     <View className="flex-1">
-      <View className="pt-10 pb-4">
+      <View className="pb-4 pt-10">
         <Image
           className="h-24"
           resizeMode="contain"
@@ -32,7 +32,7 @@ export default function CustomDrawerContent(props: any) {
         <DrawerItem
           label="Farms"
           icon={({ size, color }) => <Farm size={size} color={color} />}
-          onPress={() => router.push('/')}
+          onPress={() => router.push('/(app_drawer)')}
         />
         <DrawerItemList {...props} />
       </DrawerContentScrollView>

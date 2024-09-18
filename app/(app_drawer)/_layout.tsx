@@ -1,29 +1,40 @@
+import '~/lib/database/index';
+
 import { Drawer } from 'expo-router/drawer';
 import { cssInterop } from 'nativewind';
-import { Airplay, Cloud, DropHalfBottom, Plant, Scan } from 'phosphor-react-native';
+import { UserCircle, Farm } from 'phosphor-react-native';
 import { ComponentProps } from 'react';
 import { ViewStyle } from 'react-native';
 
-import CustomDrawerContent from '~/components/custom-drawer';
+import CustomAppDrawerContent from '~/components/custom-app-drawer';
 import { ThemeToggle } from '~/components/theme-toggle';
 
 export default function _layout() {
   return (
     <CustomDrawer
       drawerClassName="bg-background"
-      drawerContent={CustomDrawerContent}
+      drawerContent={CustomAppDrawerContent}
       screenOptions={{
         headerRight: () => <ThemeToggle />,
       }}>
       <Drawer.Screen
-        name="index"
+        name="farms"
         options={{
           // headerTitle: t('navigation.home'),
-          drawerLabel: 'General',
-          drawerIcon: ({ size, color }) => <Airplay size={size} color={color} />,
+
+          drawerLabel: 'Farms',
+          drawerIcon: ({ size, color }) => <Farm size={size} color={color} />,
         }}
       />
       <Drawer.Screen
+        name="index"
+        options={{
+          headerTitle: 'Profile',
+          drawerLabel: 'Profile',
+          drawerIcon: ({ size, color }) => <UserCircle size={size} color={color} />,
+        }}
+      />
+      {/* <Drawer.Screen
         name="irrigation"
         options={{
           // headerTitle: t('navigation.home'),
@@ -54,7 +65,7 @@ export default function _layout() {
           drawerLabel: 'Weather',
           drawerIcon: ({ size, color }) => <Cloud size={size} color={color} />,
         }}
-      />
+      /> */}
     </CustomDrawer>
   );
 }

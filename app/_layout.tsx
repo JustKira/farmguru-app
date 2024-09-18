@@ -1,14 +1,18 @@
 import '~/global.css';
 
-import '~/lib/database/database';
+import { DatabaseProvider } from '@nozbe/watermelondb/react';
 import { Theme, ThemeProvider } from '@react-navigation/native';
-import { SplashScreen, Stack } from 'expo-router';
+import { PortalHost } from '@rn-primitives/portal';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SplashScreen, Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { PortalHost } from '@rn-primitives/portal';
+
 import { NAV_THEME } from '~/lib/constants';
+import { database } from '~/lib/database';
+import { appSync } from '~/lib/database/sync';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { storage } from '~/lib/mmkv/storage';
 import { AuthProvider } from '~/lib/providers/auth-provider';
@@ -27,9 +31,13 @@ const DARK_THEME: Theme = {
 // Prevent the splash screen from auto-hiding before getting the color scheme
 SplashScreen.preventAutoHideAsync();
 
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+  const router = useRouter();
 
   React.useEffect(() => {
     (async () => {
@@ -60,18 +68,36 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <SafeAreaProvider>
-        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-        <AuthProvider signInPath="/login" protectedRoutes={[/^\/$/, /^\/field\/.*/]}>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          />
-          <PortalHost />
-        </AuthProvider>
-      </SafeAreaProvider>
-    </ThemeProvider>
+    <DatabaseProvider database={database}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+          <SafeAreaProvider>
+            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+            <AuthProvider
+              onSignInSuccess={async () => {
+                await appSync();
+                router.replace('/(app_drawer)');
+                // await reloadAppAsync();
+              }}
+              onSignOutSuccess={async () => {
+                await database.write(async () => {
+                  await database.unsafeResetDatabase();
+                });
+                router.replace('/login');
+                // await reloadAppAsync();
+              }}
+              signInPath="/login"
+              protectedRoutes={[/^\/$/, /^\/field\/.*/]}>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                }}
+              />
+              <PortalHost />
+            </AuthProvider>
+          </SafeAreaProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </DatabaseProvider>
   );
 }

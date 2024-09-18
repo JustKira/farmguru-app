@@ -28,14 +28,14 @@ export default function Login() {
 
   const { signIn } = useAuth();
 
-  const submit = handleSubmit((data) => {
-    signIn(data.email, data.password, '/index');
+  const submit = handleSubmit(async (data) => {
+    await signIn(data.email, data.password, '/');
   });
 
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <View className="flex justify-center h-full">
+      <View className="flex h-full justify-center">
         <Card className="w-full border-transparent">
           <CardHeader>
             <CardTitle className="font-black">FarmGuru</CardTitle>

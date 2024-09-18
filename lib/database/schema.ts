@@ -113,8 +113,8 @@ export default appSchema({
           type: 'string',
         },
         {
-          name: 'field_ids',
-          type: 'string', // number[]
+          name: 'fields',
+          type: 'string',
         },
       ],
     }),

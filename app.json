@@ -4,21 +4,27 @@
     "slug": "farmguru-app",
     "version": "1.0.0",
     "scheme": "farmguru-app",
-
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      ["@morrowdigital/watermelondb-expo-plugin", { "disableJsi": true }],
+      [
+        "@morrowdigital/watermelondb-expo-plugin",
+        {
+          "disableJsi": true
+        }
+      ],
       [
         "expo-build-properties",
         {
           "android": {
             "kotlinVersion": "1.6.10",
             "packagingOptions": {
-              "pickFirst": ["**/libc++_shared.so"]
+              "pickFirst": [
+                "**/libc++_shared.so"
+              ]
             }
           }
         }
@@ -37,7 +43,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.vais.farmguru"
@@ -47,7 +55,17 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC3ZEf3MEM6o4vCDVOt3AGTFPP0DrrJnto"
+        }
+      },
       "package": "com.vais.farmguru"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "53b43ee4-013f-4d22-8d06-ac651976f85b"
+      }
     }
   }
 }
