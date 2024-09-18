@@ -14,11 +14,12 @@ export default function _layout() {
     <CustomDrawer
       drawerClassName="bg-background"
       drawerContent={CustomAppDrawerContent}
-      screenOptions={{
-        headerRight: () => <ThemeToggle />,
-      }}>
+      // screenOptions={{
+      //   headerRight: () => <ThemeToggle />,
+      // }}
+    >
       <Drawer.Screen
-        name="farms"
+        name="index"
         options={{
           // headerTitle: t('navigation.home'),
 
@@ -27,7 +28,7 @@ export default function _layout() {
         }}
       />
       <Drawer.Screen
-        name="index"
+        name="profile"
         options={{
           headerTitle: 'Profile',
           drawerLabel: 'Profile',

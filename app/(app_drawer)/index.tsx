@@ -34,9 +34,7 @@ export default function Home() {
             renderItem={({ item: farm }) => {
               return (
                 <View className="w-full">
-                  <Text>
-                    {farm.name} {farm.fields.length}
-                  </Text>
+                  <Text className="mb-1.5 text-xl font-bold">{farm.name}</Text>
                   <FlashList
                     data={farm.fields}
                     estimatedItemSize={5}
@@ -57,8 +55,9 @@ export default function Home() {
                           onPress={() => {
                             router.push(`/field/${field.id}/(drawer)`);
                           }}
-                          className="h-[225px] w-full">
-                          <Text>{field.name}</Text>
+                          className="mb-4 flex h-[225px] w-full flex-col">
+                          <Text className="text-lg">{field.name}</Text>
+
                           <MapView
                             initialRegion={initialRegion}
                             provider={PROVIDER_GOOGLE}

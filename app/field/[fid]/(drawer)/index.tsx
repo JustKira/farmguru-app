@@ -1,65 +1,88 @@
-import { Stack } from 'expo-router';
-import { CloudSun, DropHalfBottom, Grains } from 'phosphor-react-native';
+import { Stack, useGlobalSearchParams } from 'expo-router';
+import { Grains, Plant, TrendDown, TrendUp } from 'phosphor-react-native';
 import React from 'react';
 import { View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
-import { InfoCard, InfoCardProps } from '~/components/info-card';
-import { Badge } from '~/components/ui/badge';
 import { Text } from '~/components/ui/text';
+import { useGetFieldDetails } from '~/lib/react-query/getField';
 
 export default function GeneralScreen() {
-  const [items] = React.useState<InfoCardProps[]>([
+  const params = useGlobalSearchParams();
+
+  const { data, isLoading } = useGetFieldDetails(params.fid as string);
+
+  if (isLoading) {
+    return (
+      <>
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: 'General',
+          }}
+        />
+      </>
+    );
+  }
+
+  if (!data) {
+    return (
+      <>
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: 'General (Error)',
+          }}
+        />
+        <View>
+          <Text>Field not found</Text>
+        </View>
+      </>
+    );
+  }
+
+  const items: { label: string; value: number; icon: JSX.Element; isNegativeNature: boolean }[] = [
     {
-      cardHeader: {
-        subTitle: 'Status',
-        title: 'Weather',
-      },
-      icon: <CloudSun size={32} weight="duotone" color="white" />,
-      iconClassName: 'bg-gray-600',
-      children: (
-        <>
-          <View className="flex-row gap-1">
-            <Badge variant="secondary">
-              <Text>Cloudy</Text>
-            </Badge>
-            <Badge variant="destructive">
-              <Text>Heatwave in 4 days</Text>
-            </Badge>
-          </View>
-        </>
-      ),
+      label: 'nutrients',
+      value: data.trendNitrogen,
+      icon: (
+        <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
+          <Grains size={32} color="rgb(74 222 128)" />
+        </View>
+      ), // Pass the icon
+      isNegativeNature: false,
     },
     {
-      cardHeader: {
-        subTitle: 'Status',
-        title: 'Crop Vitals',
-      },
-      icon: <Grains size={32} weight="fill" color="white" />,
-      iconClassName: 'bg-lime-600',
+      label: 'growth',
+      value: data.trendGrowth,
+      icon: (
+        <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
+          <Plant size={32} color="rgb(74 222 128)" />
+        </View>
+      ), // Pass the icon
+      isNegativeNature: false,
     },
     {
-      cardHeader: {
-        subTitle: 'Status',
-        title: 'Irrigation',
-      },
-      icon: <DropHalfBottom size={32} weight="fill" color="white" />,
-      iconClassName: 'bg-blue-600',
+      label: 'stress',
+      value: data.trendStress,
+      icon: (
+        <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
+          <Plant size={32} color="rgb(74 222 128)" />
+        </View>
+      ), // Pass the icon
+      isNegativeNature: true,
     },
-    {
-      cardHeader: {
-        subTitle: 'Status',
-        title: 'Weather',
-      },
-      icon: <CloudSun size={32} weight="duotone" color="white" />,
-      iconClassName: 'bg-gray-600',
-    },
-  ]);
+  ];
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Home' }} />
-      <View className="flex flex-1 bg-muted/30 md:flex-row">
+      <Stack.Screen
+        options={{
+          title: 'General',
+        }}
+      />
+      <View className="flex flex-1 gap-2 p-4">
+        <Text className="text-3xl font-black">Weekly Changes</Text>
         <FlatGrid
           itemDimension={200}
           data={items}
@@ -67,19 +90,45 @@ export default function GeneralScreen() {
             flex: 1,
           }}
           maxItemsPerRow={2}
-          spacing={8}
+          spacing={6}
           renderItem={({ item }) => {
-            const { children, ...rest } = item;
-            return <InfoCard {...rest}>{children}</InfoCard>;
+            const { ...rest } = item;
+            return <TrendBlock {...rest} />;
           }}
         />
-        <View className="hidden gap-1 md:block md:w-[40%]">
-          <View className="flex-1 rounded-xl border border-border bg-card/75 p-4" />
-          <View className="flex-1 rounded-xl border border-border bg-card/75 p-4">
-            <Text>Notifications</Text>
-          </View>
-        </View>
       </View>
     </>
+  );
+}
+
+interface TrendBlockProps {
+  value: number;
+  icon: JSX.Element; // New icon prop
+  isNegativeNature?: boolean;
+  label: string;
+}
+
+function TrendBlock({ icon, isNegativeNature, label, value }: TrendBlockProps) {
+  const isTrendingPositive = isNegativeNature ? value <= 0 : value >= 0;
+
+  return (
+    <View className="flex-row items-center justify-between rounded-md ">
+      {/* Icon on the left */}
+      <View className="flex-row items-center">
+        <View className="mr-2">{icon}</View>
+        <View>
+          <Text className="text-2xl font-medium capitalize">{label}</Text>
+          <Text className="text-lg text-muted-foreground">{value.toFixed(2)}%</Text>
+        </View>
+      </View>
+      {/* Trending indicator */}
+      <View>
+        {isTrendingPositive ? (
+          <TrendUp weight="bold" size={48} color="rgb(74 222 128)" />
+        ) : (
+          <TrendDown size={48} color="red" />
+        )}
+      </View>
+    </View>
   );
 }

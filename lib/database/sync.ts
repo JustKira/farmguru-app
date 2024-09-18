@@ -5,7 +5,7 @@ import { axiosClient } from '../axios-client';
 
 import SyncLogger from '@nozbe/watermelondb/sync/SyncLogger';
 
-interface FieldData {
+interface FieldInfoData {
   id: string;
   name: string;
   farmId: string;
@@ -76,17 +76,17 @@ const appSync = async () => {
       }, []);
 
       // Fetch field details
-      const fieldsDetailsRequests = allFieldsIds.map((fieldId) =>
-        axiosClient.post('/fields/mobile/fieldInfo', {
+      const fieldsDetailsRequests = allFieldsIds.map((fieldId) => {
+        return axiosClient.post<{ data: FieldInfoData }>('/fields/mobile/fieldInfo', {
           FieldId: fieldId,
-        })
-      );
+        });
+      });
 
       const fieldsDetailsResponses = await Promise.all(fieldsDetailsRequests);
 
       // Map field data
       const fieldRecords = fieldsDetailsResponses.map((response) => {
-        const field: FieldData = response.data;
+        const field = response.data.data;
 
         return {
           id: field.id,
@@ -130,11 +130,11 @@ const appSync = async () => {
           updated: [],
           deleted: [],
         },
-        // field: {
-        //   created: fieldRecords,
-        //   updated: [],
-        //   deleted: [],
-        // },
+        field: {
+          created: fieldRecords,
+          updated: [],
+          deleted: [],
+        },
       };
 
       // Debug print changes

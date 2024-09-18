@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as z from 'zod';
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
@@ -32,11 +33,27 @@ export default function Login() {
     await signIn(data.email, data.password, '/');
   });
 
+  const { isConnected } = useNetInfo();
+
+  if (!isConnected) {
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: true, headerTitle: 'Offline' }} />
+        <View className="flex h-full justify-center">
+          <Text className="text-xl font-medium">You are Offline</Text>
+          <Text className="text-sm text-muted-foreground">
+            It seems you are offline. Please check your internet connection and try again.
+          </Text>
+        </View>
+      </>
+    );
+  }
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View className="flex h-full justify-center">
-        <Card className="w-full border-transparent">
+        <Card className="w-full border-transparent bg-transparent">
           <CardHeader>
             <CardTitle className="font-black">FarmGuru</CardTitle>
             <CardDescription>Welcome back.</CardDescription>

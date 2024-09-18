@@ -70,9 +70,14 @@ export default function RootLayout() {
   return (
     <DatabaseProvider database={database}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <ThemeProvider
+          //value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+          value={LIGHT_THEME}>
           <SafeAreaProvider>
-            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+            <StatusBar
+              // style={isDarkColorScheme ? 'light' : 'dark'}
+              style="light"
+            />
             <AuthProvider
               onSignInSuccess={async () => {
                 await appSync();
