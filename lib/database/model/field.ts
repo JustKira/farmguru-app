@@ -75,7 +75,7 @@ class Field extends Model {
   @field('days_to_wilting') daysToWilting!: number;
   @field('advised_water') advisedWater!: number;
 
-  @date('next_irrigation') nextIrrigation!: Date;
+  @field('next_irrigation') nextIrrigation!: number;
 }
 
 export default Field;

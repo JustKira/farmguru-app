@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
-import { useGetFieldDetails } from '~/lib/react-query/getField';
+import { useGetFieldDetails } from '~/lib/react-query/get-field';
 export default function CropScreen() {
   const params = useGlobalSearchParams();
 

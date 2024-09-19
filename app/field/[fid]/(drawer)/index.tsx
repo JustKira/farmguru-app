@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
 import { Text } from '~/components/ui/text';
-import { useGetFieldDetails } from '~/lib/react-query/getField';
+import { useGetFieldDetails } from '~/lib/react-query/get-field';
 
 export default function GeneralScreen() {
   const params = useGlobalSearchParams();

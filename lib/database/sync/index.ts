@@ -2,9 +2,11 @@ import { synchronize } from '@nozbe/watermelondb/sync';
 import SyncLogger from '@nozbe/watermelondb/sync/SyncLogger';
 // import debugPrintChanges from '@nozbe/watermelondb/sync/debugPrintChanges';
 
+import { getMapImage, mapFieldRecords } from './helper';
+
 import { axiosClient } from '~/lib/axios-client';
 import { database } from '~/lib/database';
-import { getMapImage, mapFieldRecords } from './helper';
+import ScoutPoint from '../model/scout-point';
 
 const appSync = async () => {
   let isSyncing = true;
@@ -40,26 +42,49 @@ const appSync = async () => {
 
   // Map field data
   const fieldRecords = mapFieldRecords(fieldsDetailsResponses);
-  const mapKeys = fieldRecords
-    .map((field) => {
-      return [
+
+  const scoutPoints = await axiosClient.post<{ data: ScoutPointData[] }>('/fields/markers/get', {
+    Ids: [],
+    FieldIds: allFieldsIds,
+    PageSize: 100,
+    PageNumber: 1,
+  });
+
+  const scoutPointsRecord = scoutPoints.data.data.map((scoutPoint) => ({
+    id: scoutPoint.id,
+    field_id: scoutPoint.fieldId,
+    date: scoutPoint.markerDate,
+    location: JSON.stringify(scoutPoint.markerLocation),
+    photos: JSON.stringify(scoutPoint.photos),
+    note: scoutPoint.notes,
+    voice_note: scoutPoint.voiceNote,
+    issue_category: scoutPoint.issueCategory,
+    issue_severity: scoutPoint.issueSeverity,
+    reply: scoutPoint.reply,
+    voice_reply: scoutPoint.voiceReply,
+  }));
+
+  const mapKeys: string[][] = [];
+
+  fieldRecords.map((field) => {
+    mapKeys.push(
+      [
         field.default_overlay_key,
         field.nitrogen_overlay_key,
         field.anomaly_overlay_key,
         field.growth_overlay_key,
         field.irrigation_overlay_key,
-      ].filter((key) => key !== ''); // Clean up empty strings here
-    })
-    .filter((key) => key.length !== 0);
-
-  console.log('mapKeys', mapKeys);
-
-  const mapImages = mapKeys.map((keys) => {
-    return Promise.all(keys.map((key) => getMapImage(key)));
+      ].filter((key) => key !== '')
+    ); // Clean up empty strings here
   });
 
-  const mapsResult = await Promise.all(mapImages);
-  console.log('mapImages', mapsResult);
+  const mapImages = mapKeys
+    .filter((key) => key.length !== 0)
+    .map((keys) => {
+      return Promise.all(keys.map((key) => getMapImage(key)));
+    });
+
+  await Promise.all(mapImages);
 
   await synchronize({
     database,
@@ -74,6 +99,11 @@ const appSync = async () => {
         },
         field: {
           created: fieldRecords,
+          updated: [],
+          deleted: [],
+        },
+        scout_point: {
+          created: scoutPointsRecord,
           updated: [],
           deleted: [],
         },

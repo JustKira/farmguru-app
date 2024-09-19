@@ -101,7 +101,7 @@ export default appSchema({
         },
         {
           name: 'next_irrigation',
-          type: 'string',
+          type: 'number',
         },
       ],
     }),
@@ -114,6 +114,52 @@ export default appSchema({
         },
         {
           name: 'fields',
+          type: 'string',
+        },
+      ],
+    }),
+    tableSchema({
+      name: 'scout_point',
+      columns: [
+        {
+          name: 'field_id',
+          type: 'string',
+        },
+        {
+          name: 'date',
+          type: 'string',
+        },
+        {
+          name: 'location',
+          type: 'string', // JSON (tuple [number, number])
+        },
+        {
+          name: 'photos',
+          type: 'string', // JSON (string[])
+        },
+        {
+          name: 'note',
+          type: 'string',
+        },
+        {
+          name: 'voice_note',
+          type: 'string',
+        },
+        {
+          name: 'issue_category',
+          type: 'string',
+        },
+        {
+          name: 'issue_severity',
+          type: 'string',
+        },
+        // New fields for reply
+        {
+          name: 'reply',
+          type: 'string',
+        },
+        {
+          name: 'voice_reply',
           type: 'string',
         },
       ],

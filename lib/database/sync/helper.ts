@@ -3,7 +3,9 @@ import * as FileSystem from 'expo-file-system';
 import { axiosClient } from '~/lib/axios-client';
 import { storage } from '~/lib/mmkv/storage';
 
-export const mapFieldRecords = (fieldsDetailsResponses: any[]): FieldRecord[] => {
+export const mapFieldRecords = (
+  fieldsDetailsResponses: { data: { data: FieldInfoData } }[]
+): FieldRecord[] => {
   return fieldsDetailsResponses.map((response) => {
     const field = response.data.data;
 
@@ -38,7 +40,7 @@ export const mapFieldRecords = (fieldsDetailsResponses: any[]): FieldRecord[] =>
       advised_water: field.advisedWater,
       next_irrigation: field.nextIrrigation,
     };
-  });
+  }) as unknown as FieldRecord[];
 };
 
 export const getMapImage = async (key: string) => {

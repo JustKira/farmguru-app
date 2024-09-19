@@ -72,3 +72,25 @@ type FieldRecord = {
   advised_water: number;
   next_irrigation: string; // ISO date string
 };
+
+type ScoutPointData = {
+  id: string;
+  fieldId: string;
+  markerDate: string; // ISO Date format string
+  markerLocation: [number, number]; // Latitude, Longitude
+  photos: string[]; // Array of photo URLs or empty strings
+  issueSeverity: string;
+  issueCategory: string;
+  issueSubCategory: string;
+  notes: string;
+  status: string;
+  lastView: string; // ISO Date format string
+  reply: string;
+  voiceNote: string;
+  voiceReply: string;
+  createdBy: string;
+  createdOn: string; // ISO Date format string
+  modifiedBy: string;
+  modifiedOn: string; // ISO Date format string
+  isDeleted: boolean;
+};

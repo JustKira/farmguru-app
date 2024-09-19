@@ -1,29 +1,35 @@
-import { Stack, useGlobalSearchParams } from 'expo-router';
+import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
+import { ArrowLeft } from 'phosphor-react-native';
 import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import MapView, { Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useMMKVString } from 'react-native-mmkv';
+import MapView, { Marker, Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Button } from '~/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
 import { Text } from '~/components/ui/text';
 import { storage } from '~/lib/mmkv/storage';
-import { useGetFieldDetails } from '~/lib/react-query/getField';
+import { useGetFieldDetails } from '~/lib/react-query/get-field';
+import { useGetFieldScoutPoints } from '~/lib/react-query/get-field-scout-points';
 
 type MapTypes = 'general' | 'crop' | 'irrigation' | 'scout';
 
 export default function MapScreen() {
   const params = useGlobalSearchParams();
 
+  const router = useRouter();
+
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
+  const { data: scoutPoints, isLoading: isScoutPointsLoading } = useGetFieldScoutPoints(
+    params.fid as string
+  );
   const insets = useSafeAreaInsets();
 
   const type = params.type as MapTypes;
@@ -56,7 +62,7 @@ export default function MapScreen() {
     }
   }, [type, isLoading, data]);
 
-  if (isLoading) {
+  if (isLoading || isScoutPointsLoading) {
     return (
       <>
         <Stack.Screen
@@ -160,8 +166,35 @@ export default function MapScreen() {
               [data.positionMax[0], data.positionMax[1]],
             ]}
           />
+
+          {type === 'scout' ? (
+            <>
+              {scoutPoints?.map((point) => {
+                const latlng = point.location;
+
+                return (
+                  <Marker
+                    key={point.id}
+                    coordinate={{
+                      latitude: latlng[0],
+                      longitude: latlng[1],
+                    }}
+                  />
+                );
+              })}
+            </>
+          ) : null}
           <Polygon coordinates={coordinates} strokeWidth={4} strokeColor="rgb(64 165 120)" />
         </MapView>
+        <Button
+          variant="secondary"
+          onPress={() => {
+            router.back();
+          }}
+          className="absolute bottom-2 left-2 z-50 flex flex-row  gap-2">
+          <ArrowLeft size={24} />
+          <Text className="text-center font-medium">Go Back</Text>
+        </Button>
       </View>
     </>
   );

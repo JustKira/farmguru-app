@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@gorhom/bottom-sheet": "^4",
     "@hookform/resolvers": "^3.9.0",
     "@morrowdigital/watermelondb-expo-plugin": "^2.3.3",
     "@nozbe/watermelondb": "^0.27.1",
@@ -30,6 +31,7 @@
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "eas-cli": "^12.4.1",
     "expo": "^51.0.32",
     "expo-constants": "~16.0.1",

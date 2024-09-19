@@ -28,7 +28,7 @@ const SelectTrigger = React.forwardRef<
     )}
     {...props}>
     <>{children}</>
-    <ChevronDown size={16} aria-hidden={true} className="opacity-50 text-foreground" />
+    <ChevronDown size={16} aria-hidden={true} className="text-foreground opacity-50" />
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
@@ -131,8 +131,10 @@ SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
 const SelectItem = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
+    icon?: React.ReactNode;
+  }
+>(({ className, icon, children, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
@@ -146,7 +148,10 @@ const SelectItem = React.forwardRef<
         <Check size={16} strokeWidth={3} className="text-popover-foreground" />
       </SelectPrimitive.ItemIndicator>
     </View>
-    <SelectPrimitive.ItemText className="text-sm native:text-lg native:text-base text-popover-foreground web:group-focus:text-accent-foreground" />
+    <View className="flex-row gap-2">
+      {icon}
+      <SelectPrimitive.ItemText className="native:text-lg native:text-base text-sm text-popover-foreground web:group-focus:text-accent-foreground" />
+    </View>
   </SelectPrimitive.Item>
 ));
 SelectItem.displayName = SelectPrimitive.Item.displayName;
