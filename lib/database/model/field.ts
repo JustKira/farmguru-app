@@ -47,7 +47,7 @@ class Field extends Model {
   @json('position_max', numberPairSanitizer) positionMax!: [number, number];
   @json('area', numberPairSanitizer) area!: [number, number];
   @text('crop_type') cropType!: string;
-  @date('plant_date') plantDate!: Date;
+  @date('plant_date') plantDate!: Date; // Date conversion handled here
 
   @text('default_overlay_key') defaultOverlayKey!: string;
   @text('nitrogen_overlay_key') nitrogenOverlayKey!: string;
@@ -56,14 +56,12 @@ class Field extends Model {
 
   @text('irrigation_overlay_key') irrigationOverlayKey!: string;
 
-  @date('last_info_update') lastInfoUpdate!: Date;
-  @date('last_irrigation_update') lastIrrigationUpdate!: Date;
-  @date('last_crop_update') lastCropUpdate!: Date;
-  @date('last_scout_update') lastAnomalyUpdate!: Date;
+  @date('last_info_update') lastInfoUpdate!: Date; // Date conversion handled here
+  @date('last_irrigation_update') lastIrrigationUpdate!: Date; // Date conversion handled here
+  @date('last_crop_update') lastCropUpdate!: Date; // Date conversion handled here
+  @date('last_scout_update') lastAnomalyUpdate!: Date; // Date conversion handled here
 
-  // @field('farm') farm!: Farm;
   @json('growth_percentage', numberArraySanitizer) growthPercentage!: number[];
-  @json('irrigation_percentage', numberArraySanitizer) irrigationPercentage!: number[];
   @json('nitrogen_percentage', numberArraySanitizer) nitrogenPercentage!: number[];
   @json('stress_percentage', numberArraySanitizer) anomalyPercentage!: number[];
 
@@ -74,7 +72,6 @@ class Field extends Model {
   @field('soil_moisture') soilMoisture!: number;
   @field('days_to_wilting') daysToWilting!: number;
   @field('advised_water') advisedWater!: number;
-
   @field('next_irrigation') nextIrrigation!: number;
 }
 

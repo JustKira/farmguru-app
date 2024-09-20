@@ -94,3 +94,15 @@ type ScoutPointData = {
   modifiedOn: string; // ISO Date format string
   isDeleted: boolean;
 };
+
+interface ScoutPointToSync {
+  MarkerId?: string;
+  Date?: string;
+  FieldId: string;
+  IssueCategory?: string;
+  IssueSeverity?: string;
+  Location?: [number, number];
+  Notes?: string;
+  Photos?: string[];
+  VoiceNote?: string;
+}

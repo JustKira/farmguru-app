@@ -1,6 +1,7 @@
+import * as Location from 'expo-location'; // Import expo-location
 import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft } from 'phosphor-react-native';
-import { useEffect, useMemo, useState } from 'react';
+import { ArrowLeft, Person } from 'phosphor-react-native';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import MapView, { Marker, Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -23,9 +24,30 @@ type MapTypes = 'general' | 'crop' | 'irrigation' | 'scout';
 
 export default function MapScreen() {
   const params = useGlobalSearchParams();
-
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(
+    null
+  );
   const router = useRouter();
+  useEffect(() => {
+    (async () => {
+      // Request foreground permissions
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
 
+      // Fetch user's current location with high accuracy
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      });
+
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    })();
+  }, []);
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
   const { data: scoutPoints, isLoading: isScoutPointsLoading } = useGetFieldScoutPoints(
     params.fid as string
@@ -185,6 +207,13 @@ export default function MapScreen() {
             </>
           ) : null}
           <Polygon coordinates={coordinates} strokeWidth={4} strokeColor="rgb(64 165 120)" />
+          {userLocation && (
+            <Marker coordinate={userLocation} title="Your Location">
+              <View className="flex size-8 items-center justify-center rounded-full bg-green-500">
+                <Person weight="bold" />
+              </View>
+            </Marker>
+          )}
         </MapView>
         <Button
           variant="secondary"

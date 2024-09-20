@@ -3,18 +3,23 @@ import { FlashList } from '@shopify/flash-list';
 import { format } from 'date-fns';
 import { Stack, useGlobalSearchParams } from 'expo-router';
 import { Warning } from 'phosphor-react-native';
-import { useCallback, useMemo, useRef } from 'react';
-import { View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Pressable, View } from 'react-native';
 
 import { AddScoutPoint } from '~/components/forms/add-scout-point';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
+import ScoutPoint from '~/lib/database/model/scout-point';
 import getSeverity, { Severity } from '~/lib/get-severity';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 import { useGetFieldScoutPoints } from '~/lib/react-query/get-field-scout-points';
 
 export default function ScoutScreen() {
   const params = useGlobalSearchParams();
+
+  const [selectedScoutPoint, setSelectedScoutPoint] = useState<ScoutPoint | null>(null);
+
+  const [rerender, setRerender] = useState(0);
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
   const { data: scoutPoints, isLoading: isScoutPointsLoading } = useGetFieldScoutPoints(
@@ -25,10 +30,6 @@ export default function ScoutScreen() {
   const snapPoints = useMemo(() => ['100%'], []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
 
   const handleClosePress = () => bottomSheetRef.current?.close();
 
@@ -75,7 +76,11 @@ export default function ScoutScreen() {
         <View className="flex flex-1 gap-2 p-4">
           <Text className="text-3xl font-black">Scout Points</Text>
 
-          <Button onPress={handleOpenPress}>
+          <Button
+            onPress={() => {
+              setSelectedScoutPoint(null);
+              handleOpenPress();
+            }}>
             <Text>Add Scout Point</Text>
           </Button>
 
@@ -91,7 +96,12 @@ export default function ScoutScreen() {
                 : 'yellow';
 
               return (
-                <View className="mb-1.5 flex w-full flex-row justify-between gap-2 bg-muted p-2">
+                <Pressable
+                  onPress={() => {
+                    setSelectedScoutPoint(item);
+                    handleOpenPress();
+                  }}
+                  className="mb-1.5 flex w-full flex-row justify-between gap-2 bg-muted p-2">
                   <View className="flex flex-row gap-2">
                     <Warning size={24} color={color} weight="bold" />
                     <Text className="text-lg font-medium">{item.issueCategory}</Text>
@@ -99,21 +109,24 @@ export default function ScoutScreen() {
                   <Text className="text-sm font-medium">
                     {format(item.date, 'EE ,d MMM yyy HH:mm aaa')}
                   </Text>
-                </View>
+                </Pressable>
               );
             }}
-            extraData={isScoutPointsLoading}
+            extraData={rerender}
             estimatedItemSize={5}
           />
         </View>
 
-        <BottomSheet
-          index={-1}
-          snapPoints={snapPoints}
-          ref={bottomSheetRef}
-          onChange={handleSheetChanges}>
+        <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef}>
           <BottomSheetView className="flex-1 px-2">
-            <AddScoutPoint />
+            <AddScoutPoint
+              onCreateOrUpdate={() => {
+                handleClosePress();
+                setRerender((prev) => prev + 1);
+              }}
+              field={data}
+              scoutPoint={selectedScoutPoint ?? undefined}
+            />
             <Button onPress={handleClosePress}>
               <Text>Close</Text>
             </Button>

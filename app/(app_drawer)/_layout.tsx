@@ -7,7 +7,8 @@ import { ComponentProps } from 'react';
 import { ViewStyle } from 'react-native';
 
 import CustomAppDrawerContent from '~/components/custom-app-drawer';
-import { ThemeToggle } from '~/components/theme-toggle';
+
+// import { ThemeToggle } from '~/components/theme-toggle';
 
 export default function _layout() {
   return (

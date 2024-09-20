@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "farmguru-app",
+    "name": "FarmGuru",
     "slug": "farmguru-app",
     "version": "1.0.0",
-    "scheme": "farmguru-app",
+    "scheme": "FarmGuru",
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -14,6 +14,12 @@
         "@morrowdigital/watermelondb-expo-plugin",
         {
           "disableJsi": true
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
       [
@@ -55,7 +61,13 @@
           "apiKey": "AIzaSyC3ZEf3MEM6o4vCDVOt3AGTFPP0DrrJnto"
         }
       },
-      "package": "com.vais.farmguru"
+      "package": "com.vais.farmguru",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "extra": {
       "eas": {

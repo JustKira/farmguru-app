@@ -19,16 +19,16 @@ export const mapFieldRecords = (
       position_max: JSON.stringify(field.positionMax),
       area: JSON.stringify(field.area),
       crop_type: field.cropType,
-      plant_date: field.plantdate,
+      plant_date: new Date(field.plantdate).getTime(), // Convert to timestamp
       default_overlay_key: field.defaultOverlayKey,
       nitrogen_overlay_key: field.nitrogenOverlayKey,
       anomaly_overlay_key: field.anomalyOverlayKey,
       growth_overlay_key: field.growthOverlayKey,
       irrigation_overlay_key: field.irrigationOverlayKey,
-      last_info_update: field.lastInfoDate,
-      last_irrigation_update: field.lastIrrigationDate,
-      last_crop_update: field.lastCropDate,
-      last_scout_update: field.lastScoutDate,
+      last_info_update: new Date(field.lastInfoDate).getTime(), // Convert to timestamp
+      last_irrigation_update: new Date(field.lastIrrigationDate).getTime(), // Convert to timestamp
+      last_crop_update: new Date(field.lastCropDate).getTime(), // Convert to timestamp
+      last_scout_update: new Date(field.lastScoutDate).getTime(), // Convert to timestamp
       growth_percentage: JSON.stringify(field.growthPercentage),
       nitrogen_percentage: JSON.stringify(field.nitrogenPercentage),
       stress_percentage: JSON.stringify(field.stressPercentage),
@@ -43,7 +43,7 @@ export const mapFieldRecords = (
   }) as unknown as FieldRecord[];
 };
 
-export const getMapImage = async (key: string) => {
+export const getStorageFile = async (key: string) => {
   if (!key || key.length === 0) return;
 
   const storageResult = await axiosClient.post<{ data: string }>('/storage/get', {
@@ -58,5 +58,16 @@ export const getMapImage = async (key: string) => {
 
   const result = await FileSystem.downloadAsync(url, localUri);
 
+  // console.log(`Downloaded file ${key}`, result.uri);
+
   storage.set(key, result.uri);
 };
+
+export default async function uploadStorage(data: string, type: string) {
+  const response = await axiosClient.post('/storage/upload', {
+    Data: data,
+    Type: type,
+  });
+  console.log('Upload Storage', response.data);
+  return response.data.data as string;
+}

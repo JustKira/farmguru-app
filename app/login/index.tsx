@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as z from 'zod';
-import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';

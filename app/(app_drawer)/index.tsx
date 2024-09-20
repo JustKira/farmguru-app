@@ -1,4 +1,3 @@
-import { useDatabase } from '@nozbe/watermelondb/react';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import { Stack, useRouter } from 'expo-router';
@@ -11,8 +10,6 @@ import Farm from '~/lib/database/model/farm';
 
 export default function Home() {
   const router = useRouter();
-
-  const database = useDatabase();
 
   const getFarms = useQuery({
     queryKey: ['farm', 'all'],

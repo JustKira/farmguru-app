@@ -1,5 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
-import { date, json, text } from '@nozbe/watermelondb/decorators';
+import { date, json, readonly, text } from '@nozbe/watermelondb/decorators';
 import { z } from 'zod';
 
 // Zod schemas
@@ -29,7 +29,7 @@ class ScoutPoint extends Model {
   static table = 'scout_point';
 
   @text('field_id') fieldId!: string;
-  @date('date') date!: Date;
+  @date('date') date!: Date; // Date conversion handled here
 
   @json('location', numberPairSanitizer) location!: number[];
   @json('photos', stringArraySanitizer) photos!: string[];
@@ -39,6 +39,9 @@ class ScoutPoint extends Model {
 
   @text('issue_category') issueCategory!: string;
   @text('issue_severity') issueSeverity!: string;
+
+  @readonly @date('created_at') createdAt!: Date;
+  @readonly @date('updated_at') updatedAt!: Date;
 
   // New fields
   @text('reply') reply!: string;
