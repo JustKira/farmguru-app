@@ -51,6 +51,16 @@ export default appSchema({
       ],
     }),
     tableSchema({
+      name: 'irrigation_point',
+      columns: [
+        { name: 'field_id', type: 'string' },
+        { name: 'duration', type: 'number' },
+        { name: 'date', type: 'number' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
+    }),
+    tableSchema({
       name: 'scout_point',
       columns: [
         { name: 'field_id', type: 'string' },

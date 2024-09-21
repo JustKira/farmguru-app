@@ -40,6 +40,7 @@ export default function MapScreen() {
       // Fetch user's current location with high accuracy
       const location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
+        timeInterval: 1500,
       });
 
       setUserLocation({
@@ -48,6 +49,7 @@ export default function MapScreen() {
       });
     })();
   }, []);
+
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
   const { data: scoutPoints, isLoading: isScoutPointsLoading } = useGetFieldScoutPoints(
     params.fid as string
@@ -196,6 +198,13 @@ export default function MapScreen() {
 
                 return (
                   <Marker
+                    onPress={() => {
+                      console.log('Pressed');
+                      router.push(
+                        //@ts-ignore
+                        `/field/${params.fid as string}/(drawer)/scout?scoutPointId=${point.id}`
+                      );
+                    }}
                     key={point.id}
                     coordinate={{
                       latitude: latlng[0],

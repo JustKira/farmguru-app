@@ -5,6 +5,7 @@ import * as Crypto from 'expo-crypto';
 
 import Farm from './model/farm';
 import Field from './model/field';
+import IrrigationPoint from './model/irrigation-point';
 import ScoutPoint from './model/scout-point';
 
 import migrations from '~/lib/database/migrations';
@@ -27,5 +28,5 @@ export const adapter = new SQLiteAdapter({
 // Initialize WatermelonDB database
 export const database = new Database({
   adapter,
-  modelClasses: [Field, Farm, ScoutPoint],
+  modelClasses: [Field, Farm, ScoutPoint, IrrigationPoint],
 });

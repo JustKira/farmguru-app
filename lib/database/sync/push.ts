@@ -89,6 +89,34 @@ export async function PushSync() {
       await Promise.all(
         changes.scout_point.updated.map((scoutPoint) => syncScoutPoint(scoutPoint, true))
       );
+
+      // changes.irrigation_point.created.forEach(async (irrigationPoint) => {
+      //   try {
+      //      axiosClient.post('/fields/irrigation/add', {
+      //       FieldId: irrigationPoint.field_id,
+      //       Duration: irrigationPoint.duration,
+      //       Date: new Date(irrigationPoint.date).toISOString(),
+      //     });
+      //     console.log('Irrigation Point Synced');
+      //   } catch (error) {
+      //     console.error('Failed to sync irrigation point', error);
+      //   }
+      // }
+      // );
+      await Promise.all(
+        changes.irrigation_point.created.map((irrigationPoint) => {
+          try {
+            axiosClient.post('/fields/irrigation/add', {
+              FieldId: irrigationPoint.field_id,
+              duration: irrigationPoint.duration,
+              datetime: new Date(irrigationPoint.date).toISOString(),
+            });
+            console.log('Irrigation Point Synced');
+          } catch (error) {
+            console.error('Failed to sync irrigation point', error);
+          }
+        })
+      );
     },
   });
 }

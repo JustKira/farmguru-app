@@ -1,17 +1,20 @@
-import { differenceInDays } from 'date-fns';
+import BottomSheet, { BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Stack, useGlobalSearchParams } from 'expo-router';
 import { Clock, Drop, DropHalf, DropHalfBottom, Plant } from 'phosphor-react-native';
-import { View } from 'react-native';
+import { useMemo, useRef } from 'react';
+import { ScrollView, View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
+import AddIrrigationPoint from '~/components/forms/irrigation-point';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 
 export default function IrrigationScreen() {
   const params = useGlobalSearchParams();
+  const snapPoints = useMemo(() => ['100%'], []);
 
-  const today = new Date();
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
 
@@ -43,6 +46,9 @@ export default function IrrigationScreen() {
       </>
     );
   }
+  const handleClosePress = () => bottomSheetRef.current?.close();
+
+  const handleOpenPress = () => bottomSheetRef.current?.expand();
 
   const items: { label: string; value: string; icon: JSX.Element }[] = [
     {
@@ -124,25 +130,46 @@ export default function IrrigationScreen() {
           title: 'Irrigation',
         }}
       />
-      <View className="flex flex-1 gap-2 p-4">
-        <Text className="text-3xl font-black">Irrigation Info</Text>
-        <Button variant="secondary">
-          <Text>Add Irrigation</Text>
-        </Button>
-        <FlatGrid
-          itemDimension={200}
-          data={items}
-          style={{
-            flex: 1,
-          }}
-          maxItemsPerRow={2}
-          spacing={6}
-          renderItem={({ item }) => {
-            const { ...rest } = item;
-            return <InfoBlock {...rest} />;
-          }}
-        />
-      </View>
+      <BottomSheetModalProvider>
+        <View className="flex flex-1 gap-2 p-4">
+          <Text className="text-3xl font-black">Irrigation Info</Text>
+          <Button
+            onPress={() => {
+              handleOpenPress();
+            }}
+            variant="secondary">
+            <Text>Add Irrigation</Text>
+          </Button>
+          <FlatGrid
+            itemDimension={200}
+            data={items}
+            style={{
+              flex: 1,
+            }}
+            maxItemsPerRow={2}
+            spacing={6}
+            renderItem={({ item }) => {
+              const { ...rest } = item;
+              return <InfoBlock {...rest} />;
+            }}
+          />
+        </View>
+        <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef}>
+          <BottomSheetView className="flex-1 px-2">
+            <ScrollView>
+              <AddIrrigationPoint
+                onCreateSuccess={() => {
+                  handleClosePress();
+                }}
+                fieldId={data.id}
+              />
+              <Button onPress={handleClosePress}>
+                <Text>Close</Text>
+              </Button>
+            </ScrollView>
+          </BottomSheetView>
+        </BottomSheet>
+      </BottomSheetModalProvider>
     </>
   );
 }

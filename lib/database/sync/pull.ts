@@ -125,6 +125,11 @@ export async function PullSync() {
           updated: [],
           deleted: [],
         },
+        irrigation_point: {
+          created: [],
+          updated: [],
+          deleted: [],
+        },
       };
 
       // Debug print changes

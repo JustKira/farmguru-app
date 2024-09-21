@@ -3,10 +3,10 @@ import { FlashList } from '@shopify/flash-list';
 import { format } from 'date-fns';
 import { Stack, useGlobalSearchParams } from 'expo-router';
 import { Warning } from 'phosphor-react-native';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Pressable, ScrollView, View } from 'react-native';
 
-import { AddScoutPoint } from '~/components/forms/add-scout-point';
+import { AddScoutPoint } from '~/components/forms/scout-point';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import ScoutPoint from '~/lib/database/model/scout-point';
@@ -25,6 +25,15 @@ export default function ScoutScreen() {
   const { data: scoutPoints, isLoading: isScoutPointsLoading } = useGetFieldScoutPoints(
     params.fid as string
   );
+
+  useEffect(() => {
+    const scoutPointId = params.scoutPointId as string;
+
+    if (scoutPointId) {
+      setSelectedScoutPoint(scoutPoints?.find((sp) => sp.id === scoutPointId) ?? null);
+      handleOpenPress();
+    }
+  }, [params]);
 
   // Model
   const snapPoints = useMemo(() => ['100%'], []);
@@ -119,17 +128,19 @@ export default function ScoutScreen() {
 
         <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef}>
           <BottomSheetView className="flex-1 px-2">
-            <AddScoutPoint
-              onCreateOrUpdate={() => {
-                handleClosePress();
-                setRerender((prev) => prev + 1);
-              }}
-              field={data}
-              scoutPoint={selectedScoutPoint ?? undefined}
-            />
-            <Button onPress={handleClosePress}>
-              <Text>Close</Text>
-            </Button>
+            <ScrollView>
+              <AddScoutPoint
+                onCreateOrUpdate={() => {
+                  handleClosePress();
+                  setRerender((prev) => prev + 1);
+                }}
+                field={data}
+                scoutPoint={selectedScoutPoint ?? undefined}
+              />
+              <Button onPress={handleClosePress}>
+                <Text>Close</Text>
+              </Button>
+            </ScrollView>
           </BottomSheetView>
         </BottomSheet>
       </BottomSheetModalProvider>
