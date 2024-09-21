@@ -24,9 +24,11 @@ type MapTypes = 'general' | 'crop' | 'irrigation' | 'scout';
 
 export default function MapScreen() {
   const params = useGlobalSearchParams();
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(
-    null
-  );
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+    accuracy: number | null;
+  } | null>(null);
   const router = useRouter();
   useEffect(() => {
     (async () => {
@@ -46,6 +48,7 @@ export default function MapScreen() {
       setUserLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
+        accuracy: location.coords.accuracy,
       });
     })();
   }, []);
@@ -224,6 +227,11 @@ export default function MapScreen() {
             </Marker>
           )}
         </MapView>
+        <View className="absolute right-2 top-2 z-50 rounded-full bg-background px-3 py-1">
+          {userLocation?.accuracy ? (
+            <Text className="font-black">{userLocation?.accuracy.toFixed()}m</Text>
+          ) : null}
+        </View>
         <Button
           variant="secondary"
           onPress={() => {
