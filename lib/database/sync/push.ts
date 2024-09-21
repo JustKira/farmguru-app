@@ -106,7 +106,7 @@ export async function PushSync() {
       await Promise.all(
         changes.irrigation_point.created.map((irrigationPoint) => {
           try {
-            axiosClient.post('/fields/irrigation/add', {
+            axiosClient.post('/fields/irrigations/add', {
               FieldId: irrigationPoint.field_id,
               duration: irrigationPoint.duration,
               datetime: new Date(irrigationPoint.date).toISOString(),
