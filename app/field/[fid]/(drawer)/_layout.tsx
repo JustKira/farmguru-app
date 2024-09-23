@@ -9,6 +9,7 @@ import { ViewStyle } from 'react-native';
 
 import CustomDrawerFieldContent from '~/components/custom-field-drawer';
 import { Button } from '~/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 const MapButton = ({ type }: { type: string }) => {
   const params = useGlobalSearchParams();
@@ -29,13 +30,14 @@ const MapButton = ({ type }: { type: string }) => {
 };
 
 export default function _layout() {
+  const { t } = useTranslation();
   return (
     <CustomDrawer drawerClassName="bg-background" drawerContent={CustomDrawerFieldContent}>
       <Drawer.Screen
         name="index"
         options={{
-          // headerTitle: t('navigation.home'),
-          drawerLabel: 'General',
+          headerTitle: t('navigation.general'),
+          drawerLabel: t('navigation.general'),
           drawerIcon: ({ size, color }) => <Airplay size={size} color={color} />,
           headerRight: () => <MapButton type="general" />,
         }}
@@ -43,8 +45,8 @@ export default function _layout() {
       <Drawer.Screen
         name="irrigation"
         options={{
-          // headerTitle: t('navigation.home'),
-          drawerLabel: 'Irrigation',
+          headerTitle: t('navigation.irrigation'),
+          drawerLabel: t('navigation.irrigation'),
           drawerIcon: ({ size, color }) => <DropHalfBottom size={size} color={color} />,
           headerRight: () => <MapButton type="irrigation" />,
         }}
@@ -52,8 +54,8 @@ export default function _layout() {
       <Drawer.Screen
         name="crop"
         options={{
-          // headerTitle: t('navigation.home'),
-          drawerLabel: 'Crop',
+          headerTitle: t('navigation.crop'),
+          drawerLabel: t('navigation.crop'),
           drawerIcon: ({ size, color }) => <Plant size={size} color={color} />,
           headerRight: () => <MapButton type="crop" />,
         }}
@@ -61,8 +63,8 @@ export default function _layout() {
       <Drawer.Screen
         name="scout"
         options={{
-          // headerTitle: t('navigation.home'),
-          drawerLabel: 'Scout',
+          headerTitle: t('navigation.scout'),
+          drawerLabel: t('navigation.scout'),
           drawerIcon: ({ size, color }) => <Scan size={size} color={color} />,
           headerRight: () => <MapButton type="scout" />,
         }}
@@ -70,16 +72,16 @@ export default function _layout() {
       <Drawer.Screen
         name="weather"
         options={{
-          // headerTitle: t('navigation.home'),
+          headerTitle: t('navigation.weather'),
+          drawerLabel: t('navigation.weather'),
           drawerItemStyle: { height: 0 },
-          drawerLabel: 'Weather',
           drawerIcon: ({ size, color }) => <Cloud size={size} color={color} />,
         }}
       />
       <Drawer.Screen
         name="map"
         options={{
-          // headerTitle: t('navigation.home'),
+          headerTitle: t('navigation.home'),
           drawerLabel: 'Map',
           drawerItemStyle: { height: 0 },
         }}

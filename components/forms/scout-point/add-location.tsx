@@ -10,6 +10,7 @@ import { formSchema } from '.';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import Field from '~/lib/database/model/field';
+import { useTranslation } from 'react-i18next';
 
 export const AddLocation = ({
   field,
@@ -45,6 +46,8 @@ export const AddLocation = ({
     longitude: loc[1],
   }));
 
+  const { t } = useTranslation();
+
   return (
     <>
       <View className="flex w-full flex-row justify-between gap-2 pr-2">
@@ -57,7 +60,13 @@ export const AddLocation = ({
           }}>
           <View className="flex flex-row gap-2">
             <MapPinArea size={24} weight="bold" />
-            <Text>{isLocationLoading ? 'Loading' : 'Pick Location'}</Text>
+            <Text>
+              {isLocationLoading
+                ? t('loading')
+                : t('select', {
+                    name: t('location'),
+                  })}
+            </Text>
           </View>
         </Button>
       </View>
@@ -105,7 +114,9 @@ export const AddLocation = ({
           </MapView>
           <View className="absolute right-2 top-2 z-50 rounded-full bg-background px-3 py-1">
             {userLocation?.accuracy ? (
-              <Text className="font-black">{userLocation?.accuracy.toFixed()}m</Text>
+              <Text className="font-black">
+                {t('uncertain')} {userLocation?.accuracy.toFixed()}m
+              </Text>
             ) : null}
           </View>
           <View className="absolute bottom-2 left-2 flex flex-row gap-2">
@@ -117,13 +128,21 @@ export const AddLocation = ({
                   longitude: field.position[1],
                 });
               }}>
-              <Text>Reset Location</Text>
+              <Text>
+                {t('reset', {
+                  name: t('location'),
+                })}
+              </Text>
             </Button>
             <Button
               onPress={() => {
                 setModalVisible(false);
               }}>
-              <Text>Confirm Location</Text>
+              <Text>
+                {t('confirm', {
+                  name: t('location'),
+                })}
+              </Text>
             </Button>
           </View>
         </View>

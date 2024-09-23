@@ -2,6 +2,7 @@ import * as Location from 'expo-location'; // Import expo-location
 import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, Person } from 'phosphor-react-native';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import MapView, { Marker, Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -62,6 +63,8 @@ export default function MapScreen() {
   const type = params.type as MapTypes;
 
   const [overlayKey, setOverlayKey] = useState<string | null>(null);
+
+  const { t } = useTranslation();
 
   const contentInsets = {
     top: insets.top,
@@ -229,7 +232,10 @@ export default function MapScreen() {
         </MapView>
         <View className="absolute right-2 top-2 z-50 rounded-full bg-background px-3 py-1">
           {userLocation?.accuracy ? (
-            <Text className="font-black">{userLocation?.accuracy.toFixed()}m</Text>
+            <Text className="font-black">
+              {t('uncertain')}
+              {userLocation?.accuracy.toFixed()}m
+            </Text>
           ) : null}
         </View>
         <Button
@@ -239,7 +245,7 @@ export default function MapScreen() {
           }}
           className="absolute bottom-2 left-2 z-50 flex flex-row  gap-2">
           <ArrowLeft size={24} />
-          <Text className="text-center font-medium">Go Back</Text>
+          <Text className="text-center font-medium">{t('back')}</Text>
         </Button>
       </View>
     </>

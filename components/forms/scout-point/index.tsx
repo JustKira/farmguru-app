@@ -24,6 +24,7 @@ import Field from '~/lib/database/model/field';
 import ScoutPoint from '~/lib/database/model/scout-point';
 import { storage } from '~/lib/mmkv/storage';
 import { getFieldsScoutPointsQueryKey } from '~/lib/react-query/get-field-scout-points';
+import { useTranslation } from 'react-i18next';
 
 export const formSchema = z.object({
   issueCategory: z.string(),
@@ -59,6 +60,8 @@ export function AddScoutPoint({
   });
 
   const queryClient = useQueryClient();
+
+  const { t } = useTranslation();
 
   const [isLocationLoading, setIsLocationLoading] = useState(false);
   const [userLocation, setUserLocation] = useState<{
@@ -251,7 +254,7 @@ export function AddScoutPoint({
       <Text>
         {isLocationLoading ? (
           <Badge>
-            <Text>Loading...</Text>
+            <Text>{t('loading')}</Text>
           </Badge>
         ) : (
           <></>
@@ -273,7 +276,7 @@ export function AddScoutPoint({
       <AddVoiceNote setValue={setValue} value={watch('voiceNote')} />
       <AddPhoto setValue={setValue} value={watch('photo')} />
       <Button onPress={submit}>
-        <Text>Submit</Text>
+        <Text>{t('submit')}</Text>
       </Button>
     </View>
   );

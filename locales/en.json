@@ -1,0 +1,346 @@
+{
+  "map_legend": "Map Legend",
+  "ask": "Ask",
+  "data": "Data",
+  "add": "Add",
+  "back": "Back",
+  "uncertain": "Uncertain",
+  "global": {
+    "time": {
+      "hour": "hour",
+      "hours": "hours"
+    },
+    "crop": {
+      "high_risk": "High",
+      "medium_risk": "Medium",
+      "low_risk": "Low",
+      "no_risk": "Very Low"
+    },
+    "tree": {
+      "high_risk": "High",
+      "medium_risk": "Medium",
+      "low_risk": "Low",
+      "no_risk": "Very Low"
+    },
+    "no_data": "No Data",
+    "unavailable": "coming soon"
+  },
+  "day_hour": "Day / Hour",
+  "duration": "Duration",
+  "dash": {
+    "scout": {
+      "scout_map": "Scout Points",
+      "field_problems": "Scout Problems",
+      "field_points": "Scout Points",
+      "heat_map": "Scout Diagnostics Map",
+      "scout_trips": "Scout Trips",
+      "add_marker": "Add Scout Point",
+      "add_marker_field_problems": "",
+      "add_marker_field_points": "",
+      "voice_note": "Voice Note",
+      "select_scout": "Select Scout",
+      "form": {
+        "status": "Severity",
+        "type": "Type"
+      }
+    },
+    "weather": {
+      "avg": "avg",
+      "min": "min",
+      "max": "max",
+      "sum": "sum",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "base": "Base",
+      "evapotranspiration": "Evapotrans",
+      "precipitation": "Precipitation",
+      "temperature": "Temperature",
+      "solar_radiation": "Solar Radiation",
+      "alert": "Weather Alerts",
+      "status": "Weather Status",
+      "chilling_hours": "Chill Hours",
+      "sum_of_active_temperature": "Sum of Active Temperatures",
+      "vigor": "Vigor",
+      "mm": "mm",
+      "mm_h": "mm/h",
+      "km_h": "km/h",
+      "graph": {
+        "one": "Graph One",
+        "two": "Graph Two",
+        "comparison": "Comparison",
+        "spray_time": "Spraying Times",
+        "hourly_temperatures": "Hourly Temperatures",
+        "hourly_precipitation": "Hourly Precipitation",
+        "daily_temperatures": "Daily Temperatures",
+        "daily_precipitation": "Daily Precipitation",
+        "daily_acc_precipitation": "Daily Accumulative Precipitation",
+        "sum_of_active_temperatures": "Sum of Active Temperatures",
+        "chilling_hours": "Chill Hours",
+        "temperatures": "Temperatures",
+        "precipitation": "Precipitation",
+        "growth": "Growth",
+        "growing_degree": "Growing Degree Units"
+      }
+    },
+    "general": {
+      "graph": {
+        "fertilization": "Fertilization",
+        "pesticide_spraying": "Pesticide Spraying",
+        "plant_pruning": "Plant Pruning"
+      }
+    },
+    "crop": {
+      "graph": {
+        "productivity_coefficient": "Productivity Coefficient"
+      }
+    },
+    "irr": {
+      "soil_moisture_root_zone": "Soil Moisture Root Zone",
+      "calendar": "Irrigation Calendar",
+      "add_irrigation_cycle": "Add Irrigation Cycle",
+      "add_irrigation": "Add Irrigation"
+    }
+  },
+  "map": {
+    "selector": {},
+    "trees": {
+      "info": {
+        "info_tree": "Tree/Palm Info",
+        "id": "Id",
+        "age": "Age",
+        "type": "Type",
+        "location": "Location",
+        "growth_level": "Growth Level",
+        "nitrogen_level": "Nitrogen Level",
+        "stress_level": "Stress Level",
+        "water_level": "Water Level",
+        "update_add_form": {
+          "update": "Update",
+          "add_tree": "Add Tree/Palm",
+          "radius": "Radius",
+          "notes": "Notes",
+          "delete_tree": "Delete Tree",
+          "submit": "Submit",
+          "cancel": "Cancel"
+        },
+        "edit": "Edit"
+      }
+    }
+  },
+  "from": "from",
+  "to": "to",
+  "farm_guru": "FarmGuru",
+  "treeinfo": "Tree Matrix",
+  "insect": "Insect",
+  "disease": "Disease",
+  "disease_beta": "Diseases (Beta)",
+  "others": "Others",
+  "dontknow": "Don't Know",
+  "unavailable": "coming soon",
+  "nav": {
+    "general": "General",
+    "irrigation": "Irrigation",
+    "crop": "Crop",
+    "scout": "Scout"
+  },
+  "global": {
+    "hours": "Hours",
+    "days": "Days",
+    "weeks": "Weeks",
+    "months": "Months",
+    "hourly": "Hourly",
+    "early": "Early",
+    "moderate": "Moderate",
+    "late": "Late"
+  },
+  "map_layer": "Layers",
+  "status": "Status",
+  "default": "Default",
+  "weekly_status_report": "Weekly Status Report",
+  "weekly_change": "Weekly Change",
+  "nutritional_value": "Nitrogen",
+  "growth": "Growth",
+  "nutrients": "Nitrogen",
+  "leaf_water": "Leaf Water",
+  "water_consumption": "Leaf Water Level",
+  "very_low": "Very Low",
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High",
+  "stresses": "Stresses",
+  "field_info": "Field Info",
+  "last_irrigation": "Last Irrigation",
+  "last_fertilization": "Last Fertilization",
+  "last_update": "Last Update",
+  "field_operation_graph": "Field Operation Graph",
+  "operation_cycle": "Irrigation Cycle",
+  "days_to_wilting": "Days To Wilting",
+  "water_field_status": "Field Water Status",
+  "moisture_level": "Rootzone Soil Moisture",
+  "used_water_amount": "Used Water Amount",
+  "wasted_water_amount": "Wasted Water Amount",
+  "irrigation_statistics": "Irrigation Statistics",
+  "m_liters": "M Liters",
+  "advised_irrigation_duration": "Advised Irrigation Duration",
+  "next_irrigation": "Next Irrigation",
+  "irrigation_graph": "Irrigation Graph",
+  "weather": "Weather",
+  "location": "Location",
+  "image": "Image",
+  "play": "Play",
+  "stop": "Stop",
+  "select_date": "Select Date",
+  "select_time": "Select Time",
+  "unknown": "Unknown",
+  "severity": "Severity",
+  "category": "Category",
+  "open_map": "Open Map",
+  "open_image": "Open Image",
+  "no_available": "is Not Available {{name}}",
+  "no_connection_to_net": "No Connection To Internet",
+  "home": {
+    "syncing_scout_points": "Syncing. Scout Points",
+    "loading_details": "Loading. Details",
+    "loading_map_details": "Loading. Map Details",
+    "loading_scout_points": "Loading. Scout Points",
+    "analytics_not_available": "Analytics not available"
+  },
+  "dialog": {
+    "report": {
+      "title": "Report",
+      "description": "Do you want to download Report for {{name}}?",
+      "download_button": "Download"
+    },
+    "setup": {
+      "title": "Setup Info"
+    },
+    "crop_info": {
+      "title": "Crop Info",
+      "type": "Crop Type",
+      "variety": "Variety",
+      "age": "Crop Age",
+      "plant_date": "Plant Date"
+    },
+    "field_info": {
+      "title": "Field Info",
+      "area": "Area",
+      "unknown": "Unknown",
+      "edit_boundaries": "Edit Boundaries"
+    },
+    "irrigation_info": {
+      "title": "Irrigation Info",
+      "irrigation_tech": "Irrigation Tech",
+      "specifications": "Specifications"
+    },
+    "soil_info": {
+      "title": "Soil Info",
+      "type": "Type",
+      "wilting_point": "Wilting Point",
+      "field_capacity": "Field Capacity"
+    }
+  },
+  "graph_swapper": {
+    "soil_moisture_levels": "Soil Moisture Levels",
+    "soil_water_levels": "Soil Water Levels"
+  },
+  "farm": "Farm",
+  "farms": "Farms",
+  "dashboard": "Dashboard",
+  "leaf_water": "Leaf Water",
+  "very_low": "Very Low",
+  "crop_analytics": "Crop Analytics",
+  "very low": "Very Low",
+  "stress": "Stress",
+  "moderate": "Moderate",
+  "vigor": "Vigor",
+  "vigor_graph": "Vigor Graph",
+  "swc": "Soil Moisture Content",
+  "time": "Time",
+  "add_marker": "Add Marker",
+  "notes": "Notes",
+  "voice_note": "Voice Note",
+  "photo": "Photo",
+  "date": "Date",
+  "very_good": "Excellent",
+  "good": "Above Average",
+  "reasonable": "Acceptable",
+  "bad": "Below Average",
+  "very_bad": "Unacceptable",
+  "submit": "Submit",
+  "password": "Password",
+  "email": "Email",
+  "other": "Others",
+  "signin": "Sign In",
+  "signout": "Sign Out",
+  "reload": "Reload",
+  "view_photo": "View Photos",
+  "biomass": "Biomass",
+  "late": "Late",
+  "early": "Early",
+  "select": "Select {{name}}",
+  "selected": "Selected {{name}}",
+  "confirm": "Confirm {{name}}",
+  "reset": "Reset {{name}}",
+  "start_recording": "Record",
+  "stop_recording": "Stop Recording",
+  "save": "Save",
+  "cancel": "Cancel",
+  "consultation": "Consultation",
+  "healthy": "Healthy",
+  "solved": "Solved",
+  "expert_response": "Expert Reply",
+  "expert_voice_response": "Expert Audio Reply",
+  "analytics": "Analytics",
+  "at_years": "Add Years",
+  "no_graph_selected": "No Graph Selected",
+  "no_data_found": "No Data Found",
+  "select_graph": "Select Graph",
+  "try_to_increase_the_range": "Try To Increase Date Range Or Pick Different Season",
+  "unavailable": "Unavailable",
+  "current": "Current",
+  "january": "January",
+  "february": "February",
+  "march": "March",
+  "april": "April",
+  "may": "May",
+  "june": "June",
+  "july": "July",
+  "august": "August",
+  "september": "September",
+  "october": "October",
+  "november": "November",
+  "december": "December",
+  "login": {
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "forget_password": "Forgot Password?",
+    "create_account": "Create Account",
+    "already_have_account": "Already have an account?",
+    "login_to_continue": "Log in to continue"
+  },
+  "navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "field": "Field",
+    "farm": "Farms",
+    "general": "General",
+
+    "irrigation": "Irrigation",
+    "crop": "Crop",
+    "scout": "Scout"
+  },
+  "actions": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "messages": {
+    "successful": "Successful",
+    "error": "Something went wrong",
+    "loading": "Loading..."
+  }
+}

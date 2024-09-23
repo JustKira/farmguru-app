@@ -3,6 +3,7 @@ import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as z from 'zod';
@@ -27,10 +28,21 @@ export default function Login() {
     resolver: zodResolver(formSchema),
   });
 
+  const [loading, setLoading] = React.useState(false);
+
   const { signIn } = useAuth();
+  const { t } = useTranslation();
 
   const submit = handleSubmit(async (data) => {
-    await signIn(data.email, data.password);
+    setLoading(true);
+
+    try {
+      await signIn(data.email, data.password);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   });
 
   const { isConnected } = useNetInfo();
@@ -53,10 +65,9 @@ export default function Login() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View className="flex h-full justify-center">
-        <Card className="w-full border-transparent bg-transparent">
+        <Card className="w-full border-transparent bg-transparent shadow-none">
           <CardHeader>
-            <CardTitle className="font-black">FarmGuru</CardTitle>
-            <CardDescription>Welcome back.</CardDescription>
+            <CardTitle className="font-black">{t('farm_guru')}</CardTitle>
           </CardHeader>
           <CardContent className="gap-2">
             <Controller
@@ -88,8 +99,8 @@ export default function Login() {
             />
             {errors.password && <Text>{errors.password.message?.toString()}</Text>}
 
-            <Button onPress={submit}>
-              <Text>Submit</Text>
+            <Button onPress={submit} disabled={loading}>
+              <Text> {loading ? `${t('messages.loading')}` : `${t('login.signin')}`}</Text>
             </Button>
           </CardContent>
         </Card>

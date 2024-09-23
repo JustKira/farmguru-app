@@ -1,6 +1,7 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { Control, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { z } from 'zod';
 
@@ -12,6 +13,9 @@ import { Text } from '~/components/ui/text';
 export const SelectDate = ({ control }: { control: Control<z.infer<typeof formSchema>, any> }) => {
   const [type, setType] = useState<'date' | 'time'>('date');
   const [show, setShow] = useState(false);
+
+  const { t } = useTranslation();
+
   return (
     <View className="flex w-full flex-row justify-between gap-2 pr-2">
       <Button
@@ -21,7 +25,7 @@ export const SelectDate = ({ control }: { control: Control<z.infer<typeof formSc
         }}
         variant="secondary"
         className="w-1/2">
-        <Text>Select Date</Text>
+        <Text>{t('select_date')}</Text>
       </Button>
       <Button
         onPress={() => {
@@ -30,7 +34,7 @@ export const SelectDate = ({ control }: { control: Control<z.infer<typeof formSc
         }}
         variant="secondary"
         className="w-1/2">
-        <Text>Select Time </Text>
+        <Text>{t('select_time')}</Text>
       </Button>
       {show && (
         <Controller

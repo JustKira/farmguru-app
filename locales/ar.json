@@ -1,0 +1,345 @@
+{
+  "ask": "استشارة",
+  "data": "البيانات",
+  "add": "إضافة",
+  "uncertain": "غير مؤكد",
+  "farm": "المزرعة",
+  "farms": "المزارع",
+  "back": "رجوع",
+  "farm_guru": "فارم جورو",
+  "global": {
+    "map_legend": "مفتاح الخريطة",
+    "time": {
+      "hour": "ساعة",
+      "hours": "ساعات"
+    },
+    "crop": {
+      "high_risk": "عالي",
+      "medium_risk": "متوسط",
+      "low_risk": "منخفض",
+      "no_risk": "منخفض جداً"
+    },
+    "tree": {
+      "high_risk": "عالي",
+      "medium_risk": "متوسط",
+      "low_risk": "منخفض",
+      "no_risk": "لا يوجد"
+    },
+    "no_data": "لا يوجد بيانات",
+    "unavailable": "سوف تكون متاحة قريباً"
+  },
+  "day_hour": "يوم / ساعة",
+  "duration": "المدة",
+  "dash": {
+    "scout": {
+      "scout_map": "نقاط الكشف الحقلى",
+      "field_problems": "نقاط الكشف المشاكل",
+      "field_points": "نقاط الكشف الثابتة",
+      "heat_map": "خريطه فحص الحقلي",
+      "scout_trips": "رحلات الكشف الحقلي",
+      "add_marker": "اضافة نقطة كشف حقلى",
+      "add_marker_field_problems": "",
+      "add_marker_field_points": "",
+      "voice_note": "ملاحظة صوتية",
+      "select_scout": "اختار الكشاف",
+      "form": {
+        "status": "الحدة",
+        "type": "النوع"
+      }
+    },
+    "weather": {
+      "avg": "متوسط",
+      "min": "أدنى",
+      "max": "أقصى",
+      "sum": "مجموع",
+      "humidity": "الرطوبة",
+      "wind": "الرياح",
+      "base": "درجة الحرارة الاساسية",
+      "evapotranspiration": "الندح و البخر",
+      "precipitation": "الامطار",
+      "temperature": "درجة الحرارة",
+      "solar_radiation": "الطاقة الشمسية",
+      "alert": "تحذيرات الطقس",
+      "status": "حالة الطقس",
+      "chilling_hours": "ساعات البرد",
+      "sum_of_active_temperature": "مجموع درجات الحرارة النشطة",
+      "vigor": "معامل الاخضرار",
+      "mm": "مم",
+      "mm_h": "مم/ساعة",
+      "km_h": "كم/ساعة",
+      "graph": {
+        "one": "الرسم البياني الأول",
+        "two": "الرسم البياني الثاني",
+        "comparison": "الرسم البياني للمقارنة",
+        "spray_time": "اوقات الرش المقترحة",
+        "hourly_temperatures": "درجات الحرارة لكل ساعة",
+        "hourly_precipitation": "معدل الامطار فى الساعة",
+        "daily_temperatures": "درجات الحرارة اليومية",
+        "daily_precipitation": "معدل الامطار اليومي",
+        "daily_acc_precipitation": "معدل الامطار اليومي التراكمى",
+        "sum_of_active_temperatures": "مجموع درجات الحرارة النشطة التراكمى",
+        "chilling_hours": "مجموع درجات الحرارة الباردة التراكمى",
+        "temperatures": "درجات الحرارة",
+        "precipitation": "الامطار",
+        "growth": "النمو",
+        "growing_degree": "مجموع حرارة النمو التراكمى"
+      }
+    },
+    "general": {
+      "graph": {
+        "fertilization": "التسميد",
+        "pesticide_spraying": "رش المبيدات",
+        "plant_pruning": "تقليم الزرع"
+      }
+    },
+    "crop": {
+      "graph": {
+        "productivity_coefficient": "معامل الإنتاجية"
+      }
+    },
+    "irr": {
+      "soil_moisture_root_zone": "مستوى الرطوبة في منطقة الجذور",
+      "calendar": "أوقات الري",
+      "add_irrigation_cycle": "إضافة دورة ري",
+      "add_irrigation": "إضافة ري"
+    }
+  },
+  "map": {
+    "selector": {},
+    "trees": {
+      "info": {
+        "info_tree": "معلومات الشجرة/النخلة",
+        "id": "كود/رقم النخلة",
+        "age": "العمر",
+        "type": "النوع",
+        "location": "الموقع",
+        "growth_level": "مستوى النمو",
+        "nitrogen_level": "مستوى النيتروجين",
+        "stress_level": "مستوى الاجهادات",
+        "water_level": "مستوى الماء",
+        "update_add_form": {
+          "update": "تعديل بيانات النخلة",
+          "add_tree": "إضافة شجرة/نخلة",
+          "radius": "نصف القطر",
+          "notes": "ملاحظات",
+          "delete_tree": "حذف الشجرة",
+          "submit": "تأكيد",
+          "cancel": "إلغاء"
+        },
+        "edit": "تعديل"
+      }
+    }
+  },
+  "from": "من",
+  "to": "إلى",
+  "treeinfo": "مصفوفة النخيل",
+  "insect": "الحشرة",
+  "disease": "الامراض",
+  "disease_beta": "الامراض (تجريبى)",
+  "others": "أخرى",
+  "dontknow": "لا أعرف",
+  "unavailable": "سوف تكون متاحة قريبا",
+  "nav": {
+    "general": "بيانات عامة",
+    "irrigation": "بيانات الري",
+    "crop": "بيانات المحصول",
+    "scout": "الكشف الحقلي"
+  },
+  "global": {
+    "hours": "ساعات",
+    "days": "أيام",
+    "weeks": "أسابيع",
+    "months": "أشهر",
+    "hourly": "ساعة",
+    "early": "مبكر",
+    "moderate": "معتدل",
+    "late": "متأخر"
+  },
+  "map_layer": "طبقة",
+  "status": "الحالة",
+  "default": "صورة الحقل",
+  "weekly_status_report": "ملخص التقرير الأسبوعي",
+  "weekly_change": "التغير الأسبوعي",
+  "nutritional_value": "النيتروجين",
+  "growth": "النمو",
+  "nutrients": "النيتروجين",
+  "leaf_water": "المياه في الأوراق",
+  "water_consumption": "مستوي المياه في الأوراق",
+  "very_low": "منخفض جداً",
+  "very low": "منخفض جداً",
+  "crop_analytics": "تحليلات المحصول",
+  "low": "منخفض",
+  "medium": "متوسط",
+  "high": "عالي",
+  "stresses": "الاجهادات",
+  "field_info": "معلومات ميدانية",
+  "last_irrigation": "الري الأخير",
+  "last_fertilization": "التسميد الأخير",
+  "last_update": "اخر تحديث للبيانات",
+  "field_operation_graph": "الرسم البياني لتطبيقات الحقل",
+  "operation_cycle": "الري",
+  "days_to_wilting": "أيام حتى الذبول",
+  "water_field_status": "حاله المياه في الحقل",
+  "moisture_level": "مستوى الرطوبة في منطقة الجذور",
+  "used_water_amount": "كمية المياه المستخدمة",
+  "wasted_water_amount": "كمية المياه المهدرة",
+  "irrigation_statistics": "إحصائيات الري",
+  "m_liters": "مليون لتر",
+  "advised_irrigation_duration": "مدة الري المُقترحة",
+  "next_irrigation": "الري التالي",
+  "irrigation_graph": "الرسم البياني لبيانات الرى",
+  "weather": "الطقس",
+  "location": "الموقع",
+  "image": "الصورة",
+  "play": "تشغيل",
+  "stop": "إيقاف",
+  "no_available": " {{name}} غير متاح",
+  "severity": "الحدة",
+  "category": "الفئة",
+  "open_map": "فتح الخريطة",
+  "open_image": "فتح الصورة",
+  "unknown": "غير معروف",
+  "select_date": "اختر التاريخ",
+  "select_time": "اختر الوقت",
+  "no_connection_to_net": "لا يوجد اتصال بالإنترنت",
+  "home": {
+    "syncing_scout_points": "جارٍ المزامنة. نقاط الكشافة",
+    "loading_details": "جارٍ التحميل. التفاصيل",
+    "loading_map_details": "جارٍ التحميل. تفاصيل الخريطة",
+    "loading_scout_points": "جارٍ التحميل. نقاط الكشافة",
+    "analytics_not_available": "التحليلات غير متاحة"
+  },
+  "dialog": {
+    "report": {
+      "title": "تقرير",
+      "description": "هل ترغب في تنزيل التقرير لـ {{name}}؟",
+      "download_button": "تنزيل"
+    },
+    "setup": {
+      "title": "معلومات الإعداد"
+    },
+    "crop_info": {
+      "title": "معلومات المحصول",
+      "type": "نوع",
+      "variety": "نوعية",
+      "age": "عمر المحصول",
+      "plant_date": "تاريخ الزراعة"
+    },
+    "field_info": {
+      "title": "معلومات الحقل",
+      "area": "مساحة",
+      "unknown": "غير معروف",
+      "edit_boundaries": "تحرير الحدود"
+    },
+    "irrigation_info": {
+      "title": "معلومات الري",
+      "irrigation_tech": "تقنية الري",
+      "specifications": "المواصفات"
+    },
+    "soil_info": {
+      "title": "معلومات التربة",
+      "type": "نوع",
+      "wilting_point": "نقطة الذبول",
+      "field_capacity": "سعة الحقل"
+    }
+  },
+  "graph_swapper": {
+    "soil_moisture_levels": "مستويات رطوبة التربة",
+    "soil_water_levels": "مستويات مياه التربة"
+  },
+  "dashboard": "لوحة القيادة",
+  "leaf_water": "مياه الأوراق",
+  "very_low": "لا يوجد",
+  "stress": "الاجهادات",
+  "moderate": "معتدل",
+  "vigor": "معامل الاخضرار",
+  "vigor_graph": "الرسم البياني لبيانات المحصول",
+  "swc": "نسبة المحتوي الرطوبي",
+  "time": "الوقت",
+  "add_marker": "إضافة نقطة كشف حقلي",
+  "notes": "ملاحظات",
+  "voice_note": "ملاحظات صوتية",
+  "photo": "أضف صورة",
+  "date": "التاريخ",
+  "very_good": "ممتاز",
+  "good": "جيد",
+  "reasonable": "متوسط",
+  "bad": "سيء",
+  "very_bad": "سيء جدًا",
+  "submit": "انقر للتأكيد",
+  "password": "كلمة المرور",
+  "email": "البريد الإلكتروني",
+  "other": "أخرى",
+  "signin": "تسجيل الدخول",
+  "signout": "تسجيل الخروج",
+  "reload": "إعادة تحميل",
+  "view_photo": "عرض الصور",
+  "biomass": "إنتاجية المحصول",
+  "late": "متأخر",
+  "select": "اختر {{name}}",
+  "selected": "تم اختيار {{name}}",
+  "confirm": "تأكيد {{name}}",
+  "reset": "إعادة {{name}}",
+  "early": "مبكر",
+  "start_recording": "سجل",
+  "stop_recording": "إيقاف التسجيل",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "consultation": "استشارة",
+  "healthy": "جيد",
+  "solved": "تم الإصلاح",
+  "expert_response": "رد الخبير",
+  "expert_voice_response": "الرد الصوتي للخبير",
+  "analytics": "التحليلات",
+  "at_years": "إضافة سنوات",
+  "no_graph_selected": "لم يتم اختيار الرسم البياني",
+  "no_data_found": "لم يتم العثور على بيانات",
+  "select_graph": "اختر الرسم البياني",
+  "try_to_increase_the_range": "حاول زيادة نطاق التاريخ أو اختيار موسم مختلف",
+  "unavailable": "سوف تكون متاحة قريبا",
+  "current": "الحالي",
+  "january": "يناير",
+  "february": "فبراير",
+  "march": "مارس",
+  "april": "أبريل",
+  "may": "مايو",
+  "june": "يونيو",
+  "july": "يوليو",
+  "august": "أغسطس",
+  "september": "سبتمبر",
+  "october": "أكتوبر",
+  "november": "نوفمبر",
+  "december": "ديسمبر",
+  "login": {
+    "signin": "تسجيل الدخول",
+    "signup": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forget_password": "نسيت كلمة المرور؟",
+    "create_account": "إنشاء حساب",
+    "already_have_account": "هل لديك حساب؟",
+    "login_to_continue": "تسجيل الدخول للمتابعة"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "notifications": "الإشعارات",
+    "field": "الحقل",
+    "farm": "المزارع",
+    "general": "عام",
+    "irrigation": "الري",
+    "crop": "المحصول",
+    "scout": "الكشاف"
+  },
+  "actions": {
+    "add": "إضافة",
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "messages": {
+    "successful": "تم بنجاح",
+    "error": "حدث خطأ ما",
+    "loading": "جار التحميل..."
+  }
+}

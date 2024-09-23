@@ -2,6 +2,7 @@ import BottomSheet, { BottomSheetModalProvider, BottomSheetView } from '@gorhom/
 import { Stack, useGlobalSearchParams } from 'expo-router';
 import { Clock, Drop, DropHalf, DropHalfBottom, Plant } from 'phosphor-react-native';
 import { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
@@ -15,6 +16,8 @@ export default function IrrigationScreen() {
   const snapPoints = useMemo(() => ['100%'], []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const { t } = useTranslation();
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
 
@@ -52,7 +55,7 @@ export default function IrrigationScreen() {
 
   const items: { label: string; value: string; icon: JSX.Element }[] = [
     {
-      label: 'Soil moister root zone',
+      label: t('dash.irr.soil_moisture_root_zone'),
       value: data.soilMoisture ? `${data.soilMoisture} %` : '0 %',
       icon: (
         <View className="flex size-16 items-center justify-center rounded-lg border-green-400 bg-green-400/15">
@@ -61,8 +64,10 @@ export default function IrrigationScreen() {
       ), // Pass the icon
     },
     {
-      label: 'Days to Wilting',
-      value: data.daysToWilting ? `${data.daysToWilting} days` : '0 days',
+      label: t('days_to_wilting'),
+      value: data.daysToWilting
+        ? `${data.daysToWilting}  ${t('global.days')}`
+        : `0 ${t('global.days')}`,
       icon: (
         <View className="flex size-16 items-center justify-center rounded-lg border-green-400 bg-green-400/15">
           <Plant size={32} color="rgb(74 222 128)" />
@@ -70,8 +75,10 @@ export default function IrrigationScreen() {
       ), // Pass the icon
     },
     {
-      label: 'Next Irrigation',
-      value: data.nextIrrigation ? `${data.nextIrrigation} days` : '0 days',
+      label: t('next_irrigation'),
+      value: data.nextIrrigation
+        ? `${data.nextIrrigation} ${t('global.days')}`
+        : `0 ${t('global.days')}`,
       icon: (
         <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
           <Drop size={32} color="rgb(74 222 128)" />
@@ -79,8 +86,10 @@ export default function IrrigationScreen() {
       ), // Pass the icon
     },
     {
-      label: 'Advised Irrigation Duration',
-      value: data.daysToWilting ? `${data.daysToWilting} hours` : '0 hours',
+      label: t('days_to_wilting'),
+      value: data.daysToWilting
+        ? `${data.daysToWilting} ${t('global.hours')}`
+        : `0 ${t('global.hours')}`,
       icon: (
         <View className="flex size-16 items-center justify-center rounded-lg border-green-400 bg-green-400/15">
           <Clock size={32} color="rgb(74 222 128)" />
@@ -132,13 +141,13 @@ export default function IrrigationScreen() {
       />
       <BottomSheetModalProvider>
         <View className="flex flex-1 gap-2 p-4">
-          <Text className="text-3xl font-black">Irrigation Info</Text>
+          {/* <Text className="text-3xl font-black">Irrigation Info</Text> */}
           <Button
             onPress={() => {
               handleOpenPress();
             }}
             variant="secondary">
-            <Text>Add Irrigation</Text>
+            <Text> {`${t('actions.add')} ${t('nav.irrigation')}`}</Text>
           </Button>
           <FlatGrid
             itemDimension={200}
@@ -164,7 +173,7 @@ export default function IrrigationScreen() {
                 fieldId={data.id}
               />
               <Button onPress={handleClosePress}>
-                <Text>Close</Text>
+                <Text>{t('cancel')}</Text>
               </Button>
             </ScrollView>
           </BottomSheetView>

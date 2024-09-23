@@ -8,11 +8,14 @@ import { Text } from './ui/text';
 
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { useAuth } from '~/lib/providers/auth-provider';
+import { useTranslation } from 'react-i18next';
 
 export default function CustomFieldDrawerContent(props: any) {
   const { signOut } = useAuth();
   const router = useRouter();
   const { isDarkColorScheme } = useColorScheme();
+
+  const { t } = useTranslation();
 
   return (
     <View className="flex-1">
@@ -30,7 +33,7 @@ export default function CustomFieldDrawerContent(props: any) {
 
       <DrawerContentScrollView {...props}>
         <DrawerItem
-          label="Farms"
+          label={t('navigation.farm')}
           icon={({ size, color }) => <Farm size={size} color={color} />}
           onPress={() => router.push('/(app_drawer)')}
         />
@@ -38,8 +41,8 @@ export default function CustomFieldDrawerContent(props: any) {
       </DrawerContentScrollView>
 
       <View className="px-2 pb-2">
-        <Button onPress={() => signOut()}>
-          <Text>Sign out</Text>
+        <Button onPress={() => router.push('/(app_drawer)/profile')}>
+          <Text>{t('navigation.profile')}</Text>
         </Button>
       </View>
     </View>

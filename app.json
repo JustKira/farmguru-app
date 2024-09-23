@@ -10,6 +10,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "expo-localization",
       [
         "@morrowdigital/watermelondb-expo-plugin",
         {
@@ -33,7 +34,8 @@
           }
         }
       ],
-      "expo-router"
+      "expo-router",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

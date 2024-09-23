@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '~/components/ui/select';
 import { Text } from '~/components/ui/text';
+import { useTranslation } from 'react-i18next';
 
 export const SelectCategory = ({
   setValue,
@@ -23,40 +24,37 @@ export const SelectCategory = ({
   setValue: UseFormSetValue<z.infer<typeof formSchema>>;
   value: string;
 }) => {
+  const { t } = useTranslation();
+
+  const categoryItems = [
+    { label: t('insect'), value: 'insect' },
+    { label: t('disease'), value: 'disease' },
+    { label: t('growth'), value: 'growth' },
+    { label: t('others'), value: 'others' },
+  ];
+
   return (
-    <View className="gap-1.5">
-      <Text className="text-lg font-medium capitalize">Select a category</Text>
+    <View>
+      <Text>
+        {t(`select`, {
+          name: t('category'),
+        })}
+      </Text>
       <Select
         onValueChange={(value) => (value ? setValue('issueCategory', value.value) : null)}
         value={{
           value,
-          label: value?.charAt(0).toUpperCase() + value?.slice(1),
+          label: t(value),
         }}>
-        <SelectTrigger className="w-full">
-          <SelectValue
-            className="native:text-lg text-sm text-foreground"
-            placeholder="Select a fruit"
-          />
+        <SelectTrigger>
+          <SelectValue placeholder={t('select_category')} />
         </SelectTrigger>
         <SelectContent className="w-full">
-          <SelectGroup>
-            <SelectLabel>Category</SelectLabel>
-            <SelectItem label="Insect" value="insect" icon={<Bug />}>
-              Insect
+          {categoryItems.map((item) => (
+            <SelectItem key={item.value} label={item.label} value={item.value}>
+              {item.label}
             </SelectItem>
-            <SelectItem label="Disease" value="disease" icon={<Virus />}>
-              Disease
-            </SelectItem>
-            <SelectItem label="Growth" value="growth" icon={<Plant />}>
-              Growth
-            </SelectItem>
-            <SelectItem label="Others" value="others" icon={<DotsThreeCircle />}>
-              Others
-            </SelectItem>
-            <SelectItem label="DontKnow" value="dontknow" icon={<QuestionMark />}>
-              DontKnow
-            </SelectItem>
-          </SelectGroup>
+          ))}
         </SelectContent>
       </Select>
     </View>

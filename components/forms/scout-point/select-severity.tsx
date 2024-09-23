@@ -1,4 +1,5 @@
 import { UseFormSetValue } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { z } from 'zod';
 
@@ -9,7 +10,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
@@ -22,33 +22,39 @@ export const SelectSeverity = ({
   setValue: UseFormSetValue<z.infer<typeof formSchema>>;
   value: string;
 }) => {
+  const { t } = useTranslation();
+  const severityItems = [
+    { label: t('early'), value: 'early' },
+    { label: t('moderate'), value: 'moderate' },
+    { label: t('late'), value: 'late' },
+  ];
+
   return (
     <View className="gap-1.5">
-      <Text className="text-lg font-medium capitalize">Select a severity</Text>
+      <Text className="text-lg font-medium capitalize">
+        {t(`select`, {
+          name: t('severity'),
+        })}
+      </Text>
       <Select
         onValueChange={(value) => (value ? setValue('issueSeverity', value.value) : null)}
         value={{
           value,
-          label: value?.charAt(0).toUpperCase() + value?.slice(1),
+          label: t(value),
         }}>
         <SelectTrigger className="w-full">
           <SelectValue
             className="native:text-lg text-sm text-foreground"
-            placeholder="Select a severity"
+            placeholder={t('select_severity')}
           />
         </SelectTrigger>
         <SelectContent className="w-full">
           <SelectGroup>
-            <SelectLabel>Severity</SelectLabel>
-            <SelectItem label="Early" value="early">
-              Early
-            </SelectItem>
-            <SelectItem label="Moderate" value="moderate">
-              Moderate
-            </SelectItem>
-            <SelectItem label="Late" value="late">
-              Late
-            </SelectItem>
+            {severityItems.map((item) => (
+              <SelectItem key={item.value} label={item.label} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>

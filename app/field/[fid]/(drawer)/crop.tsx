@@ -1,6 +1,6 @@
-import { field } from '@nozbe/watermelondb/decorators';
 import { Stack, useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
@@ -10,15 +10,12 @@ export default function CropScreen() {
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
 
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'Crop (Loading...)',
-          }}
-        />
+        <Stack.Screen />
       </>
     );
   }
@@ -26,12 +23,7 @@ export default function CropScreen() {
   if (!data) {
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'Crop (Error)',
-          }}
-        />
+        <Stack.Screen />
         <View>
           <Text>Field not found</Text>
         </View>
@@ -43,7 +35,7 @@ export default function CropScreen() {
     {
       label: 'nutrients',
       percentages: data.nitrogenPercentage,
-      colors: ['#ffff66', '#aad466', '#55aa66', '#007f66'],
+      colors: ['#ffff66', '#aad466', '#55aa66', '#007f66'].reverse(),
     },
     {
       label: 'growth',
@@ -59,13 +51,9 @@ export default function CropScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: 'Crop',
-        }}
-      />
+      <Stack.Screen />
       <View className="flex flex-1 gap-2 p-4">
-        <Text className="text-3xl font-black">Crop Analysis</Text>
+        <Text className="text-3xl font-black">{t('crop_analytics')}</Text>
         <FlatGrid
           itemDimension={200}
           data={items}
@@ -97,6 +85,8 @@ function FieldPercentages({
 }: FieldPercentagesProps) {
   const levels = ['High', 'Medium', 'Low', 'Very Low'];
 
+  const { t } = useTranslation();
+
   const data = useMemo(() => {
     return levels.map((level, index) => ({
       level,
@@ -109,7 +99,7 @@ function FieldPercentages({
     <View className="my-2 rounded-lg p-2 ">
       {/* Sales Report and Amount */}
       <View className="flex-row items-center justify-between">
-        <Text className="text-xl font-bold capitalize text-black">{label}</Text>
+        <Text className="text-xl font-bold capitalize text-black">{t(label)}</Text>
       </View>
 
       {/* Bars Section */}
@@ -118,7 +108,7 @@ function FieldPercentages({
           <View key={level} className="flex-row items-center justify-between">
             {/* Level label */}
             <Text className="text-sm text-black" style={{ width: 70 }}>
-              {level}
+              {t(level.toLowerCase())}
             </Text>
             {/* Background bar */}
             <View className="h-3 flex-1 rounded-full bg-muted">

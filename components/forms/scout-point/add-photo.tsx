@@ -10,6 +10,7 @@ import { formSchema } from '.';
 import { Button } from '~/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Text } from '~/components/ui/text';
+import { useTranslation } from 'react-i18next';
 
 export const AddPhoto = ({
   setValue,
@@ -43,7 +44,7 @@ export const AddPhoto = ({
   };
 
   const [viewImageModal, setViewImageModal] = useState(false);
-
+  const { t } = useTranslation();
   return (
     <View className="flex w-full justify-between gap-2 pr-2">
       <Popover className="w-full">
@@ -51,7 +52,13 @@ export const AddPhoto = ({
           <Button variant="secondary" className="w-full">
             <View className="flex flex-row gap-2">
               <ImageSquare size={24} weight="bold" />
-              {value ? <Text>Change Image</Text> : <Text>Add Image</Text>}
+              <Text>
+                {value
+                  ? t('change_image')
+                  : t('select', {
+                      name: t('image'),
+                    })}
+              </Text>
             </View>
           </Button>
         </PopoverTrigger>
@@ -60,13 +67,13 @@ export const AddPhoto = ({
             <Button size="lg" className="w-1/2" onPress={() => openCamera()}>
               <View className="flex flex-row gap-2">
                 <CameraPlus size={24} weight="bold" color="white" />
-                <Text>Camera</Text>
+                <Text>{t('camera')}</Text>
               </View>
             </Button>
             <Button size="lg" className="w-1/2" onPress={() => pickImage()}>
               <View className="flex flex-row gap-2">
                 <ImagesSquare size={24} weight="bold" color="white" />
-                <Text>Gallery</Text>
+                <Text>{t('gallery')}</Text>
               </View>
             </Button>
           </View>
@@ -78,7 +85,7 @@ export const AddPhoto = ({
               onPress={() => setViewImageModal(true)}>
               <View className="flex flex-row gap-2">
                 <ImagesSquare size={24} weight="bold" />
-                <Text>View Selected Image</Text>
+                <Text>{t('view_selected_image')}</Text>
               </View>
             </Button>
           ) : null}
@@ -96,7 +103,7 @@ export const AddPhoto = ({
               <Image source={{ uri: value }} className="h-[400px] w-[400px]" />
             </View>
             <Button className="w-full" onPress={() => setViewImageModal(false)}>
-              <Text>Close</Text>
+              <Text>{t('cancel')}</Text>
             </Button>
           </View>
         </Modal>

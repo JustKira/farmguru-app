@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { Stack, useGlobalSearchParams } from 'expo-router';
 import { Warning } from 'phosphor-react-native';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { AddScoutPoint } from '~/components/forms/scout-point';
@@ -26,6 +27,8 @@ export default function ScoutScreen() {
     params.fid as string
   );
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     const scoutPointId = params.scoutPointId as string;
 
@@ -47,12 +50,7 @@ export default function ScoutScreen() {
   if (isLoading || isScoutPointsLoading) {
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'General',
-          }}
-        />
+        <Stack.Screen />
       </>
     );
   }
@@ -60,12 +58,7 @@ export default function ScoutScreen() {
   if (!data) {
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'General (Error)',
-          }}
-        />
+        <Stack.Screen />
         <View>
           <Text>Field not found</Text>
         </View>
@@ -75,22 +68,17 @@ export default function ScoutScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          headerShown: true,
-          headerTitle: 'Scout',
-        }}
-      />
+      <Stack.Screen />
       <BottomSheetModalProvider>
         <View className="flex flex-1 gap-2 p-4">
-          <Text className="text-3xl font-black">Scout Points</Text>
+          <Text className="text-3xl font-black">{t('dash.scout.field_points')}</Text>
 
           <Button
             onPress={() => {
               setSelectedScoutPoint(null);
               handleOpenPress();
             }}>
-            <Text>Add Scout Point</Text>
+            <Text> {t('dash.scout.add_marker')}</Text>
           </Button>
 
           <FlashList
@@ -138,7 +126,7 @@ export default function ScoutScreen() {
                 scoutPoint={selectedScoutPoint ?? undefined}
               />
               <Button onPress={handleClosePress}>
-                <Text>Close</Text>
+                <Text>{t('cancel')}</Text>
               </Button>
             </ScrollView>
           </BottomSheetView>

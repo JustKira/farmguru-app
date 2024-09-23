@@ -7,10 +7,12 @@ import { ComponentProps } from 'react';
 import { ViewStyle } from 'react-native';
 
 import CustomAppDrawerContent from '~/components/custom-app-drawer';
+import { useTranslation } from 'react-i18next';
 
 // import { ThemeToggle } from '~/components/theme-toggle';
 
 export default function _layout() {
+  const { t } = useTranslation();
   return (
     <CustomDrawer
       drawerClassName="bg-background"
@@ -22,17 +24,16 @@ export default function _layout() {
       <Drawer.Screen
         name="index"
         options={{
-          // headerTitle: t('navigation.home'),
-
-          drawerLabel: 'Farms',
+          headerTitle: t('navigation.farm'),
+          drawerLabel: t('navigation.farm'),
           drawerIcon: ({ size, color }) => <Farm size={size} color={color} />,
         }}
       />
       <Drawer.Screen
         name="profile"
         options={{
-          headerTitle: 'Profile',
-          drawerLabel: 'Profile',
+          headerTitle: t('navigation.profile'),
+          drawerLabel: t('navigation.profile'),
           drawerIcon: ({ size, color }) => <UserCircle size={size} color={color} />,
         }}
       />

@@ -2,6 +2,7 @@ import { Audio } from 'expo-av';
 import { Microphone, SpeakerHigh, SpeakerNone } from 'phosphor-react-native';
 import { useEffect, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { z } from 'zod';
 
@@ -20,6 +21,7 @@ export const AddVoiceNote = ({
 }) => {
   const [recording, setRecording] = useState<Audio.Recording>();
 
+  const { t } = useTranslation();
   const voiceReplyPlayer = useAudioPlayer(value && value !== '' ? value : undefined);
 
   useEffect(() => {
@@ -78,7 +80,7 @@ export const AddVoiceNote = ({
           ) : (
             <Microphone size={24} weight="bold" />
           )}
-          <Text>{recording ? 'Stop Recording' : 'Record Voice Note'}</Text>
+          <Text>{recording ? t('stop_recording') : t('start_recording')}</Text>
         </View>
       </Button>
       {value ? (
@@ -93,7 +95,6 @@ export const AddVoiceNote = ({
             ) : (
               <SpeakerNone size={24} weight="bold" />
             )}
-            <Text> {voiceReplyPlayer.isPlaying ? 'Stop' : 'Play'}</Text>
           </View>
         </Button>
       ) : null}

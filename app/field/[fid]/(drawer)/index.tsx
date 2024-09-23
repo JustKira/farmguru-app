@@ -1,6 +1,7 @@
 import { Stack, useGlobalSearchParams } from 'expo-router';
 import { Grains, Plant, TrendDown, TrendUp } from 'phosphor-react-native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
@@ -12,15 +13,12 @@ export default function GeneralScreen() {
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
 
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'General',
-          }}
-        />
+        <Stack.Screen />
       </>
     );
   }
@@ -28,12 +26,7 @@ export default function GeneralScreen() {
   if (!data) {
     return (
       <>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'General (Error)',
-          }}
-        />
+        <Stack.Screen />
         <View>
           <Text>Field not found</Text>
         </View>
@@ -76,13 +69,9 @@ export default function GeneralScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: 'General',
-        }}
-      />
+      <Stack.Screen />
       <View className="flex flex-1 gap-2 p-4">
-        <Text className="text-3xl font-black">Weekly Changes</Text>
+        <Text className="text-3xl font-black">{t('weekly_change')}</Text>
         <FlatGrid
           itemDimension={200}
           data={items}
@@ -109,6 +98,7 @@ interface TrendBlockProps {
 }
 
 function TrendBlock({ icon, isNegativeNature, label, value }: TrendBlockProps) {
+  const { t } = useTranslation();
   const isTrendingPositive = isNegativeNature ? value <= 0 : value >= 0;
 
   return (
@@ -117,7 +107,7 @@ function TrendBlock({ icon, isNegativeNature, label, value }: TrendBlockProps) {
       <View className="flex-row items-center">
         <View className="mr-2">{icon}</View>
         <View>
-          <Text className="text-2xl font-medium capitalize">{label}</Text>
+          <Text className="text-2xl font-medium capitalize">{t(label)}</Text>
           <Text className="text-lg text-muted-foreground">{value.toFixed(2)}%</Text>
         </View>
       </View>

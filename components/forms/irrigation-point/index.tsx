@@ -13,6 +13,7 @@ import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { database } from '~/lib/database';
 import IrrigationPoint from '~/lib/database/model/irrigation-point';
+import { useTranslation } from 'react-i18next';
 
 export const formSchema = z.object({
   duration: z.coerce.number().min(1, 'Duration must be at least 1 hour'),
@@ -26,6 +27,7 @@ const AddIrrigationPoint = ({
   fieldId: string;
   onCreateSuccess?: () => void;
 }) => {
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -74,7 +76,7 @@ const AddIrrigationPoint = ({
       </Text>
 
       <Button onPress={onSubmit}>
-        <Text>Add Irrigation Point</Text>
+        <Text>{t('add')}</Text>
       </Button>
     </View>
   );
