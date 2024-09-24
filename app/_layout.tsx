@@ -55,12 +55,12 @@ export default function RootLayout() {
         setIsColorSchemeLoaded(true);
         return;
       }
-      // const colorTheme = theme === 'dark' ? 'dark' : 'light';
-      // if (colorTheme !== colorScheme) {
-      //   setColorScheme('light');
-      //   setIsColorSchemeLoaded(true);
-      //   return;
-      // }
+      const colorTheme = theme === 'dark' ? 'dark' : 'light';
+      if (colorTheme !== colorScheme) {
+        setColorScheme('light');
+        setIsColorSchemeLoaded(true);
+        return;
+      }
 
       setIsColorSchemeLoaded(true);
     })().finally(() => {
@@ -68,45 +68,45 @@ export default function RootLayout() {
     });
   }, []);
 
-  React.useEffect(() => {
-    const checkAppVersion = async () => {
-      try {
-        const latestVersion = await VersionCheck.getLatestVersion({
-          provider: 'playStore',
-          packageName: 'com.vais.farmgate',
-          ignoreErrors: true,
-        });
+  // React.useEffect(() => {
+  //   const checkAppVersion = async () => {
+  //     try {
+  //       const latestVersion = await VersionCheck.getLatestVersion({
+  //         provider: 'playStore',
+  //         packageName: 'com.vais.farmgate',
+  //         ignoreErrors: true,
+  //       });
 
-        const currentVersion = VersionCheck.getCurrentVersion();
+  //       const currentVersion = VersionCheck.getCurrentVersion();
 
-        if (latestVersion > currentVersion) {
-          Alert.alert(
-            'Update Required',
-            'A new version of the app is available. Please update to continue using the app.',
-            [
-              {
-                text: 'Update Now',
-                onPress: async () => {
-                  Linking.openURL(
-                    await VersionCheck.getPlayStoreUrl({ packageName: 'com.vais.farmgate' })
-                  );
-                },
-              },
-            ],
-            { cancelable: false }
-          );
-        } else {
-          // App is up-to-date; proceed with the app
-        }
-      } catch (error) {
-        // Handle error while checking app version
-      }
-    };
+  //       if (latestVersion > currentVersion) {
+  //         Alert.alert(
+  //           'Update Required',
+  //           'A new version of the app is available. Please update to continue using the app.',
+  //           [
+  //             {
+  //               text: 'Update Now',
+  //               onPress: async () => {
+  //                 Linking.openURL(
+  //                   await VersionCheck.getPlayStoreUrl({ packageName: 'com.vais.farmgate' })
+  //                 );
+  //               },
+  //             },
+  //           ],
+  //           { cancelable: false }
+  //         );
+  //       } else {
+  //         // App is up-to-date; proceed with the app
+  //       }
+  //     } catch (error) {
+  //       // Handle error while checking app version
+  //     }
+  //   };
 
-    if (Platform.OS === 'android') {
-      checkAppVersion();
-    }
-  }, []);
+  //   if (Platform.OS === 'android') {
+  //     checkAppVersion();
+  //   }
+  // }, []);
 
   if (!isColorSchemeLoaded) {
     return null; // Return null while loading

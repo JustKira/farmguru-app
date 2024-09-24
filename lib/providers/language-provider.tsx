@@ -1,15 +1,15 @@
-import * as Localization from 'expo-localization';
-import * as Updates from 'expo-updates';
-import i18n from 'i18next';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Localization from 'expo-localization';
 import { I18nManager } from 'react-native';
-import { storage } from '../mmkv/storage';
+import i18n from 'i18next';
+import * as Updates from 'expo-updates';
 
 const LANGUAGE_STORAGE_KEY = 'current-language';
 
 interface LanguageContextType {
   currentLanguage: 'en' | 'ar';
-  changeLanguage: (language: string) => void;
+  changeLanguage: (language: string) => Promise<void>;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -28,8 +28,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 
   useEffect(() => {
-    const loadLanguage = () => {
-      const storedLanguage = storage.getString(LANGUAGE_STORAGE_KEY);
+    const loadLanguage = async () => {
+      const storedLanguage = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
       if (storedLanguage) {
         i18n.changeLanguage(storedLanguage);
         setCurrentLanguage(storedLanguage);
@@ -46,8 +46,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     loadLanguage();
   }, []);
 
-  const changeLanguage = (language: string) => {
-    storage.set(LANGUAGE_STORAGE_KEY, language);
+  const changeLanguage = async (language: string) => {
+    await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, language);
     i18n.changeLanguage(language);
     setCurrentLanguage(language);
     handleRTL(language);
@@ -64,9 +64,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       I18nManager.allowRTL(language.startsWith('ar'));
       I18nManager.forceRTL(language.startsWith('ar'));
       // Restart the app to apply changes
+      Updates.reloadAsync();
     }
-
-    Updates.reloadAsync();
   };
 
   return (
