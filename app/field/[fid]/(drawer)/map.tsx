@@ -31,7 +31,10 @@ export default function MapScreen() {
     accuracy: number | null;
   } | null>(null);
   const router = useRouter();
+
   useEffect(() => {
+    let locationSubscription: Location.LocationSubscription | null = null;
+
     (async () => {
       // Request foreground permissions
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -40,18 +43,29 @@ export default function MapScreen() {
         return;
       }
 
-      // Fetch user's current location with high accuracy
-      const location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 1500,
-      });
-
-      setUserLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        accuracy: location.coords.accuracy,
-      });
+      // Start watching position
+      locationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.BestForNavigation,
+          timeInterval: 500, // Update every 0.5 seconds
+          distanceInterval: 0, // Update regardless of distance change
+        },
+        (location: Location.LocationObject) => {
+          setUserLocation({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            accuracy: location.coords.accuracy,
+          });
+        }
+      );
     })();
+
+    // Cleanup function to remove the subscription when component unmounts
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
   }, []);
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
@@ -230,7 +244,11 @@ export default function MapScreen() {
             </Marker>
           )}
         </MapView>
-        <View className="absolute right-2 top-2 z-50 rounded-full bg-background px-3 py-1">
+        <View
+          style={{
+            top: insets.top + 8,
+          }}
+          className="absolute right-2 z-50 rounded-full bg-background px-3 py-1">
           {userLocation?.accuracy ? (
             <Text className="font-black">
               {t('uncertain')}

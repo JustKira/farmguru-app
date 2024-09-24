@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { z } from 'zod';
 
@@ -24,7 +25,6 @@ import Field from '~/lib/database/model/field';
 import ScoutPoint from '~/lib/database/model/scout-point';
 import { storage } from '~/lib/mmkv/storage';
 import { getFieldsScoutPointsQueryKey } from '~/lib/react-query/get-field-scout-points';
-import { useTranslation } from 'react-i18next';
 
 export const formSchema = z.object({
   issueCategory: z.string(),
@@ -170,6 +170,42 @@ export function AddScoutPoint({
   });
 
   useEffect(() => {
+    let locationSubscription: Location.LocationSubscription | null = null;
+
+    (async () => {
+      // Request foreground permissions
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      // Start watching position
+      locationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.BestForNavigation,
+          timeInterval: 500, // Update every 0.5 seconds
+          distanceInterval: 0, // Update regardless of distance change
+        },
+        (location: Location.LocationObject) => {
+          setUserLocation({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            accuracy: location.coords.accuracy,
+          });
+        }
+      );
+    })();
+
+    // Cleanup function to remove the subscription when component unmounts
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     (async () => {
       setIsLocationLoading(true);
       try {
@@ -180,16 +216,6 @@ export function AddScoutPoint({
         }
 
         const locationSnap = await Location.getLastKnownPositionAsync();
-
-        const location = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.High,
-        });
-
-        setUserLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          accuracy: location.coords.accuracy,
-        });
 
         if (scoutPoint) {
           setValue('location', {
@@ -254,7 +280,7 @@ export function AddScoutPoint({
       <Text>
         {isLocationLoading ? (
           <Badge>
-            <Text>{t('loading')}</Text>
+            <Text>{t('messages.loading')}</Text>
           </Badge>
         ) : (
           <></>

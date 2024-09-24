@@ -62,7 +62,7 @@ export const AddLocation = ({
             <MapPinArea size={24} weight="bold" />
             <Text>
               {isLocationLoading
-                ? t('loading')
+                ? t('messages.loading')
                 : t('select', {
                     name: t('location'),
                   })}
