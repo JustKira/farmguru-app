@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { format } from 'date-fns';
-import { Stack, useGlobalSearchParams } from 'expo-router';
+import { Href, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { Warning } from 'phosphor-react-native';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,7 @@ import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import ScoutPoint from '~/lib/database/model/scout-point';
 import getSeverity, { Severity } from '~/lib/get-severity';
+import useBackHandler from '~/lib/hooks/use-back-handler';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 import { useGetFieldScoutPoints } from '~/lib/react-query/get-field-scout-points';
 
@@ -38,14 +39,37 @@ export default function ScoutScreen() {
     }
   }, [params]);
 
+  const router = useRouter();
+
   // Model
   const snapPoints = useMemo(() => ['100%'], []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const handleClosePress = () => bottomSheetRef.current?.close();
+  const [open, setOpen] = useState(false);
+  useBackHandler(
+    () => {
+      if (open) {
+        handleClosePress();
+        return true;
+      } else {
+        return false;
+      }
+    },
+    () => {
+      router.replace(`/field/${params.fid}/(drawer)/scout` as Href);
+    }
+  );
 
-  const handleOpenPress = () => bottomSheetRef.current?.expand();
+  const handleClosePress = () => {
+    bottomSheetRef.current?.close();
+    setOpen(false);
+  };
+
+  const handleOpenPress = () => {
+    bottomSheetRef.current?.expand();
+    setOpen(true);
+  };
 
   if (isLoading || isScoutPointsLoading) {
     return (

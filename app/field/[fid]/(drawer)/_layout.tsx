@@ -5,11 +5,11 @@ import { Drawer } from 'expo-router/drawer';
 import { cssInterop } from 'nativewind';
 import { Airplay, Cloud, DropHalfBottom, MapTrifold, Plant, Scan } from 'phosphor-react-native';
 import { ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ViewStyle } from 'react-native';
 
 import CustomDrawerFieldContent from '~/components/custom-field-drawer';
 import { Button } from '~/components/ui/button';
-import { useTranslation } from 'react-i18next';
 
 const MapButton = ({ type }: { type: string }) => {
   const params = useGlobalSearchParams();
@@ -22,7 +22,7 @@ const MapButton = ({ type }: { type: string }) => {
       className="mr-2"
       onPress={() => {
         //@ts-ignore
-        router.navigate(`/field/${params.fid as string}/(drawer)/map?type=${type}`);
+        router.navigate(`/field/${params.fid as string}/(app)/map?type=${type}`);
       }}>
       <MapTrifold weight="bold" />
     </Button>
@@ -72,8 +72,8 @@ export default function _layout() {
       <Drawer.Screen
         name="weather"
         options={{
-          headerTitle: t('navigation.weather'),
-          drawerLabel: t('navigation.weather'),
+          // headerTitle: t('navigation.weather'),
+          // drawerLabel: t('navigation.weather'),
           drawerItemStyle: { height: 0 },
           drawerIcon: ({ size, color }) => <Cloud size={size} color={color} />,
         }}

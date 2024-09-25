@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
-import { Stack, useGlobalSearchParams } from 'expo-router';
+import { Href, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { Clock, Drop, DropHalf, DropHalfBottom, Plant } from 'phosphor-react-native';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
@@ -9,6 +9,7 @@ import { FlatGrid } from 'react-native-super-grid';
 import AddIrrigationPoint from '~/components/forms/irrigation-point';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
+import useBackHandler from '~/lib/hooks/use-back-handler';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 
 export default function IrrigationScreen() {
@@ -20,6 +21,32 @@ export default function IrrigationScreen() {
   const { t } = useTranslation();
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
+
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  useBackHandler(
+    () => {
+      if (open) {
+        handleClosePress();
+        return true;
+      } else {
+        return false;
+      }
+    },
+    () => {
+      router.replace(`/field/${params.fid}/(drawer)/irrigation` as Href);
+    }
+  );
+
+  const handleClosePress = () => {
+    bottomSheetRef.current?.close();
+    setOpen(false);
+  };
+
+  const handleOpenPress = () => {
+    bottomSheetRef.current?.expand();
+    setOpen(true);
+  };
 
   if (isLoading) {
     return (
@@ -49,9 +76,6 @@ export default function IrrigationScreen() {
       </>
     );
   }
-  const handleClosePress = () => bottomSheetRef.current?.close();
-
-  const handleOpenPress = () => bottomSheetRef.current?.expand();
 
   const items: { label: string; value: string; icon: JSX.Element }[] = [
     {

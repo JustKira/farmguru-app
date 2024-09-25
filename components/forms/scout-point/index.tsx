@@ -64,6 +64,7 @@ export function AddScoutPoint({
   const { t } = useTranslation();
 
   const [isLocationLoading, setIsLocationLoading] = useState(false);
+
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -170,42 +171,6 @@ export function AddScoutPoint({
   });
 
   useEffect(() => {
-    let locationSubscription: Location.LocationSubscription | null = null;
-
-    (async () => {
-      // Request foreground permissions
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-        return;
-      }
-
-      // Start watching position
-      locationSubscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.BestForNavigation,
-          timeInterval: 500, // Update every 0.5 seconds
-          distanceInterval: 0, // Update regardless of distance change
-        },
-        (location: Location.LocationObject) => {
-          setUserLocation({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            accuracy: location.coords.accuracy,
-          });
-        }
-      );
-    })();
-
-    // Cleanup function to remove the subscription when component unmounts
-    return () => {
-      if (locationSubscription) {
-        locationSubscription.remove();
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     (async () => {
       setIsLocationLoading(true);
       try {
@@ -216,6 +181,16 @@ export function AddScoutPoint({
         }
 
         const locationSnap = await Location.getLastKnownPositionAsync();
+
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.High,
+        });
+
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          accuracy: location.coords.accuracy,
+        });
 
         if (scoutPoint) {
           setValue('location', {
@@ -256,6 +231,11 @@ export function AddScoutPoint({
       } else {
         setValue('photo', undefined);
       }
+
+      setValue('location', {
+        latitude: scoutPoint.location[0],
+        longitude: scoutPoint.location[1],
+      });
     } else {
       setValue('issueCategory', 'insect');
       setValue('issueSeverity', 'early');
@@ -283,7 +263,9 @@ export function AddScoutPoint({
             <Text>{t('messages.loading')}</Text>
           </Badge>
         ) : (
-          <></>
+          <Badge>
+            <Text>{t('your-current-location')}</Text>
+          </Badge>
         )}
       </Text>
       {errors.location && <Text>{errors.location.message?.toString()}</Text>}

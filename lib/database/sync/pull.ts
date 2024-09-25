@@ -12,11 +12,13 @@ export async function PullSync() {
   const farmsData: FarmData[] = farmsResponse.data;
 
   // Map farm data
-  const farmRecords = farmsData.map((farm) => ({
-    id: farm.id,
-    name: farm.name,
-    fields: JSON.stringify(farm.fields),
-  }));
+  const farmRecords = farmsData
+    .filter((farm) => farm.fields.length > 0)
+    .map((farm) => ({
+      id: farm.id,
+      name: farm.name,
+      fields: JSON.stringify(farm.fields),
+    }));
 
   // Extract field IDs
   const allFieldsIds = farmsData.reduce<string[]>((acc, farm) => {
@@ -35,14 +37,17 @@ export async function PullSync() {
   // Map field data
   const fieldRecords = mapFieldRecords(fieldsDetailsResponses);
 
-  const scoutPoints = await axiosClient.post<{ data: ScoutPointData[] }>('/fields/markers/get', {
-    Ids: [],
-    FieldIds: allFieldsIds,
-    PageSize: 100,
-    PageNumber: 1,
-  });
+  const scoutPoints =
+    (
+      await axiosClient.post<{ data: ScoutPointData[] | null }>('/fields/markers/get', {
+        Ids: [],
+        FieldIds: allFieldsIds,
+        PageSize: 100,
+        PageNumber: 1,
+      })
+    ).data.data ?? [];
 
-  const scoutPointsRecord = scoutPoints.data.data.map((scoutPoint) => ({
+  const scoutPointsRecord = scoutPoints.map((scoutPoint) => ({
     id: scoutPoint.id,
     field_id: scoutPoint.fieldId,
     date: new Date(scoutPoint.markerDate).getTime(),
