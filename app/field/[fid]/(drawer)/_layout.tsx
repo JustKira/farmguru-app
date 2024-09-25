@@ -22,7 +22,7 @@ const MapButton = ({ type }: { type: string }) => {
       className="mr-2"
       onPress={() => {
         //@ts-ignore
-        router.navigate(`/field/${params.fid as string}/(app)/map?type=${type}`);
+        router.navigate(`/field/${params.fid as string}/(drawer)/map?type=${type}`);
       }}>
       <MapTrifold weight="bold" />
     </Button>
