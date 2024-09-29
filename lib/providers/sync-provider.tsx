@@ -6,7 +6,6 @@ import { PullSync, PushSync } from '../database/sync';
 import { storage } from '../mmkv/storage';
 
 // Define types and interfaces for better TypeScript support
-
 interface SyncContextType {
   lastSync: Date | null;
   triggerSync: ({ onSuccess }: { onSuccess?: () => void }) => Promise<void>;
@@ -18,10 +17,9 @@ interface SyncProviderProps {
 }
 
 const SYNC_KEY = 'lastSync';
-const TWELVE_HOURS = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-const DEBUG_HOURS = 3 * 60 * 1000; // 1 minute in milliseconds
+const SYNC_TIME_KEY = 'syncTime';
+const DEFAULT_SYNC_TIME = '02:00'; // Default sync time (2 AM)
 
-const SYNC_DURATION = DEBUG_HOURS;
 // Create the SyncContext
 const SyncContext = createContext<SyncContextType | undefined>(undefined);
 
@@ -30,7 +28,6 @@ export const SyncProvider: React.FC<SyncProviderProps> = ({ children }) => {
   const { isConnected } = useNetInfo();
   const [lastSync, setLastSync] = useState<Date | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
-
   const router = useRouter();
 
   // Function to get last sync time from MMKV storage
@@ -47,22 +44,21 @@ export const SyncProvider: React.FC<SyncProviderProps> = ({ children }) => {
     setLastSync(time);
   };
 
+  // Function to get the sync time
+  const getSyncTime = (): string => {
+    return storage.getString(SYNC_TIME_KEY) || DEFAULT_SYNC_TIME;
+  };
+
   // Sync function to be triggered
   const triggerSync = async ({ onSuccess }: { onSuccess?: () => void } = {}): Promise<void> => {
-    // check if can sync based on connection
     if (!isConnected) return console.log('No internet connection');
-
     if (isSyncing) return; // Prevent multiple syncs at once
+
     setIsSyncing(true);
-
     try {
-      // Simulate a sync operation (replace this with actual logic)
-      console.log('Syncing data...');
-
+      console.log('Starting sync...');
       await PushSync();
-
       await PullSync();
-      // After successful sync, save the current time
       saveSyncTime(new Date());
       console.log('Sync completed.');
       onSuccess?.();
@@ -78,16 +74,29 @@ export const SyncProvider: React.FC<SyncProviderProps> = ({ children }) => {
     loadLastSyncTime();
   }, []);
 
-  // Effect to trigger sync if conditions are met
+  // Effect to check and trigger sync daily at the specified time
   useEffect(() => {
-    if (!isConnected) return; // Do not sync if not connected
+    const checkAndSync = () => {
+      const now = new Date();
+      const [syncHour, syncMinute] = getSyncTime().split(':').map(Number);
+      const lastSyncDate = lastSync ? new Date(lastSync) : new Date(0);
 
-    const now = new Date();
+      // Check if it's sync time and if we haven't synced today
+      if (
+        now.getHours() === syncHour &&
+        now.getMinutes() === syncMinute &&
+        (lastSyncDate.getDate() !== now.getDate() ||
+          lastSyncDate.getMonth() !== now.getMonth() ||
+          lastSyncDate.getFullYear() !== now.getFullYear())
+      ) {
+        router.replace('/sync');
+        triggerSync();
+      }
+    };
 
-    // Check if lastSync exists and if more than 12 hours have passed
-    if (!lastSync || now.getTime() - lastSync.getTime() > SYNC_DURATION) {
-      router.replace('/sync');
-    }
+    const interval = setInterval(checkAndSync, 60000); // Check every minute
+
+    return () => clearInterval(interval);
   }, [isConnected, lastSync]);
 
   return (

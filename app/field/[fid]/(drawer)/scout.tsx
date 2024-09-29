@@ -1,11 +1,11 @@
-import BottomSheet, { BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { format } from 'date-fns';
 import { Href, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { Warning } from 'phosphor-react-native';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AddScoutPoint } from '~/components/forms/scout-point';
 import { Button } from '~/components/ui/button';
@@ -139,21 +139,20 @@ export default function ScoutScreen() {
         </View>
 
         <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef}>
-          <BottomSheetView className="flex-1 px-2">
-            <ScrollView>
-              <AddScoutPoint
-                onCreateOrUpdate={() => {
-                  handleClosePress();
-                  setRerender((prev) => prev + 1);
-                }}
-                field={data}
-                scoutPoint={selectedScoutPoint ?? undefined}
-              />
-              <Button onPress={handleClosePress}>
-                <Text>{t('cancel')}</Text>
-              </Button>
-            </ScrollView>
-          </BottomSheetView>
+          <BottomSheetScrollView className="flex-1 px-2">
+            <AddScoutPoint
+              onCreateOrUpdate={() => {
+                handleClosePress();
+                setRerender((prev) => prev + 1);
+              }}
+              field={data}
+              scoutPoint={selectedScoutPoint ?? undefined}
+            />
+
+            <Button onPress={handleClosePress}>
+              <Text>{t('cancel')}</Text>
+            </Button>
+          </BottomSheetScrollView>
         </BottomSheet>
       </BottomSheetModalProvider>
     </>

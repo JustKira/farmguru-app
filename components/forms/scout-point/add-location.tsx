@@ -1,6 +1,7 @@
 import { MapPinArea, MapPinPlus, Person } from 'phosphor-react-native';
 import { useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Modal, View } from 'react-native';
 import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { z } from 'zod';
@@ -10,7 +11,6 @@ import { formSchema } from '.';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import Field from '~/lib/database/model/field';
-import { useTranslation } from 'react-i18next';
 
 export const AddLocation = ({
   field,

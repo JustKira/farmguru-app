@@ -1,12 +1,13 @@
-import * as Location from 'expo-location'; // Import expo-location
-import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft, Person } from 'phosphor-react-native';
+import { Href, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
+import { ArrowLeft } from 'phosphor-react-native';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import MapView, { Marker, Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GetMapAccuracy } from '~/components/get-map-accuracy';
 
+import { MapTracker } from '~/components/map-tracker';
 import { Button } from '~/components/ui/button';
 import {
   Select,
@@ -17,7 +18,9 @@ import {
   SelectValue,
 } from '~/components/ui/select';
 import { Text } from '~/components/ui/text';
+import useBackHandler from '~/lib/hooks/use-back-handler';
 import { storage } from '~/lib/mmkv/storage';
+import { LocationProvider } from '~/lib/providers/live-location-provider';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 import { useGetFieldScoutPoints } from '~/lib/react-query/get-field-scout-points';
 
@@ -25,48 +28,8 @@ type MapTypes = 'general' | 'crop' | 'irrigation' | 'scout';
 
 export default function MapScreen() {
   const params = useGlobalSearchParams();
-  const [userLocation, setUserLocation] = useState<{
-    latitude: number;
-    longitude: number;
-    accuracy: number | null;
-  } | null>(null);
+
   const router = useRouter();
-
-  useEffect(() => {
-    let locationSubscription: Location.LocationSubscription | null = null;
-
-    (async () => {
-      // Request foreground permissions
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-        return;
-      }
-
-      // Start watching position
-      locationSubscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.BestForNavigation,
-          timeInterval: 500, // Update every 0.5 seconds
-          distanceInterval: 0, // Update regardless of distance change
-        },
-        (location: Location.LocationObject) => {
-          setUserLocation({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            accuracy: location.coords.accuracy,
-          });
-        }
-      );
-    })();
-
-    // Cleanup function to remove the subscription when component unmounts
-    return () => {
-      if (locationSubscription) {
-        locationSubscription.remove();
-      }
-    };
-  }, []);
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
   const { data: scoutPoints, isLoading: isScoutPointsLoading } = useGetFieldScoutPoints(
@@ -86,6 +49,32 @@ export default function MapScreen() {
     left: 12,
     right: 12,
   };
+
+  useBackHandler(
+    () => {
+      return true;
+    },
+    () => {
+      let path = '';
+
+      switch (type) {
+        case 'crop':
+          path = '/crop';
+          break;
+        case 'irrigation':
+          path = '/irrigation';
+          break;
+        case 'scout':
+          path = '/scout';
+          break;
+        default:
+          path = '/';
+          break;
+      }
+
+      router.navigate(`/field/${params.fid}/(drawer)${path}` as Href);
+    }
+  );
 
   useEffect(() => {
     if (data !== undefined && isLoading === false) {
@@ -154,6 +143,7 @@ export default function MapScreen() {
           headerShown: false,
         }}
       />
+      {/* <LocationProvider timeInterval={2500}> */}
       <View className="flex-1">
         {type === 'crop' ? (
           <Select
@@ -197,7 +187,6 @@ export default function MapScreen() {
             </SelectContent>
           </Select>
         ) : null}
-
         <MapView
           initialRegion={initialRegion}
           style={{ width: '100%', height: '100%' }}
@@ -236,36 +225,39 @@ export default function MapScreen() {
             </>
           ) : null}
           <Polygon coordinates={coordinates} strokeWidth={4} strokeColor="rgb(64 165 120)" />
-          {userLocation && (
-            <Marker coordinate={userLocation} title="Your Location">
-              <View className="flex size-8 items-center justify-center rounded-full bg-green-500">
-                <Person weight="bold" />
-              </View>
-            </Marker>
-          )}
+          <MapTracker />
         </MapView>
-        <View
-          style={{
-            top: insets.top + 8,
-          }}
-          className="absolute right-2 z-50 rounded-full bg-background px-3 py-1">
-          {userLocation?.accuracy ? (
-            <Text className="font-black">
-              {t('uncertain')}
-              {userLocation?.accuracy.toFixed()}m
-            </Text>
-          ) : null}
-        </View>
+        {/* <GetMapAccuracy /> */}
         <Button
           variant="secondary"
           onPress={() => {
-            router.back();
+            let path: string;
+
+            switch (type) {
+              case 'crop':
+                path = '/crop';
+                break;
+              case 'irrigation':
+                path = '/irrigation';
+                break;
+              case 'scout':
+                path = '/scout';
+                break;
+              default:
+                path = '/';
+                break;
+            }
+
+            console.log(path);
+
+            router.navigate(`/field/${params.fid as string}/(drawer)${path}` as Href);
           }}
           className="absolute bottom-2 left-2 z-50 flex flex-row  gap-2">
           <ArrowLeft size={24} />
           <Text className="text-center font-medium">{t('back')}</Text>
         </Button>
       </View>
+      {/* </LocationProvider> */}
     </>
   );
 }
