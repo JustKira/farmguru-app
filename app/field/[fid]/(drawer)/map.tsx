@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import MapView, { Marker, Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { GetMapAccuracy } from '~/components/get-map-accuracy';
 
+import { GetMapAccuracy } from '~/components/get-map-accuracy';
 import { MapTracker } from '~/components/map-tracker';
 import { Button } from '~/components/ui/button';
 import {
@@ -20,7 +20,6 @@ import {
 import { Text } from '~/components/ui/text';
 import useBackHandler from '~/lib/hooks/use-back-handler';
 import { storage } from '~/lib/mmkv/storage';
-import { LocationProvider } from '~/lib/providers/live-location-provider';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 import { useGetFieldScoutPoints } from '~/lib/react-query/get-field-scout-points';
 
@@ -227,7 +226,7 @@ export default function MapScreen() {
           <Polygon coordinates={coordinates} strokeWidth={4} strokeColor="rgb(64 165 120)" />
           <MapTracker />
         </MapView>
-        {/* <GetMapAccuracy /> */}
+        <GetMapAccuracy />
         <Button
           variant="secondary"
           onPress={() => {

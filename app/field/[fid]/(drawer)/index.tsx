@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
+import { TapInfo } from '~/components/tap-info';
 
 import { Text } from '~/components/ui/text';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
@@ -39,9 +40,9 @@ export default function GeneralScreen() {
       label: 'nutrients',
       value: data.trendNitrogen,
       icon: (
-        <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
-          <Grains size={32} color="rgb(74 222 128)" />
-        </View>
+        <>
+          <Grains size={48} color="rgb(74 222 128)" />
+        </>
       ), // Pass the icon
       isNegativeNature: false,
     },
@@ -49,9 +50,9 @@ export default function GeneralScreen() {
       label: 'growth',
       value: data.trendGrowth,
       icon: (
-        <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
-          <Plant size={32} color="rgb(74 222 128)" />
-        </View>
+        <>
+          <Plant size={48} color="rgb(74 222 128)" />
+        </>
       ), // Pass the icon
       isNegativeNature: false,
     },
@@ -59,9 +60,9 @@ export default function GeneralScreen() {
       label: 'stress',
       value: data.trendStress,
       icon: (
-        <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
-          <Plant size={32} color="rgb(74 222 128)" />
-        </View>
+        <>
+          <Plant size={48} color="rgb(74 222 128)" />
+        </>
       ), // Pass the icon
       isNegativeNature: true,
     },
@@ -70,16 +71,17 @@ export default function GeneralScreen() {
   return (
     <>
       <Stack.Screen />
-      <View className="flex flex-1 gap-2 p-4">
+      <View className="flex flex-1 gap-6 p-4">
+        <TapInfo age={0} type={data.cropType} lastUpdate={data.lastCropUpdate} />
         <Text className="text-3xl font-black">{t('weekly_change')}</Text>
         <FlatGrid
-          itemDimension={200}
+          itemDimension={50}
           data={items}
           style={{
             flex: 1,
           }}
           maxItemsPerRow={2}
-          spacing={6}
+          spacing={10}
           renderItem={({ item }) => {
             const { ...rest } = item;
             return <TrendBlock {...rest} />;
@@ -102,12 +104,12 @@ function TrendBlock({ icon, isNegativeNature, label, value }: TrendBlockProps) {
   const isTrendingPositive = isNegativeNature ? value <= 0 : value >= 0;
 
   return (
-    <View className="flex-row items-center justify-between rounded-md ">
+    <View className="items- flex aspect-square justify-center gap-2 rounded-md bg-muted/50 p-4">
       {/* Icon on the left */}
+      <View className="flex size-10 items-center justify-center rounded-lg">{icon}</View>
       <View className="flex-row items-center">
-        <View className="mr-2">{icon}</View>
         <View>
-          <Text className="text-2xl font-medium capitalize">{t(label)}</Text>
+          <Text className="text-xl font-bold capitalize">{t(label as any)}</Text>
           <Text className="text-lg text-muted-foreground">{value.toFixed(2)}%</Text>
         </View>
       </View>
