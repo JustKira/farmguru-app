@@ -1,6 +1,8 @@
+import { useNetInfo } from '@react-native-community/netinfo';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { useRouter } from 'expo-router';
 import { Farm } from 'phosphor-react-native';
+import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 
 import { Button } from './ui/button';
@@ -8,10 +10,12 @@ import { Text } from './ui/text';
 
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { useAuth } from '~/lib/providers/auth-provider';
-import { useTranslation } from 'react-i18next';
 
 export default function CustomFieldDrawerContent(props: any) {
   const { signOut } = useAuth();
+
+  const { isWifiEnabled, isConnected } = useNetInfo();
+
   const router = useRouter();
   const { isDarkColorScheme } = useColorScheme();
 
@@ -39,6 +43,14 @@ export default function CustomFieldDrawerContent(props: any) {
         />
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
+
+      {isWifiEnabled && isConnected ? (
+        <View className="px-2 pb-2">
+          <Button onPress={() => router.push('/sync')}>
+            <Text>{t('resync')}</Text>
+          </Button>
+        </View>
+      ) : null}
 
       <View className="px-2 pb-2">
         <Button onPress={() => router.push('/(app_drawer)/profile')}>
