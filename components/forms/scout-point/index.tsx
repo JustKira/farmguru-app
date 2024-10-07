@@ -43,10 +43,12 @@ export function AddScoutPoint({
   field,
   scoutPoint,
   onCreateOrUpdate,
+  onCanceled,
 }: {
   field: Field;
   scoutPoint?: ScoutPoint;
   onCreateOrUpdate?: () => void;
+  onCanceled?: () => void;
 }) {
   const {
     control,
@@ -285,6 +287,13 @@ export function AddScoutPoint({
       <AddPhoto setValue={setValue} value={watch('photo')} />
       <Button onPress={submit}>
         <Text>{t('submit')}</Text>
+      </Button>
+      <Button
+        onPress={() => {
+          reset();
+          onCanceled?.();
+        }}>
+        <Text>{t('cancel')}</Text>
       </Button>
     </View>
   );

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 
 import { AddScoutPoint } from '~/components/forms/scout-point';
+import { TapInfo } from '~/components/tap-info';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import ScoutPoint from '~/lib/database/model/scout-point';
@@ -93,6 +94,7 @@ export default function ScoutScreen() {
   return (
     <>
       <Stack.Screen />
+      {/* <TapInfo age={0} type={data.cropType} lastUpdate={data.lastCropUpdate} /> */}
       <BottomSheetModalProvider>
         <View className="flex flex-1 gap-2 p-4">
           <Text className="text-3xl font-black">{t('dash.scout.field_points')}</Text>
@@ -145,13 +147,10 @@ export default function ScoutScreen() {
                 handleClosePress();
                 setRerender((prev) => prev + 1);
               }}
+              onCanceled={handleClosePress}
               field={data}
               scoutPoint={selectedScoutPoint ?? undefined}
             />
-
-            <Button onPress={handleClosePress}>
-              <Text>{t('cancel')}</Text>
-            </Button>
           </BottomSheetScrollView>
         </BottomSheet>
       </BottomSheetModalProvider>

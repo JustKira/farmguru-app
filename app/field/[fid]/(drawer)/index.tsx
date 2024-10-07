@@ -4,8 +4,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
-import { TapInfo } from '~/components/tap-info';
 
+import { TapInfo } from '~/components/tap-info';
 import { Text } from '~/components/ui/text';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 
@@ -72,7 +72,7 @@ export default function GeneralScreen() {
     <>
       <Stack.Screen />
       <View className="flex flex-1 gap-6 p-4">
-        <TapInfo age={0} type={data.cropType} lastUpdate={data.lastCropUpdate} />
+        <TapInfo plantDate={data.plantDate} type={data.cropType} lastUpdate={data.lastInfoUpdate} />
         <Text className="text-3xl font-black">{t('weekly_change')}</Text>
         <FlatGrid
           itemDimension={50}
@@ -104,12 +104,12 @@ function TrendBlock({ icon, isNegativeNature, label, value }: TrendBlockProps) {
   const isTrendingPositive = isNegativeNature ? value <= 0 : value >= 0;
 
   return (
-    <View className="items- flex aspect-square justify-center gap-2 rounded-md bg-muted/50 p-4">
+    <View className="items- flex aspect-square justify-center gap-2 rounded-md border-2 border-muted bg-muted/50 p-4">
       {/* Icon on the left */}
       <View className="flex size-10 items-center justify-center rounded-lg">{icon}</View>
       <View className="flex-row items-center">
         <View>
-          <Text className="text-xl font-bold capitalize">{t(label as any)}</Text>
+          <Text className="text-2xl font-bold capitalize">{t(label as any)}</Text>
           <Text className="text-lg text-muted-foreground">{value.toFixed(2)}%</Text>
         </View>
       </View>
@@ -118,7 +118,7 @@ function TrendBlock({ icon, isNegativeNature, label, value }: TrendBlockProps) {
         {isTrendingPositive ? (
           <TrendUp weight="bold" size={48} color="rgb(74 222 128)" />
         ) : (
-          <TrendDown size={48} color="red" />
+          <TrendDown size={48} weight="bold" color="red" />
         )}
       </View>
     </View>

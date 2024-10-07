@@ -6,10 +6,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import * as z from 'zod';
 
 import { Button } from '~/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { useAuth } from '~/lib/providers/auth-provider';
@@ -38,7 +39,20 @@ export default function Login() {
 
     try {
       await signIn(data.email, data.password);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'You have successfully logged in',
+        visibilityTime: 2000,
+      });
     } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        //@ts-ignore
+        text2: "We couldn't log you in. Please check your credentials and try again",
+        visibilityTime: 2000,
+      });
       console.error(error);
     } finally {
       setLoading(false);

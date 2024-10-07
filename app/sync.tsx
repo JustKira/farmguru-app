@@ -18,6 +18,8 @@ export default function Sync() {
   const { t } = useTranslation();
   const [progress, setProgress] = useState<number>(0);
 
+  const [completed, setCompleted] = useState(false);
+
   const getRandomDelay = useCallback((min: number, max: number) => {
     return Math.random() * (max - min) + min;
   }, []);
@@ -25,6 +27,8 @@ export default function Sync() {
   useEffect(() => {
     let timeoutId: any;
     const animateProgress = () => {
+      if (completed) return;
+
       //@ts-ignore
       setProgress((prevProgress) => {
         if (prevProgress >= 0.99) return 0.99;
@@ -59,7 +63,12 @@ export default function Sync() {
   useEffect(() => {
     (async () => {
       await triggerSync({
-        onSuccess: () => {
+        onSuccess: async () => {
+          setCompleted(true);
+
+          setProgress(1);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
           queryClient.removeQueries();
           router.replace('/(app_drawer)');
         },

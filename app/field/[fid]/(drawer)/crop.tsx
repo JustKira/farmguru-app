@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
+import { TapInfo } from '~/components/tap-info';
 
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 export default function CropScreen() {
@@ -52,6 +53,7 @@ export default function CropScreen() {
   return (
     <>
       <Stack.Screen />
+      <TapInfo plantDate={data.plantDate} type={data.cropType} lastUpdate={data.lastCropUpdate} />
       <View className="flex flex-1 gap-2 p-4">
         <Text className="text-3xl font-black">{t('crop_analytics')}</Text>
         <FlatGrid
@@ -99,6 +101,7 @@ function FieldPercentages({
     <View className="my-2 rounded-lg p-2 ">
       {/* Sales Report and Amount */}
       <View className="flex-row items-center justify-between">
+        {/* @ts-ignore */}
         <Text className="text-xl font-bold capitalize text-black">{t(label)}</Text>
       </View>
 
@@ -108,6 +111,7 @@ function FieldPercentages({
           <View key={level} className="flex-row items-center justify-between">
             {/* Level label */}
             <Text className="text-sm text-black" style={{ width: 70 }}>
+              {/* @ts-ignore */}
               {t(level.toLowerCase())}
             </Text>
             {/* Background bar */}

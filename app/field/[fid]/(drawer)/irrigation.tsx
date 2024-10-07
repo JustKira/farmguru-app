@@ -7,6 +7,7 @@ import { ScrollView, View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 
 import AddIrrigationPoint from '~/components/forms/irrigation-point';
+import { TapInfo } from '~/components/tap-info';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import useBackHandler from '~/lib/hooks/use-back-handler';
@@ -82,9 +83,9 @@ export default function IrrigationScreen() {
       label: t('dash.irr.soil_moisture_root_zone'),
       value: data.soilMoisture ? `${data.soilMoisture} %` : '0 %',
       icon: (
-        <View className="flex size-16 items-center justify-center rounded-lg border-green-400 bg-green-400/15">
-          <DropHalfBottom size={32} color="rgb(74 222 128)" />
-        </View>
+        <>
+          <DropHalfBottom size={48} color="rgb(74 222 128)" />
+        </>
       ), // Pass the icon
     },
     {
@@ -93,9 +94,9 @@ export default function IrrigationScreen() {
         ? `${data.daysToWilting}  ${t('global.days')}`
         : `0 ${t('global.days')}`,
       icon: (
-        <View className="flex size-16 items-center justify-center rounded-lg border-green-400 bg-green-400/15">
-          <Plant size={32} color="rgb(74 222 128)" />
-        </View>
+        <>
+          <Plant size={48} color="rgb(74 222 128)" />
+        </>
       ), // Pass the icon
     },
     {
@@ -104,9 +105,9 @@ export default function IrrigationScreen() {
         ? `${data.nextIrrigation} ${t('global.days')}`
         : `0 ${t('global.days')}`,
       icon: (
-        <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
-          <Drop size={32} color="rgb(74 222 128)" />
-        </View>
+        <>
+          <Drop size={48} color="rgb(74 222 128)" />
+        </>
       ), // Pass the icon
     },
     {
@@ -115,9 +116,9 @@ export default function IrrigationScreen() {
         ? `${data.daysToWilting} ${t('global.hours')}`
         : `0 ${t('global.hours')}`,
       icon: (
-        <View className="flex size-16 items-center justify-center rounded-lg border-green-400 bg-green-400/15">
-          <Clock size={32} color="rgb(74 222 128)" />
-        </View>
+        <>
+          <Clock size={48} color="rgb(74 222 128)" />
+        </>
       ), // Pass the icon
     },
     // {
@@ -125,7 +126,7 @@ export default function IrrigationScreen() {
     //   value: data.trendGrowth,
     //   icon: (
     //     <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
-    //       <Drop size={32} color="rgb(74 222 128)" />
+    //       <Drop size={48} color="rgb(74 222 128)" />
     //     </View>
     //   ), // Pass the icon
     // },
@@ -134,7 +135,7 @@ export default function IrrigationScreen() {
     //   value: data.trendStress,
     //   icon: (
     //     <View className="flex size-16 items-center justify-center rounded-lg bg-green-400/15">
-    //       <Drop size={32} color="rgb(74 222 128)" />
+    //       <Drop size={48} color="rgb(74 222 128)" />
     //     </View>
     //   ), // Pass the icon
     // },
@@ -163,9 +164,11 @@ export default function IrrigationScreen() {
           title: 'Irrigation',
         }}
       />
+      <TapInfo plantDate={data.plantDate} type={data.cropType} lastUpdate={data.lastCropUpdate} />
       <BottomSheetModalProvider>
         <View className="flex flex-1 gap-2 p-4">
           {/* <Text className="text-3xl font-black">Irrigation Info</Text> */}
+          <Text className="text-3xl font-medium">{t('water_field_status')}</Text>
           <Button
             onPress={() => {
               handleOpenPress();
@@ -174,7 +177,7 @@ export default function IrrigationScreen() {
             <Text> {`${t('actions.add')} ${t('nav.irrigation')}`}</Text>
           </Button>
           <FlatGrid
-            itemDimension={200}
+            itemDimension={50}
             data={items}
             style={{
               flex: 1,
@@ -215,16 +218,13 @@ interface InfoBlockProps {
 
 function InfoBlock({ icon, label, value }: InfoBlockProps) {
   return (
-    <View className="flex-row items-center justify-between rounded-md ">
+    <View className=" gap- flex aspect-square  justify-between rounded-md border-2 border-muted bg-muted/50 px-4 py-8">
       {/* Icon on the left */}
-      <View className="flex-row items-center">
-        <View className="mr-2">{icon}</View>
-        <View>
-          <Text className="text-2xl font-medium capitalize">{label}</Text>
-          <Text className="text-lg text-muted-foreground">{value}</Text>
-        </View>
+      <View className="flex size-10 items-center justify-center rounded-lg">{icon}</View>
+      <View>
+        <Text className="text-xl font-bold capitalize">{label}</Text>
+        <Text className="text-2xl text-muted-foreground">{value}</Text>
       </View>
-      {/* Trending indicator */}
     </View>
   );
 }

@@ -10,6 +10,8 @@ import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // import { PermissionRequester } from '~/components/permission-requester';
+import Toast from 'react-native-toast-message';
+
 import { NAV_THEME } from '~/lib/constants';
 import { database } from '~/lib/database';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
@@ -139,6 +141,7 @@ export default function RootLayout() {
                     headerShown: false,
                   }}
                 />
+                <Toast />
                 <PortalHost />
                 {/* </PermissionRequester> */}
               </SyncProvider>
