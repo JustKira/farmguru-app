@@ -64,16 +64,17 @@ export async function PullSync() {
   const scoutPointFiles = scoutPointsRecord.map((scoutPoint) => {
     const filesToGet = [];
 
-    const photos = [scoutPoint.photos] as string[];
+    const photos = JSON.parse(scoutPoint.photos) as string[];
 
     photos.forEach((photo) => {
-      if (photo.length === 0 || photo === '') return;
-      filesToGet.push(getStorageFile(photo));
+      if (photo.length === 0 || photo[0] === '') return;
+
+      filesToGet.push(getStorageFile(photo, 'Photo'));
     });
 
     if (scoutPoint.voice_note) {
       if (scoutPoint.voice_note.length === 0) return;
-      filesToGet.push(getStorageFile(scoutPoint.voice_note));
+      filesToGet.push(getStorageFile(scoutPoint.voice_note, 'Voice Note'));
     }
 
     return Promise.all(filesToGet);
@@ -98,7 +99,7 @@ export async function PullSync() {
   const mapImages = mapKeys
     .filter((key) => key.length !== 0)
     .map((keys) => {
-      return Promise.all(keys.map((key) => getStorageFile(key)));
+      return Promise.all(keys.map((key) => getStorageFile(key, 'Map')));
     });
 
   await Promise.all(mapImages);

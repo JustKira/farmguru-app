@@ -85,7 +85,7 @@ export const AddPhoto = ({
               onPress={() => setViewImageModal(true)}>
               <View className="flex flex-row gap-2">
                 <ImagesSquare size={24} weight="bold" />
-                <Text>{t('view_selected_image')}</Text>
+                <Text>{t('view_photo')}</Text>
               </View>
             </Button>
           ) : null}

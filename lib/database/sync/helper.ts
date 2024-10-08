@@ -43,7 +43,7 @@ export const mapFieldRecords = (
   }) as unknown as FieldRecord[];
 };
 
-export const getStorageFile = async (key: string) => {
+export const getStorageFile = async (key: string, type: string) => {
   if (!key || key.length === 0) return;
 
   const storageResult = await axiosClient.post<{ data: string }>('/storage/get', {
@@ -58,7 +58,7 @@ export const getStorageFile = async (key: string) => {
 
   const result = await FileSystem.downloadAsync(url, localUri);
 
-  // console.log(`Downloaded file ${key}`, result.uri);
+  console.log(`${type} Downloaded file ${key}`, result.uri);
 
   storage.set(key, result.uri);
 };

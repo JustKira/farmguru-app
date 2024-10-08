@@ -261,13 +261,13 @@ export function AddScoutPoint({
       />
       <Text>
         {isLocationLoading ? (
-          <Badge>
+          <>
             <Text>{t('messages.loading')}</Text>
-          </Badge>
+          </>
         ) : (
-          <Badge>
-            <Text>{t('your-current-location')}</Text>
-          </Badge>
+          <>
+            <Text className="text-sm font-bold">{t('your-current-location')}</Text>
+          </>
         )}
       </Text>
       {errors.location && <Text>{errors.location.message?.toString()}</Text>}

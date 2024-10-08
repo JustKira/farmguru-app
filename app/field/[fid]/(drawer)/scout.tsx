@@ -145,6 +145,7 @@ export default function ScoutScreen() {
             <AddScoutPoint
               onCreateOrUpdate={() => {
                 handleClosePress();
+                setSelectedScoutPoint(null);
                 setRerender((prev) => prev + 1);
               }}
               onCanceled={handleClosePress}

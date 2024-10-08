@@ -7,6 +7,10 @@
   "uncertain": "Uncertain",
   "your-current-location": "Your Current Location",
   "resync": "Resync",
+  "change_image": "Change Image",
+  "view_photo": "View Photo",
+  "gallery": "Gallery",
+  "camera": "Camera",
   "global": {
     "time": {
       "hour": "hour",
