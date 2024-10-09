@@ -127,6 +127,7 @@ export function AddScoutPoint({
           });
         });
         onCreateOrUpdate?.();
+
         console.log('Scout point updated');
       } catch (error) {
         console.error('Failed to update scout point', error);
@@ -155,18 +156,15 @@ export function AddScoutPoint({
             sp.voiceNote = data.voiceNote ? vnId : '';
           });
         });
-
-        reset({
-          issueCategory: 'insect',
-          issueSeverity: 'early',
-          date: new Date(),
-        });
         onCreateOrUpdate?.();
         console.log('Scout point created');
       } catch (error) {
         console.error('Failed to create scout point', error);
       }
     }
+
+    reset();
+
     await queryClient.invalidateQueries({
       queryKey: getFieldsScoutPointsQueryKey(field.id),
     });

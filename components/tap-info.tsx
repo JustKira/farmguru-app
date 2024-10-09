@@ -1,5 +1,5 @@
+import { Entypo, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { format } from 'date-fns';
-import { Clock, Grains, Plant } from 'phosphor-react-native';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
@@ -23,21 +23,21 @@ export function TapInfo({
   return (
     <View className="flex w-full flex-row items-center justify-between">
       <View className="flex aspect-square w-[32%] items-center justify-center gap-2 rounded-lg bg-muted">
-        <Grains size={48} weight="bold" />
+        <FontAwesome6 name="wheat-awn" size={32} color="rgb(74 222 128)" />
         <View className="flex gap-1">
           <Text className="text-center text-lg font-medium">{t('dialog.crop_info.type')}</Text>
           <Text className="text-center text-lg font-bold">{type}</Text>
         </View>
       </View>
       <View className="flex aspect-square w-[32%] items-center justify-center gap-2 rounded-lg bg-muted">
-        <Plant size={48} weight="bold" />
+        <Entypo name="flower" size={32} color="rgb(74 222 128)" />
         <View className="flex gap-1">
           <Text className="text-center text-lg font-medium">{t('dialog.crop_info.age')}</Text>
           <Text className="text-center text-lg font-bold">{cropAge}</Text>
         </View>
       </View>
       <View className="flex aspect-square w-[32%] items-center justify-center gap-2 rounded-lg bg-muted ">
-        <Clock size={48} weight="bold" />
+        <MaterialIcons name="update" size={32} color="rgb(74 222 128)" />
         <View className="flex gap-1">
           <Text className="text-center text-lg font-medium">{t('last_update')}</Text>
           <Text className="text-center text-lg font-bold">{format(lastUpdate, 'dd/MM/yyyy')}</Text>

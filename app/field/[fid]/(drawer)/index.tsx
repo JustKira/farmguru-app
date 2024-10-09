@@ -41,7 +41,7 @@ export default function GeneralScreen() {
       value: data.trendNitrogen,
       icon: (
         <>
-          <Grains size={48} color="rgb(74 222 128)" />
+          <Grains size={34} weight="bold" color="rgb(74 222 128)" />
         </>
       ), // Pass the icon
       isNegativeNature: false,
@@ -51,7 +51,7 @@ export default function GeneralScreen() {
       value: data.trendGrowth,
       icon: (
         <>
-          <Plant size={48} color="rgb(74 222 128)" />
+          <Plant size={34} weight="fill" color="rgb(74 222 128)" />
         </>
       ), // Pass the icon
       isNegativeNature: false,
@@ -61,7 +61,7 @@ export default function GeneralScreen() {
       value: data.trendStress,
       icon: (
         <>
-          <Plant size={48} color="rgb(74 222 128)" />
+          <Plant size={34} weight="fill" color="rgb(74 222 128)" />
         </>
       ), // Pass the icon
       isNegativeNature: true,
@@ -104,21 +104,23 @@ function TrendBlock({ icon, isNegativeNature, label, value }: TrendBlockProps) {
   const isTrendingPositive = isNegativeNature ? value <= 0 : value >= 0;
 
   return (
-    <View className="items- flex aspect-square justify-center gap-2 rounded-md border-2 border-muted bg-muted/50 p-4">
+    <View className="items- flex aspect-square justify-between gap-2 rounded-md border-2 border-muted bg-muted/50 p-4">
       {/* Icon on the left */}
-      <View className="flex size-10 items-center justify-center rounded-lg">{icon}</View>
-      <View className="flex-row items-center">
-        <View>
-          <Text className="text-2xl font-bold capitalize">{t(label as any)}</Text>
-          <Text className="text-lg text-muted-foreground">{value.toFixed(2)}%</Text>
+      <View className="flex flex-row gap-4">
+        <View className="flex size-10 items-center justify-center rounded-lg">{icon}</View>
+        <View className="flex-row items-center">
+          <View>
+            <Text className="text-2xl font-bold capitalize">{t(label as any)}</Text>
+            <Text className="text-lg text-muted-foreground">{value.toFixed(2)}%</Text>
+          </View>
         </View>
       </View>
       {/* Trending indicator */}
       <View>
         {isTrendingPositive ? (
-          <TrendUp weight="bold" size={48} color="rgb(74 222 128)" />
+          <TrendUp weight="bold" size={74} color="rgb(74 222 128)" />
         ) : (
-          <TrendDown size={48} weight="bold" color="red" />
+          <TrendDown size={74} weight="bold" color="red" />
         )}
       </View>
     </View>

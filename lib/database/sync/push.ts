@@ -105,10 +105,12 @@ export async function PushSync() {
       // );
       await Promise.all(
         changes.irrigation_point.created.map((irrigationPoint) => {
+          console.log('Irrigation Point', irrigationPoint);
+
           try {
             axiosClient.post('/fields/irrigations/add', {
               FieldId: irrigationPoint.field_id,
-              duration: irrigationPoint.duration,
+              duration: `${irrigationPoint.duration}`,
               datetime: new Date(irrigationPoint.date).toISOString(),
             });
             console.log('Irrigation Point Synced');

@@ -8,16 +8,10 @@ import { Image, View } from 'react-native';
 import { Button } from './ui/button';
 import { Text } from './ui/text';
 
-import { useColorScheme } from '~/lib/hooks/use-color-scheme';
-import { useAuth } from '~/lib/providers/auth-provider';
-
 export default function CustomFieldDrawerContent(props: any) {
-  const { signOut } = useAuth();
-
-  const { isWifiEnabled, isConnected } = useNetInfo();
+  const { isConnected } = useNetInfo();
 
   const router = useRouter();
-  const { isDarkColorScheme } = useColorScheme();
 
   const { t } = useTranslation();
 
@@ -36,7 +30,7 @@ export default function CustomFieldDrawerContent(props: any) {
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      {isWifiEnabled && isConnected ? (
+      {isConnected ? (
         <View className="px-2 pb-2">
           <Button onPress={() => router.push('/sync')}>
             <Text>{t('resync')}</Text>

@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { z } from 'zod';
 
@@ -13,7 +14,6 @@ import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { database } from '~/lib/database';
 import IrrigationPoint from '~/lib/database/model/irrigation-point';
-import { useTranslation } from 'react-i18next';
 
 export const formSchema = z.object({
   duration: z.coerce.number().min(1, 'Duration must be at least 1 hour'),
@@ -32,6 +32,7 @@ const AddIrrigationPoint = ({
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
@@ -57,6 +58,8 @@ const AddIrrigationPoint = ({
     } catch (error) {
       console.error('Failed to create irrigation point', error);
     }
+
+    reset();
   });
 
   return (

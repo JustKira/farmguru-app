@@ -7,10 +7,8 @@ import { Image, View } from 'react-native';
 import { Button } from './ui/button';
 import { Text } from './ui/text';
 
-import { useColorScheme } from '~/lib/hooks/use-color-scheme';
-
 export default function CustomAppDrawerContent(props: any) {
-  const { isWifiEnabled, isConnected } = useNetInfo();
+  const { isConnected } = useNetInfo();
 
   const { t } = useTranslation();
 
@@ -25,7 +23,7 @@ export default function CustomAppDrawerContent(props: any) {
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      {isWifiEnabled && isConnected ? (
+      {isConnected ? (
         <View className="px-2 pb-2">
           <Button onPress={() => router.push('/sync')}>
             <Text>{t('resync')}</Text>
