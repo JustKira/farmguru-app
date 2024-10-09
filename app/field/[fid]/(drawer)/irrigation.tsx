@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
-import { Href, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
+import { Href, Stack, useGlobalSearchParams, usePathname, useRouter } from 'expo-router';
 import { Clock, Drop, DropHalf, DropHalfBottom, Plant } from 'phosphor-react-native';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ import { useGetFieldDetails } from '~/lib/react-query/get-field';
 
 export default function IrrigationScreen() {
   const params = useGlobalSearchParams();
+
   const snapPoints = useMemo(() => ['100%'], []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -25,11 +26,11 @@ export default function IrrigationScreen() {
 
   const router = useRouter();
   const [open, setOpen] = useState(false);
-
+  const pathname = usePathname();
   useEffect(() => {
     setOpen(false);
     bottomSheetRef.current?.close();
-  }, [router]);
+  }, [pathname]);
 
   useBackHandler(
     () => {

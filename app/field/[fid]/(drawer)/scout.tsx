@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { format } from 'date-fns';
-import { Href, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
+import { Href, Stack, useGlobalSearchParams, usePathname, useRouter } from 'expo-router';
 import { Warning } from 'phosphor-react-native';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,11 +41,12 @@ export default function ScoutScreen() {
   }, [params]);
 
   const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
-    setSelectedScoutPoint(null);
     setOpen(false);
+    setSelectedScoutPoint(null);
     bottomSheetRef.current?.close();
-  }, [router]);
+  }, [pathname]);
 
   // Model
   const snapPoints = useMemo(() => ['100%'], []);
