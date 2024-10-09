@@ -10,7 +10,6 @@ import { Text } from './ui/text';
 import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 
 export default function CustomAppDrawerContent(props: any) {
-  const { isDarkColorScheme } = useColorScheme();
   const { isWifiEnabled, isConnected } = useNetInfo();
 
   const { t } = useTranslation();
@@ -19,15 +18,7 @@ export default function CustomAppDrawerContent(props: any) {
   return (
     <View className="flex-1">
       <View className="pb-4 pt-10">
-        <Image
-          className="h-24"
-          resizeMode="contain"
-          source={
-            isDarkColorScheme
-              ? require('~/assets/farmguru.png')
-              : require('~/assets/farmguru_dark.png')
-          }
-        />
+        <Image className="h-20" resizeMode="contain" source={require('~/assets/farmguru.png')} />
       </View>
 
       <DrawerContentScrollView {...props}>

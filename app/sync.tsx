@@ -79,8 +79,9 @@ export default function Sync() {
   return (
     <View className="flex flex-1 items-center justify-between gap-2 px-4">
       <View />
-      <View className="items-center">
+      <View className="items-center gap-2">
         <Progress.Pie size={150} color="green" progress={progress} />
+        <Text className="text-center">{t('messages.loading')}</Text>
       </View>
       <Button variant="default" size="lg" className="mb-4 w-full" onPress={() => signOut()}>
         <Text>{t('signout')}</Text>

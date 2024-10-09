@@ -1,20 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Image } from 'react-native';
 import Toast from 'react-native-toast-message';
 import * as z from 'zod';
 
 import { Button } from '~/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { useAuth } from '~/lib/providers/auth-provider';
 
+import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -28,6 +28,7 @@ export default function Login() {
   } = useForm({
     resolver: zodResolver(formSchema),
   });
+  const { isDarkColorScheme } = useColorScheme();
 
   const [loading, setLoading] = React.useState(false);
 
@@ -79,9 +80,11 @@ export default function Login() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View className="flex h-full justify-center">
-        <Card className="w-full border-transparent bg-transparent shadow-none">
-          <CardHeader>
-            <CardTitle className="font-black">{t('farm_guru')}</CardTitle>
+        <Card className="w-full justify-between border-transparent bg-transparent shadow-none">
+          <CardHeader className="py-0">
+            <View className="items-start justify-start">
+              <Image resizeMode="cover" source={require('~/assets/farmguru.png')} />
+            </View>
           </CardHeader>
           <CardContent className="gap-2">
             <Controller

@@ -24,15 +24,7 @@ export default function CustomFieldDrawerContent(props: any) {
   return (
     <View className="flex-1">
       <View className="pb-4 pt-10">
-        <Image
-          className="h-24"
-          resizeMode="contain"
-          source={
-            isDarkColorScheme
-              ? require('~/assets/farmguru.png')
-              : require('~/assets/farmguru_dark.png')
-          }
-        />
+        <Image className="h-20" resizeMode="contain" source={require('~/assets/farmguru.png')} />
       </View>
 
       <DrawerContentScrollView {...props}>

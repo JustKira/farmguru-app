@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import MapView, { Marker, Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AccuracyCircle } from '~/components/accuracy-circle';
 
 import { GetMapAccuracy } from '~/components/get-map-accuracy';
 import { MapTracker } from '~/components/map-tracker';
@@ -225,6 +226,7 @@ export default function MapScreen() {
           ) : null}
           <Polygon coordinates={coordinates} strokeWidth={4} strokeColor="rgb(64 165 120)" />
           <MapTracker />
+          <AccuracyCircle />
         </MapView>
         <GetMapAccuracy />
         <Button
@@ -251,12 +253,11 @@ export default function MapScreen() {
 
             router.navigate(`/field/${params.fid as string}/(drawer)${path}` as Href);
           }}
-          className="absolute bottom-2 left-2 z-50 flex flex-row  gap-2">
+          className="absolute bottom-2 left-2 z-50 flex flex-row gap-2">
           <ArrowLeft size={24} />
           <Text className="text-center font-medium">{t('back')}</Text>
         </Button>
       </View>
-      {/* </LocationProvider> */}
     </>
   );
 }

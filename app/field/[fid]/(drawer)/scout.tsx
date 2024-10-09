@@ -41,6 +41,10 @@ export default function ScoutScreen() {
   }, [params]);
 
   const router = useRouter();
+  useEffect(() => {
+    setSelectedScoutPoint(null);
+    bottomSheetRef.current?.close();
+  }, [router]);
 
   // Model
   const snapPoints = useMemo(() => ['100%'], []);

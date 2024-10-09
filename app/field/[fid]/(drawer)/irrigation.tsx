@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Href, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { Clock, Drop, DropHalf, DropHalfBottom, Plant } from 'phosphor-react-native';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
@@ -25,6 +25,11 @@ export default function IrrigationScreen() {
 
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    bottomSheetRef.current?.close();
+  }, [router]);
+
   useBackHandler(
     () => {
       if (open) {
