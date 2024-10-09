@@ -27,6 +27,7 @@ export default function IrrigationScreen() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    setOpen(false);
     bottomSheetRef.current?.close();
   }, [router]);
 

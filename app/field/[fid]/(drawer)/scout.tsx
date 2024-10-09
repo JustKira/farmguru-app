@@ -43,6 +43,7 @@ export default function ScoutScreen() {
   const router = useRouter();
   useEffect(() => {
     setSelectedScoutPoint(null);
+    setOpen(false);
     bottomSheetRef.current?.close();
   }, [router]);
 
