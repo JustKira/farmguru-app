@@ -3,7 +3,7 @@
     "name": "FarmGuru",
     "slug": "farmguru-app",
     "version": "1.0.0",
-    "scheme": "FarmGuru",
+    "scheme": "farmguru",
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -55,7 +55,21 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "intentFilters": [
+          {
+            "action": "VIEW",
+            "autoVerify": true,
+            "data": [
+              {
+                "scheme": "https",
+                "host": "*.farmguru.com",
+                "path": "/auth"
+              }
+            ],
+            "category": ["BROWSABLE", "DEFAULT"]
+          }
+        ]
       },
       "config": {
         "googleMaps": {

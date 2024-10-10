@@ -5,9 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import MapView, { Marker, Overlay, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AccuracyCircle } from '~/components/accuracy-circle';
 
-import { GetMapAccuracy } from '~/components/get-map-accuracy';
+import { AccuracyCircle } from '~/components/accuracy-circle';
 import { MapTracker } from '~/components/map-tracker';
 import { Button } from '~/components/ui/button';
 import {
@@ -228,7 +227,7 @@ export default function MapScreen() {
           <MapTracker />
           <AccuracyCircle />
         </MapView>
-        <GetMapAccuracy />
+
         <Button
           variant="secondary"
           onPress={() => {

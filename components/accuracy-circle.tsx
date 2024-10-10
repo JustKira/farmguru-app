@@ -52,8 +52,8 @@ export const AccuracyCircle = () => {
         <Circle
           center={{ latitude: userLocation.latitude, longitude: userLocation.longitude }}
           radius={userLocation.accuracy}
-          fillColor="rgba(0, 255, 0, 0.5)"
-          strokeColor="rgba(0, 255, 0, 1)"
+          fillColor="rgba(52, 216, 235, 0.25)"
+          strokeColor="rgba(52, 216, 235, 1)"
           strokeWidth={1}
           zIndex={2}
         />

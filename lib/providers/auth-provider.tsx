@@ -8,6 +8,7 @@ import { storage } from '../mmkv/storage';
 export interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
+  oauth: (data: { accessToken: string; refreshToken: string }) => void;
   isLoading: boolean;
 }
 
@@ -15,7 +16,7 @@ type AuthProviderProps = {
   children: React.ReactNode;
   signInPath: Href<string>;
   protectedRoutes: RegExp[];
-  onSignInSuccess?: (user: {
+  onSignInSuccess?: (user?: {
     accountId: string;
     loginId: string;
     accountType: string;
@@ -57,13 +58,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   useEffect(() => {
     // Only perform route checks after loading is complete
     const isProtectedRoute = protectedRoutes.some((regex) => regex.test(pathName));
-    const u = storage.getString('user-data');
-    const userData = u ? JSON.parse(u) : null;
-    if (isProtectedRoute && !userData) {
+    const u = storage.getString('user-refresh-token');
+
+    if (isProtectedRoute && !u) {
       // If the user is not authenticated and is trying to access a protected route, redirect to the sign-in page
       router.replace(signInPath);
     }
   }, [pathName]);
+
+  const oauth = async ({
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+  }) => {
+    storage.set('user-access-token', accessToken);
+    storage.set('user-refresh-token', refreshToken);
+
+    if (onSignInSuccess) {
+      onSignInSuccess();
+    }
+  };
 
   const signIn = async (email: string, password: string) => {
     setIsLoading(true);
@@ -113,6 +129,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       value={{
         signIn,
         signOut,
+        oauth,
         isLoading,
       }}>
       {children}

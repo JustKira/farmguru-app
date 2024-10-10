@@ -1,4 +1,4 @@
-import { MapPinArea, MapPinPlus, Person } from 'phosphor-react-native';
+import { MapPin, MapPinArea, MapPinPlus, Person } from 'phosphor-react-native';
 import { useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -102,23 +102,11 @@ export const AddLocation = ({
               </Marker>
             ) : null}
 
-            {userLocation ? (
-              <Marker coordinate={userLocation}>
-                <View className="flex size-8 animate-pulse items-center justify-center rounded-full bg-green-500">
-                  <Person weight="bold" />
-                </View>
-              </Marker>
-            ) : null}
+            {userLocation ? <Marker coordinate={userLocation} pinColor="#4287f5" /> : null}
 
             <Polygon coordinates={coordinates} strokeWidth={4} strokeColor="rgb(64 165 120)" />
           </MapView>
-          <View className="absolute right-2 top-2 z-50 rounded-full bg-background px-3 py-1">
-            {userLocation?.accuracy ? (
-              <Text className="font-black">
-                {t('uncertain')} {userLocation?.accuracy.toFixed()}m
-              </Text>
-            ) : null}
-          </View>
+
           <View className="absolute bottom-2 left-2 flex flex-row gap-2">
             <Button
               variant="secondary"

@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 
 import { storage } from '~/lib/mmkv/storage';
 
-export const BASE_URL = 'https://api.vais.ai'; // Replace with your API base URL
+export const BASE_URL = 'https://api.ofi.farmguru.ai'; //  https://api.vais.ai || https://api.ofi.farmguru.ai
 
 const apiClient = axios.create({
   baseURL: BASE_URL,

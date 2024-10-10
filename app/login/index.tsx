@@ -1,6 +1,8 @@
+import { FontAwesome5 } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { Stack } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -12,9 +14,9 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
+import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 import { useAuth } from '~/lib/providers/auth-provider';
 
-import { useColorScheme } from '~/lib/hooks/use-color-scheme';
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -87,7 +89,7 @@ export default function Login() {
             </View>
           </CardHeader>
           <CardContent className="gap-2">
-            <Controller
+            {/* <Controller
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -118,6 +120,17 @@ export default function Login() {
 
             <Button onPress={submit} disabled={loading}>
               <Text> {loading ? `${t('messages.loading')}` : `${t('login.signin')}`}</Text>
+            </Button> */}
+
+            <Button
+              onPress={() => {
+                WebBrowser.openBrowserAsync(
+                  'https://login.microsoftonline.com/5e007b6c-258b-4fde-adc1-8bf8a135885d/oauth2/v2.0/authorize?client_id=bcbae075-5cb8-42aa-900c-1ec403121b61&response_type=code&redirect_uri=https://api.ofi.farmguru.ai/accounts/auth&scope=https://graph.microsoft.com/user.read'
+                );
+              }}>
+              <Text>
+                <FontAwesome5 name="microsoft" size={24} /> {`${t('login.signin')}`}
+              </Text>
             </Button>
           </CardContent>
         </Card>

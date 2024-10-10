@@ -1,5 +1,5 @@
 import * as Location from 'expo-location';
-import { Person } from 'phosphor-react-native';
+import { MapPin } from 'phosphor-react-native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Marker } from 'react-native-maps';
@@ -46,11 +46,5 @@ export const MapTracker = () => {
       }
     };
   }, []);
-  return userLocation ? (
-    <Marker coordinate={userLocation} title="Your Location">
-      <View className="flex size-8 items-center justify-center rounded-full bg-green-500">
-        <Person weight="bold" />
-      </View>
-    </Marker>
-  ) : null;
+  return userLocation ? <Marker coordinate={userLocation} pinColor="#4287f5" /> : null;
 };
