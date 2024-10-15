@@ -44,11 +44,13 @@ export function AddScoutPoint({
   scoutPoint,
   onCreateOrUpdate,
   onCanceled,
+  resetTrigger,
 }: {
   field: Field;
   scoutPoint?: ScoutPoint;
   onCreateOrUpdate?: () => void;
   onCanceled?: () => void;
+  resetTrigger: boolean;
 }) {
   const {
     control,
@@ -72,6 +74,10 @@ export function AddScoutPoint({
     longitude: number;
     accuracy: number | null;
   } | null>(null);
+
+  useEffect(() => {
+    resetWithDefaults();
+  }, [resetTrigger]);
 
   const submit = handleSubmit(async (data) => {
     if (scoutPoint) {
@@ -163,7 +169,7 @@ export function AddScoutPoint({
       }
     }
 
-    reset();
+    resetWithDefaults();
 
     await queryClient.invalidateQueries({
       queryKey: getFieldsScoutPointsQueryKey(field.id),
@@ -243,6 +249,21 @@ export function AddScoutPoint({
     }
   }, [scoutPoint]);
 
+  const resetWithDefaults = () => {
+    reset({
+      issueCategory: 'insect',
+      issueSeverity: 'early',
+      date: new Date(),
+      notes: '',
+      voiceNote: undefined,
+      photo: undefined,
+      location: {
+        latitude: userLocation?.latitude ?? 0,
+        longitude: userLocation?.longitude ?? 0,
+      },
+    });
+  };
+
   return (
     <View className="mb-2 gap-2">
       {scoutPoint?.id ? <Text className="text-xs">{scoutPoint?.id}</Text> : null}
@@ -288,8 +309,8 @@ export function AddScoutPoint({
       </Button>
       <Button
         onPress={() => {
-          reset();
           onCanceled?.();
+          resetWithDefaults();
         }}>
         <Text>{t('cancel')}</Text>
       </Button>

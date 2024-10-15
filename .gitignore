@@ -25,3 +25,4 @@ android
 
 # Builds
 *.apk
+.env.local

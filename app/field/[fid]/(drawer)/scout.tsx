@@ -40,6 +40,8 @@ export default function ScoutScreen() {
     }
   }, [params]);
 
+  const [formResetTrigger, setFormResetTrigger] = useState(false);
+
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
@@ -70,6 +72,7 @@ export default function ScoutScreen() {
 
   const handleClosePress = () => {
     bottomSheetRef.current?.close();
+    setFormResetTrigger((prev) => !prev);
     setOpen(false);
   };
 
@@ -149,6 +152,7 @@ export default function ScoutScreen() {
         <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef}>
           <BottomSheetScrollView className="flex-1 px-2">
             <AddScoutPoint
+              resetTrigger={formResetTrigger}
               onCreateOrUpdate={() => {
                 handleClosePress();
                 setSelectedScoutPoint(null);

@@ -37,7 +37,7 @@ const AddIrrigationPoint = ({
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      duration: 1,
+      duration: 0,
       date: new Date(),
     },
   });

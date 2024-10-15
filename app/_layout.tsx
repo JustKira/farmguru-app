@@ -2,13 +2,13 @@ import '~/global.css';
 
 import { Theme, ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
+import * as Sentry from '@sentry/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SplashScreen, Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 // import { PermissionRequester } from '~/components/permission-requester';
 import Toast from 'react-native-toast-message';
 
@@ -39,7 +39,19 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 bootCryptoPolyfill();
 
-export default function RootLayout() {
+Sentry.init({
+  dsn: 'https://03979c1c851d1579f4b3f6caf087553a@o4507394079326208.ingest.de.sentry.io/4508128981549136',
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+  // We recommend adjusting this value in production.
+  // tracesSampleRate: 1.0,
+  // _experiments: {
+  //   // profilesSampleRate is relative to tracesSampleRate.
+  //   // Here, we'll capture profiles for 100% of transactions.
+  //   profilesSampleRate: 1.0,
+  // },
+});
+
+function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
@@ -152,3 +164,4 @@ export default function RootLayout() {
     </QueryClientProvider>
   );
 }
+export default Sentry.wrap(RootLayout);

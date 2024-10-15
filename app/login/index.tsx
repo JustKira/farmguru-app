@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { View, Image } from 'react-native';
 import Toast from 'react-native-toast-message';
 import * as z from 'zod';
-
+import * as Sentry from '@sentry/react-native';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
@@ -89,7 +89,12 @@ export default function Login() {
             </View>
           </CardHeader>
           <CardContent className="gap-2">
-            {/* <Controller
+            <Button
+              onPress={() => {
+                throw new Error('My first Sentry error!');
+              }}
+            />
+            <Controller
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -120,18 +125,18 @@ export default function Login() {
 
             <Button onPress={submit} disabled={loading}>
               <Text> {loading ? `${t('messages.loading')}` : `${t('login.signin')}`}</Text>
-            </Button> */}
+            </Button>
 
-            <Button
+            {/* <Button
               onPress={() => {
                 WebBrowser.openBrowserAsync(
-                  'https://login.microsoftonline.com/5e007b6c-258b-4fde-adc1-8bf8a135885d/oauth2/v2.0/authorize?client_id=bcbae075-5cb8-42aa-900c-1ec403121b61&response_type=code&redirect_uri=https://api.ofi.farmguru.ai/accounts/auth&scope=https://graph.microsoft.com/user.read'
+                  'https://login.microsoftonline.com/5e007b6c-258b-4fde-adc1-8bf8a135885d/oauth2/v2.0/authorize?client_id=bcbae075-5cb8-42aa-900c-1ec403121b61&response_type=code&redirect_uri=https://api.ofi.farmguru.ai/accounts/authMobile&scope=https://graph.microsoft.com/user.read'
                 );
               }}>
               <Text>
                 <FontAwesome5 name="microsoft" size={24} /> {`${t('login.signin')}`}
               </Text>
-            </Button>
+            </Button> */}
           </CardContent>
         </Card>
       </View>
