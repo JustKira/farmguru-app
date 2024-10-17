@@ -7,8 +7,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 
-import { AddScoutPoint } from '~/components/forms/scout-point';
-import { TapInfo } from '~/components/tap-info';
+import { AddScoutPoint, AddScoutPointHandles } from '~/components/forms/scout-point';
+
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import ScoutPoint from '~/lib/database/model/scout-point';
@@ -20,11 +20,13 @@ import { useGetFieldScoutPoints } from '~/lib/react-query/get-field-scout-points
 export default function ScoutScreen() {
   const params = useGlobalSearchParams();
 
+  const addScoutPointRef = useRef<AddScoutPointHandles>(null);
   const [selectedScoutPoint, setSelectedScoutPoint] = useState<ScoutPoint | null>(null);
 
   const [rerender, setRerender] = useState(0);
 
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
+
   const { data: scoutPoints, isLoading: isScoutPointsLoading } = useGetFieldScoutPoints(
     params.fid as string
   );
@@ -32,34 +34,26 @@ export default function ScoutScreen() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    const scoutPointId = params.scoutPointId as string;
-
-    if (scoutPointId) {
-      setSelectedScoutPoint(scoutPoints?.find((sp) => sp.id === scoutPointId) ?? null);
-      handleOpenPress();
+    if (scoutPoints && params.scoutPointId) {
+      const scoutPointId = params.scoutPointId as string;
+      const scoutPoint = scoutPoints.find((sp) => sp.id === scoutPointId);
+      if (scoutPoint) addScoutPointRef.current?.open(scoutPoint);
     }
   }, [params]);
-
-  const [formResetTrigger, setFormResetTrigger] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
     setOpen(false);
     setSelectedScoutPoint(null);
-    bottomSheetRef.current?.close();
+    // bottomSheetRef.current?.close();
   }, [pathname]);
-
-  // Model
-  const snapPoints = useMemo(() => ['100%'], []);
-
-  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const [open, setOpen] = useState(false);
   useBackHandler(
     () => {
       if (open) {
-        handleClosePress();
+        addScoutPointRef.current?.reset();
         return true;
       } else {
         return false;
@@ -70,16 +64,16 @@ export default function ScoutScreen() {
     }
   );
 
-  const handleClosePress = () => {
-    bottomSheetRef.current?.close();
-    setFormResetTrigger((prev) => !prev);
-    setOpen(false);
-  };
+  // const handleClosePress = () => {
+  //   bottomSheetRef.current?.close();
+  //   setFormResetTrigger((prev) => !prev);
+  //   setOpen(false);
+  // };
 
-  const handleOpenPress = () => {
-    bottomSheetRef.current?.expand();
-    setOpen(true);
-  };
+  // const handleOpenPress = () => {
+  //   bottomSheetRef.current?.expand();
+  //   setOpen(true);
+  // };
 
   if (isLoading || isScoutPointsLoading) {
     return (
@@ -110,8 +104,7 @@ export default function ScoutScreen() {
 
           <Button
             onPress={() => {
-              setSelectedScoutPoint(null);
-              handleOpenPress();
+              addScoutPointRef.current?.reset();
             }}>
             <Text> {t('dash.scout.add_marker')}</Text>
           </Button>
@@ -130,8 +123,7 @@ export default function ScoutScreen() {
               return (
                 <Pressable
                   onPress={() => {
-                    setSelectedScoutPoint(item);
-                    handleOpenPress();
+                    addScoutPointRef.current?.open(item);
                   }}
                   className="mb-1.5 flex w-full flex-row justify-between gap-2 bg-muted p-2">
                   <View className="flex flex-row gap-2">
@@ -149,21 +141,7 @@ export default function ScoutScreen() {
           />
         </View>
 
-        <BottomSheet index={-1} snapPoints={snapPoints} ref={bottomSheetRef}>
-          <BottomSheetScrollView className="flex-1 px-2">
-            <AddScoutPoint
-              resetTrigger={formResetTrigger}
-              onCreateOrUpdate={() => {
-                handleClosePress();
-                setSelectedScoutPoint(null);
-                setRerender((prev) => prev + 1);
-              }}
-              onCanceled={handleClosePress}
-              field={data}
-              scoutPoint={selectedScoutPoint ?? undefined}
-            />
-          </BottomSheetScrollView>
-        </BottomSheet>
+        <AddScoutPoint ref={addScoutPointRef} field={data} />
       </BottomSheetModalProvider>
     </>
   );
