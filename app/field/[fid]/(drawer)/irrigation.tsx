@@ -42,7 +42,7 @@ export default function IrrigationScreen() {
       }
     },
     () => {
-      router.replace(`/field/${params.fid}/(drawer)/irrigation` as Href);
+      router.push(`/field/${params.fid}/(drawer)/irrigation` as Href);
     }
   );
 

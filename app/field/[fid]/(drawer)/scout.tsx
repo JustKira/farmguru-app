@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 
 import { AddScoutPoint, AddScoutPointHandles } from '~/components/forms/scout-point';
-
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import ScoutPoint from '~/lib/database/model/scout-point';
@@ -37,19 +36,22 @@ export default function ScoutScreen() {
     if (scoutPoints && params.scoutPointId) {
       const scoutPointId = params.scoutPointId as string;
       const scoutPoint = scoutPoints.find((sp) => sp.id === scoutPointId);
-      if (scoutPoint) addScoutPointRef.current?.open(scoutPoint);
+      if (scoutPoint) {
+        setOpen(true);
+        addScoutPointRef.current?.open(scoutPoint);
+      }
     }
   }, [params]);
+  const [open, setOpen] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
+    addScoutPointRef.current?.reset();
     setOpen(false);
     setSelectedScoutPoint(null);
-    // bottomSheetRef.current?.close();
   }, [pathname]);
 
-  const [open, setOpen] = useState(false);
   useBackHandler(
     () => {
       if (open) {
@@ -60,7 +62,7 @@ export default function ScoutScreen() {
       }
     },
     () => {
-      router.replace(`/field/${params.fid}/(drawer)/scout` as Href);
+      router.push(`/field/${params.fid}/(drawer)/scout` as Href);
     }
   );
 
@@ -104,7 +106,8 @@ export default function ScoutScreen() {
 
           <Button
             onPress={() => {
-              addScoutPointRef.current?.reset();
+              setOpen(true);
+              addScoutPointRef.current?.open();
             }}>
             <Text> {t('dash.scout.add_marker')}</Text>
           </Button>
@@ -123,12 +126,15 @@ export default function ScoutScreen() {
               return (
                 <Pressable
                   onPress={() => {
+                    setOpen(true);
                     addScoutPointRef.current?.open(item);
                   }}
                   className="mb-1.5 flex w-full flex-row justify-between gap-2 bg-muted p-2">
                   <View className="flex flex-row gap-2">
                     <Warning size={24} color={color} weight="bold" />
-                    <Text className="text-lg font-medium">{item.issueCategory}</Text>
+                    <Text className="text-lg font-medium">
+                      {t(item.issueCategory.toLocaleLowerCase() as any)}
+                    </Text>
                   </View>
                   <Text className="text-sm font-medium">
                     {format(item.date, 'EE ,d MMM yyy HH:mm aaa')}
@@ -141,7 +147,17 @@ export default function ScoutScreen() {
           />
         </View>
 
-        <AddScoutPoint ref={addScoutPointRef} field={data} />
+        <AddScoutPoint
+          onScoutPointAdded={() => {
+            setRerender((prev) => prev + 1);
+            setOpen(false);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+          ref={addScoutPointRef}
+          field={data}
+        />
       </BottomSheetModalProvider>
     </>
   );

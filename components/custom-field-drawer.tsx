@@ -25,14 +25,17 @@ export default function CustomFieldDrawerContent(props: any) {
         <DrawerItem
           label={t('navigation.farm')}
           icon={({ size, color }) => <Farm size={size} color={color} />}
-          onPress={() => router.push('/(app_drawer)')}
+          onPress={() => {
+            router.dismissAll();
+            router.replace('/(app_drawer)');
+          }}
         />
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
       {isConnected ? (
         <View className="px-2 pb-2">
-          <Button onPress={() => router.push('/sync')}>
+          <Button onPress={() => router.replace('/sync')}>
             <Text>{t('resync')}</Text>
           </Button>
         </View>

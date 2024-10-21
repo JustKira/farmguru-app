@@ -70,6 +70,7 @@ export default function Sync() {
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
           queryClient.removeQueries();
+          router.dismissAll();
           router.replace('/(app_drawer)');
         },
       });

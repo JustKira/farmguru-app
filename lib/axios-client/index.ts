@@ -70,6 +70,7 @@ async function handleLogout() {
   console.log('Logging out user due to authentication failure');
   storage.delete('user-access-token');
   storage.delete('user-refresh-token');
+  router.dismissAll();
   router.replace('/logout');
 }
 

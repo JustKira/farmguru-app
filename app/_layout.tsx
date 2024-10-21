@@ -134,6 +134,7 @@ function RootLayout() {
             <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
             <AuthProvider
               onSignInSuccess={async () => {
+                router.dismissAll();
                 router.replace('/sync');
                 // await reloadAppAsync();
               }}
@@ -141,6 +142,7 @@ function RootLayout() {
                 await database.write(async () => {
                   await database.unsafeResetDatabase();
                 });
+                router.dismissAll();
                 router.replace('/login');
                 // await reloadAppAsync();
               }}

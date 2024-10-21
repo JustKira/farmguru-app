@@ -61,6 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     const u = storage.getString('user-refresh-token');
 
     if (isProtectedRoute && !u) {
+      router.dismissAll();
       // If the user is not authenticated and is trying to access a protected route, redirect to the sign-in page
       router.replace(signInPath);
     }

@@ -99,6 +99,7 @@ export const SyncProvider: React.FC<SyncProviderProps> = ({ children }) => {
 
       if (isNewDay && isAfterSyncHour) {
         console.log('Conditions met, triggering sync...');
+        router.dismissAll();
         router.replace('/sync');
         triggerSync();
       } else {

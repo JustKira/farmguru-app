@@ -6,7 +6,7 @@ import { Image, Modal, Platform, View } from 'react-native';
 import { z } from 'zod';
 
 import { formSchema } from '.';
-
+import Toast from 'react-native-toast-message';
 import { Button } from '~/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Text } from '~/components/ui/text';
@@ -20,29 +20,54 @@ export const AddPhoto = ({
   value?: string;
 }) => {
   const openCamera = async () => {
-    const permissionResult = await IP.requestCameraPermissionsAsync();
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your camera!");
-      return;
-    }
-    const result = await IP.launchCameraAsync();
-    if (!result.canceled) {
-      const uri = result.assets[0].uri;
-      setValue('photo', uri);
+    try {
+      const permissionResult = await IP.requestCameraPermissionsAsync();
+      if (permissionResult.granted === false) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          // @ts-ignore
+          text2: "You've refused to allow this app to access your camera!",
+          visibilityTime: 2000,
+        });
+        return;
+      }
+      const result = await IP.launchCameraAsync();
+      if (!result.canceled) {
+        const uri = result.assets[0].uri;
+        setValue('photo', uri);
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        // @ts-ignore
+        text2: 'Failed to get Photo',
+        visibilityTime: 2000,
+      });
     }
   };
 
   const pickImage = async () => {
-    const result = await IP.launchImageLibraryAsync({
-      mediaTypes: IP.MediaTypeOptions.All,
-      quality: 1,
-    });
-    if (!result.canceled) {
-      const uri = result.assets[0].uri;
-      setValue('photo', uri);
+    try {
+      const result = await IP.launchImageLibraryAsync({
+        mediaTypes: IP.MediaTypeOptions.All,
+        quality: 1,
+      });
+      if (!result.canceled) {
+        const uri = result.assets[0].uri;
+        setValue('photo', uri);
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        // @ts-ignore
+        text2: 'Failed to get Photo',
+        visibilityTime: 2000,
+      });
     }
   };
-
   const [viewImageModal, setViewImageModal] = useState(false);
   const { t } = useTranslation();
   return (

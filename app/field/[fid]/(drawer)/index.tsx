@@ -1,4 +1,4 @@
-import { Stack, useGlobalSearchParams } from 'expo-router';
+import { Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { Grains, Plant, TrendDown, TrendUp } from 'phosphor-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { FlatGrid } from 'react-native-super-grid';
 
 import { TapInfo } from '~/components/tap-info';
 import { Text } from '~/components/ui/text';
+import useBackHandler from '~/lib/hooks/use-back-handler';
 import { useGetFieldDetails } from '~/lib/react-query/get-field';
 
 export default function GeneralScreen() {
@@ -15,6 +16,17 @@ export default function GeneralScreen() {
   const { data, isLoading } = useGetFieldDetails(params.fid as string);
 
   const { t } = useTranslation();
+
+  const router = useRouter();
+  useBackHandler(
+    () => {
+      return true;
+    },
+    () => {
+      router.dismissAll();
+      router.replace('/(app_drawer)');
+    }
+  );
 
   if (isLoading) {
     return (

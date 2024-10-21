@@ -43,6 +43,8 @@ type FormData = z.infer<typeof formSchema>;
 
 interface AddScoutPointProps {
   field: Field;
+  onCancel?: () => void;
+  onScoutPointAdded?: () => void;
 }
 
 export interface AddScoutPointHandles {
@@ -51,7 +53,7 @@ export interface AddScoutPointHandles {
 }
 
 export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps>(
-  ({ field }, ref) => {
+  ({ field, onScoutPointAdded, onCancel }, ref) => {
     const snapPoints = useMemo(() => ['100%'], []);
 
     const [scoutPoint, setScoutPoint] = useState<ScoutPoint | null>(null);
@@ -116,11 +118,16 @@ export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps
       },
       // submit: handleSubmit(onSubmit),
       open: (sp) => {
+        console.log('opening scout point');
         voiceNoteRef.current?.stopRecording();
-        setScoutPoint(null);
+
         resetWithDefaults();
         bottomSheetRef.current?.expand();
-        if (sp) setScoutPoint(sp);
+        if (sp) {
+          setScoutPoint(sp);
+        } else {
+          setScoutPoint(null);
+        }
       },
     }));
 
@@ -195,6 +202,7 @@ export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps
         resetWithDefaults();
         bottomSheetRef.current?.forceClose();
 
+        onScoutPointAdded?.();
         await queryClient.invalidateQueries({
           queryKey: getFieldsScoutPointsQueryKey(field.id),
         });
@@ -298,6 +306,7 @@ export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps
                 voiceNoteRef.current?.stopRecording();
                 setScoutPoint(null);
                 resetWithDefaults();
+                onCancel?.();
                 bottomSheetRef.current?.forceClose();
               }}>
               <Text>{t('cancel')}</Text>
