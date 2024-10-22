@@ -41,9 +41,7 @@ export default function IrrigationScreen() {
         return false;
       }
     },
-    () => {
-      router.push(`/field/${params.fid}/(drawer)/irrigation` as Href);
-    }
+    () => {}
   );
 
   const handleClosePress = () => {

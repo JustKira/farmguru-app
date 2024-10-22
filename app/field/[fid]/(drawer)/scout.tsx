@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { Href, Stack, useGlobalSearchParams, usePathname, useRouter } from 'expo-router';
 import { Warning } from 'phosphor-react-native';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -31,6 +31,9 @@ export default function ScoutScreen() {
   );
 
   const { t } = useTranslation();
+  const pathname = usePathname();
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (scoutPoints && params.scoutPointId) {
@@ -42,28 +45,21 @@ export default function ScoutScreen() {
       }
     }
   }, [params]);
-  const [open, setOpen] = useState(false);
 
   const router = useRouter();
-  const pathname = usePathname();
-  useEffect(() => {
-    addScoutPointRef.current?.reset();
-    setOpen(false);
-    setSelectedScoutPoint(null);
-  }, [pathname]);
 
   useBackHandler(
     () => {
+      console.log('open', open);
       if (open) {
         addScoutPointRef.current?.reset();
+        setOpen(false);
         return true;
       } else {
         return false;
       }
     },
-    () => {
-      router.push(`/field/${params.fid}/(drawer)/scout` as Href);
-    }
+    () => {}
   );
 
   // const handleClosePress = () => {

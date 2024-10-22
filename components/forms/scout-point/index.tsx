@@ -49,13 +49,14 @@ interface AddScoutPointProps {
 
 export interface AddScoutPointHandles {
   reset: () => void;
+  getOpen: () => boolean;
   open: (sp?: ScoutPoint) => void;
 }
 
 export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps>(
   ({ field, onScoutPointAdded, onCancel }, ref) => {
     const snapPoints = useMemo(() => ['100%'], []);
-
+    const [open, setOpen] = useState(false);
     const [scoutPoint, setScoutPoint] = useState<ScoutPoint | null>(null);
 
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -114,8 +115,10 @@ export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps
         voiceNoteRef.current?.stopRecording();
         setScoutPoint(null);
         resetWithDefaults();
+        setOpen(false);
         bottomSheetRef.current?.forceClose();
       },
+      getOpen: () => open,
       // submit: handleSubmit(onSubmit),
       open: (sp) => {
         console.log('opening scout point');
@@ -128,6 +131,7 @@ export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps
         } else {
           setScoutPoint(null);
         }
+        setOpen(true);
       },
     }));
 

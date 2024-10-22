@@ -49,31 +49,29 @@ export default function MapScreen() {
     right: 12,
   };
 
-  useBackHandler(
-    () => {
-      return true;
-    },
-    () => {
-      let path = '';
+  // useBackHandler(
+  //   () => {
+  //     return true;
+  //   },
+  //   () => {
+  //     switch (type) {
+  //       case 'crop':
+  //         path = '/crop';
+  //         break;
+  //       case 'irrigation':
+  //         path = '/irrigation';
+  //         break;
+  //       case 'scout':
+  //         path = '/scout';
+  //         break;
+  //       default:
+  //         path = '/';
+  //         break;
+  //     }
 
-      switch (type) {
-        case 'crop':
-          path = '/crop';
-          break;
-        case 'irrigation':
-          path = '/irrigation';
-          break;
-        case 'scout':
-          path = '/scout';
-          break;
-        default:
-          path = '/';
-          break;
-      }
-
-      router.navigate(`/field/${params.fid}/(drawer)${path}` as Href);
-    }
-  );
+  //     router.dismiss(1);
+  //   }
+  // );
 
   useEffect(() => {
     if (data !== undefined && isLoading === false) {
@@ -208,7 +206,7 @@ export default function MapScreen() {
                   <Marker
                     onPress={() => {
                       console.log('Pressed');
-                      router.push(
+                      router.navigate(
                         //@ts-ignore
                         `/field/${params.fid as string}/(drawer)/scout?scoutPointId=${point.id}`
                       );

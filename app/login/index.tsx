@@ -89,11 +89,6 @@ export default function Login() {
             </View>
           </CardHeader>
           <CardContent className="gap-2">
-            <Button
-              onPress={() => {
-                throw new Error('My first Sentry error!');
-              }}
-            />
             <Controller
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
