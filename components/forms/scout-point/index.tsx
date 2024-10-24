@@ -58,7 +58,7 @@ export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps
     const snapPoints = useMemo(() => ['100%'], []);
     const [open, setOpen] = useState(false);
     const [scoutPoint, setScoutPoint] = useState<ScoutPoint | null>(null);
-
+    const [isRecording, setIsRecording] = useState(false);
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     const { t } = useTranslation();
@@ -300,9 +300,14 @@ export const AddScoutPoint = forwardRef<AddScoutPointHandles, AddScoutPointProps
               Optional
             </Text>
             <Notes control={control} />
-            <AddVoiceNote ref={voiceNoteRef} setValue={setValue} value={watch('voiceNote')} />
+            <AddVoiceNote
+              onRecordingChange={setIsRecording}
+              ref={voiceNoteRef}
+              setValue={setValue}
+              value={watch('voiceNote')}
+            />
             <AddPhoto setValue={setValue} value={watch('photo')} />
-            <Button onPress={handleSubmit(onSubmit)}>
+            <Button disabled={isRecording} onPress={handleSubmit(onSubmit)}>
               <Text>{t('submit')}</Text>
             </Button>
             <Button

@@ -17,7 +17,9 @@ export const AddVoiceNote = forwardRef(
     {
       setValue,
       value,
+      onRecordingChange,
     }: {
+      onRecordingChange: (b: boolean) => void;
       value?: string;
       setValue: UseFormSetValue<z.infer<typeof formSchema>>;
     },
@@ -48,6 +50,7 @@ export const AddVoiceNote = forwardRef(
         const { recording: newRecording } = await Audio.Recording.createAsync(
           Audio.RecordingOptionsPresets.HIGH_QUALITY
         );
+        onRecordingChange(true);
         setRecording(newRecording);
       } catch (err) {
         console.error('Failed to start recording', err);
@@ -55,6 +58,7 @@ export const AddVoiceNote = forwardRef(
     }
 
     async function stopRecording() {
+      onRecordingChange(false);
       console.log('Stopping recording..');
       setRecording(undefined);
       await recording?.stopAndUnloadAsync();
